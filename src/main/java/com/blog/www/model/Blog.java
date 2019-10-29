@@ -6,6 +6,6 @@ package com.blog.www.model;
  */
 public class Blog {
 
-    
+
 
 }
