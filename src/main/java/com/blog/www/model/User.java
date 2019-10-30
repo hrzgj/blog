@@ -37,4 +37,9 @@ public class User {
      *用户邮箱
      */
     private String mail;
+
+    /**
+     *用户状态，1是注册，0是未点击链接注册
+     */
+    private int status;
 }

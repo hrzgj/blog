@@ -13,10 +13,9 @@ public interface UserService {
     /**
      * 注册用户
      * @param user 用户
-     * @return "1"--用户存在，插入失败             "2"--用户不存在，插入成功
      */
     @Transactional
-    String insert(User user);
+    boolean insert(User user);
 
     /**
      * 登录
@@ -32,4 +31,11 @@ public interface UserService {
      * @return 是否存在
      */
     boolean accountAndMailExist(User user);
+
+    /**
+     * 验证用户注册
+     * @param code  验证码
+     * @return  是否找到
+     */
+    boolean findCode(String code);
 }
