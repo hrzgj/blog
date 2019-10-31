@@ -26,7 +26,7 @@ public class User {
     /**
      * 用户昵称
      */
-    private String userName;
+    private String name;
 
     /**
      * 用户头像地址

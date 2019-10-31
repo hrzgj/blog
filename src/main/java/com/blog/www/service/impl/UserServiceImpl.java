@@ -4,8 +4,8 @@ import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.User;
 import com.blog.www.service.MailService;
 import com.blog.www.service.UserService;
-import com.utils.MD5Utils;
-import com.utils.UUIDUtils;
+import com.blog.www.utils.MD5Utils;
+import com.blog.www.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,23 +28,20 @@ public class UserServiceImpl implements UserService {
         user.setPassword(MD5Utils.encode(user.getPassword()));
         String code= UUIDUtils.getUUID();
         userMapper.insertUser(user);
-        userMapper.insertCode(code,user.getId());
+        userMapper.insertCode(user.getId(),code);
         String subject="验证你的邮箱";
-        String context="尊敬的"+user.getUserName()+"你好"+
-                "<a href=\"/checkCode?code="+code+"\">激活请点击:"+code+"</a>";
+        String context="尊敬的"+user.getName()+"你好"+
+                "点击该链接进行注册"+
+                " http://localhost:8080/checkCode?code="+code;
         mailService.sendMail(user.getMail(),subject,context);
         return true;
     }
 
     @Override
-    public String findByAccountAndPassword(User user) {
+    public User findByAccountAndPassword(User user) {
         user.setPassword(MD5Utils.encode(user.getPassword()));
-        user= userMapper.findByAccountAndPassword(user);
-        if(user==null) {
-            return "0";
-        } else {
-            return "1";
-        }
+        return userMapper.findByAccountAndPassword(user);
+
     }
 
     @Override
@@ -58,6 +55,7 @@ public class UserServiceImpl implements UserService {
         int id=userMapper.findCode(code);
         if(id!=0) {
             userMapper.updateStatus(id);
+            userMapper.deleteCode(id);
             return true;
         }
         else {

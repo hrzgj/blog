@@ -15,7 +15,8 @@ public interface UserMapper {
      * 插入用户数据
      * @param user 登录用户
      */
-    @Insert("insert into user (account,password,name,mail) values(#{account},#{password},#{name},#{mail})")
+    @Insert("insert into user (account,password,name,mail,status) values(#{account},#{password},#{name},#{mail},#{status})")
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     void insertUser(User user);
 
     /**
@@ -23,14 +24,23 @@ public interface UserMapper {
      * @param code 验证码
      * @param id    用户id
      */
-    @Insert("insert into u_code (id, code) values(#{code},#{id})")
-    void insertCode(String code,int id);
+    @Insert("insert into u_code (id, code) values(#{id},#{code})")
+    void insertCode(int id,String code);
 
     /**
      * 登录
      * @param user 用户
      * @return  存在的用户
      */
+    @Results({
+            @Result(property="id",column="id"),
+            @Result(property="account",column="account"),
+            @Result(property="password",column="password"),
+            @Result(property="photo",column="photo"),
+            @Result(property="name",column="name"),
+            @Result(property="mail",column="mail"),
+            @Result(property="status",column="status")
+    })
     @Select("select * from user where account=#{account} and password=#{password} and status=1")
     User findByAccountAndPassword(User user);
 
@@ -56,4 +66,7 @@ public interface UserMapper {
      */
     @Update("update user set status = 1 where id =#{id}")
     void updateStatus(@Param("id")int id);
+
+    @Delete("delete from u_code where id=#{id}")
+    void deleteCode(@Param("id") int id);
 }

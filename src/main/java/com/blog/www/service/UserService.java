@@ -1,7 +1,7 @@
 package com.blog.www.service;
 
 import com.blog.www.model.User;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -14,15 +14,15 @@ public interface UserService {
      * 注册用户
      * @param user 用户
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     boolean insert(User user);
 
     /**
      * 登录
      * @param user 用户
-     * @return "1" 用户存在，可以登录 "0"用户不存在，无法登录
+     * @return true用户可以登录 false没有该用户，账户密码错误
      */
-    String findByAccountAndPassword(User user);
+    User findByAccountAndPassword(User user);
 
 
     /**

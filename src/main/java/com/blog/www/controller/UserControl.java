@@ -2,12 +2,9 @@ package com.blog.www.controller;
 
 import com.blog.www.model.Result;
 import com.blog.www.model.User;
-import com.blog.www.service.MailService;
 import com.blog.www.service.UserService;
-import com.utils.UUIDUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,7 +19,7 @@ public class UserControl {
 
 
     /**
-     * 注册
+     * 预注册
      * @param user 用户
      * @return  注册是否成功
      */
@@ -52,12 +49,24 @@ public class UserControl {
             return null;
         }
         Result<User> result=new Result<>();
-        result.setCode(200);
-        result.setMsg("success");
-        result.setData(user);
-        return result;
+        user=userService.findByAccountAndPassword(user);
+        if(user!=null) {
+            result.setCode(200);
+            result.setMsg("success");
+            result.setData(user);
+            return result;
+        }else {
+            result.setCode(200);
+            result.setMsg("账户密码错误");
+            return result;
+        }
     }
 
+    /**
+     * 用户点击邮件链接，成功注册
+     * @param code 验证码
+     * @return 注册
+     */
     @GetMapping("/checkCode")
     public Result checkCode(@Param("code")String code){
         Result<User> result=new Result<>();

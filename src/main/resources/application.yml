@@ -1,20 +1,23 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/blog
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8
     username: root
     password: 2289360
     driver-class-name: com.mysql.jdbc.Driver
 
-    mail:
-      protocol: smtp #smtp是邮件发送协议，pop3和imap是邮件接收协议。因为我们要发送邮件，因此是smtp
-      host: smtp.qq.com #邮件发送服务器的主机，这里采用的是QQ邮箱来发送邮件
-      port: 25 #邮件发送服务器的端口
-      username: 863234009@qq.com #邮件发送服务器的用户名
-      password: xxqcczdakfmfbega #此处不是账户密码而是权限码(可以在邮箱中开启服务得到)
-      default-encoding:UTF-8
-      properties:
-                  #由于smtp属于变种协议,需要申明ssl
-        mail:
-          smtp:
+  mail:
+    protocol: smtp #smtp是邮件发送协议，pop3和imap是邮件接收协议。因为我们要发送邮件，因此是smtp
+    host: smtp.qq.com #邮件发送服务器的主机，这里采用的是QQ邮箱来发送邮件
+    port: 465 #邮件发送服务器的端口
+    username: 863234009@qq.com #邮件发送服务器的用户名
+    password: xxqcczdakfmfbega #此处不是账户密码而是权限码(可以在邮箱中开启服务得到)
+    default-encoding: UTF-8
+    properties:        #由于smtp属于变种协议,需要申明ssl
+       mail:
+        smtp:
+            socketFactory:
+              port: 25
+            auth: true
             ssl:
               enable: true
+
