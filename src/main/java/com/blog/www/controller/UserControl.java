@@ -26,7 +26,7 @@ public class UserControl {
      * @return  注册是否成功
      */
     @PostMapping("/register")
-    public Result register(@RequestBody User user){
+    public Result register( User user){
         Result<User> result=new Result<>();
         if(userService.accountAndMailExist(user)){
             result.setMsg("账户或者邮箱已经存在");
@@ -46,7 +46,7 @@ public class UserControl {
      * @return 登录是否成功 "1" 成功 "0"失败
      */
     @PostMapping("/login")
-    public Result login(@RequestBody User user, HttpServletRequest request){
+    public Result login( User user, HttpServletRequest request){
         if(user==null){
             return null;
         }
