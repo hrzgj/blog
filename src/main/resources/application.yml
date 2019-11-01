@@ -21,3 +21,5 @@ spring:
             ssl:
               enable: true
 
+img:
+ location: img

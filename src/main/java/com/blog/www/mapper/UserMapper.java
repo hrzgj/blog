@@ -69,4 +69,7 @@ public interface UserMapper {
 
     @Delete("delete from u_code where id=#{id}")
     void deleteCode(@Param("id") int id);
+
+    @Update("update user set photo =#{photo} where id =#{id}")
+    void updtaePhoto(String photo);
 }
