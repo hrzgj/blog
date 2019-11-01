@@ -23,7 +23,6 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailServiceImpl implements MailService {
 
-    private final Logger logger=LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JavaMailSender mailSender;
@@ -47,9 +46,6 @@ public class MailServiceImpl implements MailService {
 //            logger.error("发生邮件出错了！",e);
 //        }
         SimpleMailMessage message = new SimpleMailMessage();
-
-
-
         message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);

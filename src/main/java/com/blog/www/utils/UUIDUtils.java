@@ -3,7 +3,7 @@ package com.blog.www.utils;
 import java.util.UUID;
 
 /**
- * 生成邮件验证码
+ * 产生一串随机字符串
  * @author: chenyu
  * @date: 2019/10/30 21:25
  */

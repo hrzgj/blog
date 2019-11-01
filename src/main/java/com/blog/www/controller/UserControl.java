@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author cy
  */
@@ -44,7 +46,7 @@ public class UserControl {
      * @return 登录是否成功 "1" 成功 "0"失败
      */
     @PostMapping("/login")
-    public Result login(@RequestBody User user){
+    public Result login(@RequestBody User user, HttpServletRequest request){
         if(user==null){
             return null;
         }
@@ -54,6 +56,7 @@ public class UserControl {
             result.setCode(200);
             result.setMsg("success");
             result.setData(user);
+            request.getSession().setAttribute("user", user);
             return result;
         }else {
             result.setCode(200);

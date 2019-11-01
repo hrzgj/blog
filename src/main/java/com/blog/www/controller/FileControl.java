@@ -1,6 +1,7 @@
 package com.blog.www.controller;
 
 import com.blog.www.model.Result;
+import com.blog.www.model.User;
 import com.blog.www.service.FileService;
 import com.blog.www.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class FileControl {
         this.resourceLoader = resourceLoader;
     }
 
-    @PostMapping("fileLoad")
-    public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request){
+    @PostMapping("/fileLoad")
+    public Result upload(@RequestParam("photo") MultipartFile file, HttpServletRequest request){
         Result result=new Result();
         String contentType=file.getContentType();
         String fileName=file.getOriginalFilename();
@@ -47,12 +48,13 @@ public class FileControl {
             result.setCode(404);
             return result;
         }
-        // 拼接图片url
-        String imgHost = "http://localost:8080";
-        String imgUploadPath = path;
-        String imgName = fileName;
-        String imgPath = imgHost + imgUploadPath + imgName;
-        fileService.upload(fileName);
+//        // 拼接图片url
+//        String imgHost = "http://localost:8080";
+//        String imgUploadPath = path;
+//        String imgName = fileName;
+//        String imgPath = imgHost + imgUploadPath + imgName;
+        User user= (User) request.getSession().getAttribute("user");
+        fileService.upload(fileName,user.getId());
         result.setMsg("下载成功，数据库更新成功");
         result.setCode(200);
         return result;

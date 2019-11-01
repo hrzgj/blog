@@ -16,7 +16,7 @@ public class FileServiceImpl implements FileService {
     UserMapper userMapper;
 
     @Override
-    public void upload(String fileName) {
-            userMapper.updtaePhoto(fileName);
+    public void upload(String fileName,int id) {
+            userMapper.updtaePhoto(fileName,id);
     }
 }

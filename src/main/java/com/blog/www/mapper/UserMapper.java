@@ -67,9 +67,12 @@ public interface UserMapper {
     @Update("update user set status = 1 where id =#{id}")
     void updateStatus(@Param("id")int id);
 
+    /**
+     * @param id 用户id
+     */
     @Delete("delete from u_code where id=#{id}")
     void deleteCode(@Param("id") int id);
 
     @Update("update user set photo =#{photo} where id =#{id}")
-    void updtaePhoto(String photo);
+    void updtaePhoto(String photo,int id);
 }
