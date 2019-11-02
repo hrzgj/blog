@@ -40,4 +40,11 @@ public interface UserService {
     boolean findCode(String code);
 
 
+
+    /**
+     * 修改密码的操作
+     * @param user 用户
+     * @return 是否修改成功
+     */
+    boolean updatePassword(User user,String newPsw);
 }

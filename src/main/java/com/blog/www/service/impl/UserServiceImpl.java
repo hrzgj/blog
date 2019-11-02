@@ -6,9 +6,10 @@ import com.blog.www.service.MailService;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.MD5Utils;
 import com.blog.www.utils.UUIDUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 /**
@@ -61,5 +62,14 @@ public class UserServiceImpl implements UserService {
         else {
             return false;
         }
+    }
+
+    @Override
+    public boolean updatePassword( User user,  String newPassword) {
+        int count = userMapper.updatePassword(user.getId(),newPassword);
+        if (count>0){
+            return true;
+        }
+        return false;
     }
 }

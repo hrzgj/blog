@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 2289360
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
 
   mail:

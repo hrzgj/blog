@@ -3,6 +3,7 @@ package com.blog.www.controller;
 import com.blog.www.model.Result;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
+import com.blog.www.utils.MD5Utils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -91,5 +92,41 @@ public class UserControl {
 
 
     }
+
+
+
+    @PostMapping("/updatePassword")
+    public Result updatePassword(@RequestParam("oldpassword") String oldPsw, @RequestParam("newpassword") String newPsw, HttpServletRequest request) {
+        Result<User> result=new Result<>();
+        User user = (User) request.getSession().getAttribute("user");
+        if(user==null) {
+            result.setMsg("用户为空");
+            result.setCode(404);
+            return  result;
+        }else{
+            String oldPassword = MD5Utils.encode(oldPsw);
+            String newPassword = MD5Utils.encode(newPsw);
+            if (oldPassword==user.getPassword()||oldPassword.equals(user.getPassword())){
+                boolean state = userService.updatePassword(user,newPassword);
+                if (state){
+                    result.setCode(200);
+                    result.setMsg("success");
+                    result.setData(user);
+                }else {
+                    result.setCode(200);
+                    result.setMsg("修改密码失败");
+                }
+            }
+            result.setMsg("旧密码不正确");
+            result.setCode(404);
+            request.getSession().setAttribute("user", user);
+            return result;
+        }
+    }
+
+//    public  Result forgetPassword(){
+//
+//    }
+
 
 }
