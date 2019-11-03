@@ -81,6 +81,7 @@ public interface UserMapper {
      * 修改密码的操作
      * @param id 用户id
      * @param newPsw 新密码
+     * @return 数据条数
      */
     @Update("update user set password =#{password} where id = #{id}")
     int updatePassword(@Param("id") int id,@Param("password") String newPsw);
