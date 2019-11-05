@@ -1,6 +1,7 @@
 package com.blog.www.service;
 
 import com.blog.www.model.User;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,5 +40,35 @@ public interface UserService {
      */
     boolean findCode(String code);
 
+    /**
+     * 寻找随机验证码，用于用户忘记密码时使用
+     * @param code 随机验证码
+     * @param user 用户
+     * @return 是否找到
+     */
+    boolean findCodeInForget(User user,String code);
 
+
+    /**
+     * 修改密码的操作
+     * @param user 用户
+     * @param newPsw 新密码
+     * @return 是否修改成功
+     */
+    boolean updatePassword(User user,String newPsw);
+
+    /**
+     * 发送随机验证码
+     * @param user 用户
+     * @return 是否发送成功
+     */
+    boolean sendRandomCode(User user);
+
+    /**
+     * 忘记密码
+     * @param user 用户
+     * @param newPassword  新密码
+     * @return 是否修改密码成功
+     */
+    boolean forgetPassword(User user,String newPassword);
 }
