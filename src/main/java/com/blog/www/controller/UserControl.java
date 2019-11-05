@@ -4,7 +4,6 @@ import com.blog.www.model.Result;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.MD5Utils;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -130,9 +129,9 @@ public class UserControl {
     }
 
     @GetMapping("/sendCode")
-    public  Result sendRandomCode(@RequestBody User user,HttpServletRequest request){
+    public  Result sendRandomCode(HttpServletRequest request){
         Result<User> result = new Result<>();
-        user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         userService.sendRandomCode(user);
         result.setCode(200);
         result.setMsg("发送随即验证码成功");

@@ -66,9 +66,9 @@ public interface UserService {
 
     /**
      * 忘记密码
-     * @param user
-     * @param newPassword
-     * @return
+     * @param user 用户
+     * @param newPassword  新密码
+     * @return 是否修改密码成功
      */
     boolean forgetPassword(User user,String newPassword);
 }
