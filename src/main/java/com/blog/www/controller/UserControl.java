@@ -27,11 +27,11 @@ public class UserControl {
      * @return  注册是否成功
      */
     @PostMapping("/register")
-    public Result register( User user){
+    public Result register(@RequestBody  User user){
         Result<User> result=new Result<>();
         if(userService.accountAndMailExist(user)){
             result.setMsg("账户或者邮箱已经存在");
-            result.setCode(404);
+            result.setCode(200);
             return result;
         }
         userService.insert(user);
@@ -47,7 +47,7 @@ public class UserControl {
      * @return 登录是否成功 "1" 成功 "0"失败
      */
     @PostMapping("/login")
-    public Result login( User user, HttpServletRequest request){
+    public Result login( @RequestBody User user, HttpServletRequest request){
         if(user==null){
             return null;
         }
@@ -55,7 +55,7 @@ public class UserControl {
         user=userService.findByAccountAndPassword(user);
         if(user!=null) {
             result.setCode(200);
-            result.setMsg("success");
+            result.setMsg("登录成功");
             result.setData(user);
             request.getSession().setAttribute("user", user);
             return result;
@@ -64,6 +64,7 @@ public class UserControl {
             result.setMsg("账户密码错误");
             return result;
         }
+
     }
 
     /**
@@ -72,7 +73,7 @@ public class UserControl {
      * @return 注册
      */
     @GetMapping("/checkCode")
-    public Result checkCode(@Param("code")String code){
+    public Result checkCode(@PathVariable String code){
         Result<User> result=new Result<>();
         if(code==null){
             result.setMsg("修改了url的参数");
@@ -101,7 +102,7 @@ public class UserControl {
         User user = (User) request.getSession().getAttribute("user");
         if(user==null) {
             result.setMsg("用户为空");
-            result.setCode(404);
+            result.setCode(200);
             return  result;
         }else{
             String oldPassword = MD5Utils.encode(oldPsw);
@@ -121,7 +122,7 @@ public class UserControl {
                 }
             }else {
                 result.setMsg("旧密码不正确");
-                result.setCode(404);
+                result.setCode(200);
             }
             request.getSession().setAttribute("user", user);
             return result;

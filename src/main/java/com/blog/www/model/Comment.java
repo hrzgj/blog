@@ -17,17 +17,17 @@ public class Comment {
     /**
      *评论内容
      */
-    private String comtent;
+    private String content;
 
     /**
      * 评论的用户的id
      */
-    private int userId;
+    private User user;
 
     /**
      * 评论的这篇博客的id
      */
-    private int blogId;
+    private Blog blog;
 
     /**
      * 评论的时间

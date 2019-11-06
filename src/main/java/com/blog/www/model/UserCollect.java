@@ -14,7 +14,7 @@ public class UserCollect {
     /**
      * 此分组的所有者user的id
      */
-    private int UserId;
+    private User user;
 
     /**
      * 此分组的名字

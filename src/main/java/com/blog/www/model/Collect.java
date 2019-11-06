@@ -3,8 +3,8 @@ package com.blog.www.model;
 import lombok.Data;
 
 /**
- * @Author liuyanxiang
- * @Date 2019/11/3 15:22
+ * @author liuyanxiang
+ * @date 2019/11/3 15:22
  */
 @Data
 public class Collect {
