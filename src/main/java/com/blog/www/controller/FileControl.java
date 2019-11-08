@@ -6,8 +6,7 @@ import com.blog.www.service.FileService;
 import com.blog.www.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 public class FileControl {
-    private final ResourceLoader  resourceLoader;
+
 
     @Autowired
     private FileService fileService;
@@ -29,10 +28,7 @@ public class FileControl {
     @Value("${img.location}")
     private String path;
 
-    @Autowired
-    public FileControl(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
+
 
     @PostMapping("/fileLoad")
     public Result upload(@RequestParam("photo") MultipartFile file, HttpServletRequest request){
