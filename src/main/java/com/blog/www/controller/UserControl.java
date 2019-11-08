@@ -4,6 +4,7 @@ import com.blog.www.model.Result;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.MD5Utils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +72,7 @@ public class UserControl {
      * @return 注册
      */
     @GetMapping("/checkCode")
-    public Result checkCode(@PathVariable String code){
+    public Result checkCode(@Param("code")String code){
         Result<User> result=new Result<>();
         if(code==null){
             result.setMsg("修改了url的参数");
@@ -93,12 +94,7 @@ public class UserControl {
     }
 
 
-    /**
-     * 修改密码
-     * @param oldPsw 旧密码
-     * @param newPsw 新密码
-     * @return 修改结果
-     */
+
     @PostMapping("/updatePassword")
     public Result updatePassword(@RequestParam("oldpassword") String oldPsw, @RequestParam("newpassword") String newPsw, HttpServletRequest request) {
         Result<User> result=new Result<>();
@@ -111,47 +107,37 @@ public class UserControl {
             String oldPassword = MD5Utils.encode(oldPsw);
             String newPassword = MD5Utils.encode(newPsw);
 
-            if (oldPassword.equals(user.getPassword())){
+
+            if (oldPassword.equals(user.getPassword())||oldPassword==user.getPassword()){
                 boolean state = userService.updatePassword(user,newPassword);
                 if (state){
                     result.setCode(200);
                     result.setMsg("success");
                     result.setData(user);
-                    user.setPassword(newPassword);
+                    user.setPassword(oldPassword);
                 }else {
                     result.setCode(200);
                     result.setMsg("修改密码失败");
                 }
             }else {
                 result.setMsg("旧密码不正确");
-                result.setCode(212);
+                result.setCode(404);
             }
             request.getSession().setAttribute("user", user);
             return result;
         }
     }
 
-    /**
-     * 忘记密码时使用的发送随即验证码到邮箱
-     * @return 返回是否发送验证码成功
-     */
     @GetMapping("/sendCode")
     public  Result sendRandomCode(HttpServletRequest request){
         Result<User> result = new Result<>();
         User user = (User) request.getSession().getAttribute("user");
         userService.sendRandomCode(user);
         result.setCode(200);
-        result.setMsg("发送随机验证码成功");
+        result.setMsg("发送随即验证码成功");
         return result;
     }
 
-    /**
-     * 忘记密码的操作
-     * @param newPassword 新的密码
-     * @param code 发送到邮箱的随机验证码
-     * @param request 请求体，用于session中用户的数据
-     * @return 是否修改密码成功
-     */
     @PostMapping("/forgetPassword")
     public  Result forgetPassword(@RequestParam("password") String newPassword,@RequestParam("randomcode") String code,HttpServletRequest request){
         Result<User> result = new Result<>();
