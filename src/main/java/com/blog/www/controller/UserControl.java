@@ -94,7 +94,12 @@ public class UserControl {
     }
 
 
-
+    /**
+     * 修改密码
+     * @param oldPsw  旧密码
+     * @param newPsw   新密码
+     * @return 修改成功与否
+     */
     @PostMapping("/updatePassword")
     public Result updatePassword(@RequestParam("oldpassword") String oldPsw, @RequestParam("newpassword") String newPsw, HttpServletRequest request) {
         Result<User> result=new Result<>();
@@ -114,7 +119,7 @@ public class UserControl {
                     result.setCode(200);
                     result.setMsg("success");
                     result.setData(user);
-                    user.setPassword(oldPassword);
+                    user.setPassword(newPassword);
                 }else {
                     result.setCode(200);
                     result.setMsg("修改密码失败");
@@ -128,16 +133,30 @@ public class UserControl {
         }
     }
 
+    /**
+     * 忘记密码时发送随机验证码
+     * @return 发送成功与否
+     */
     @GetMapping("/sendCode")
     public  Result sendRandomCode(HttpServletRequest request){
         Result<User> result = new Result<>();
         User user = (User) request.getSession().getAttribute("user");
-        userService.sendRandomCode(user);
-        result.setCode(200);
-        result.setMsg("发送随即验证码成功");
+        if(userService.sendRandomCode(user)){
+            result.setCode(200);
+            result.setMsg("发送随机验证码成功");
+        }else {
+            result.setCode(200);
+            result.setMsg("发送随机验证码失败");
+        }
         return result;
     }
 
+    /**
+     * 忘记密码
+     * @param newPassword 新的密码
+     * @param code 随机验证码
+     * @return 成功与否
+     */
     @PostMapping("/forgetPassword")
     public  Result forgetPassword(@RequestParam("password") String newPassword,@RequestParam("randomcode") String code,HttpServletRequest request){
         Result<User> result = new Result<>();
