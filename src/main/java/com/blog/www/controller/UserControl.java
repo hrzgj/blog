@@ -44,7 +44,7 @@ public class UserControl {
     /**
      * 登录
      * @param user 用户
-     * @return 登录是否成功 "1" 成功 "0"失败
+     * @return 登录成功
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user, HttpServletRequest request){
@@ -93,6 +93,33 @@ public class UserControl {
 
     }
 
+    @PostMapping("/checkAccount")
+    public Result checkAccount(@RequestBody User user){
+        Result result=new Result();
+        if(userService.accountExit(user)){
+            result.setMsg("账户存在");
+            result.setCode(200);
+            return result;
+        }else {
+            result.setMsg("账户可用");
+            result.setCode(200);
+            return result;
+        }
+    }
+
+    @PostMapping("/checkMail")
+    public Result checkMail(@RequestBody User user){
+        Result result=new Result();
+        if(userService.mailExit(user)){
+            result.setMsg("邮箱存在");
+            result.setCode(200);
+            return result;
+        }else {
+            result.setMsg("邮箱可用");
+            result.setCode(200);
+            return result;
+        }
+    }
 
     /**
      * 修改密码
