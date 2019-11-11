@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailService mailService;
 
+    /**
+     * 注册用户
+     * @param user 用户 用户
+     * @return  是否增加成功
+     */
     @Override
     public boolean insert(User user) {
         user.setPassword(MD5Utils.encode(user.getPassword()));
@@ -47,10 +52,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean accountAndMailExist(User user) {
-        user=userMapper.findByAccountOrMail(user);
-        return user != null;
+    public boolean accountExit(User user) {
+        return userMapper.findByAccount(user)!=0;
     }
+
+    @Override
+    public boolean mailExit(User user) {
+        return userMapper.findByMail(user)!=0;
+    }
+
+    @Override
+    public boolean accountAndMailExist(User user) {
+        return userMapper.findByAccountOrMail(user) != 0;
+    }
+
 
     @Override
     public boolean findCode(String code) {

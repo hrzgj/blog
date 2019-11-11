@@ -25,6 +25,19 @@ public interface UserService {
      */
     User findByAccountAndPassword(User user);
 
+    /**
+     * 用户账号是否存在
+     * @param user 用户账号
+     * @return  是否存在
+     */
+    boolean accountExit(User user);
+
+    /**
+     * 用户邮箱是否存在
+     * @param user 用户邮箱
+     * @return  是否存在
+     */
+    boolean mailExit(User user);
 
     /**
      * 判断是否账户和邮箱是否存在

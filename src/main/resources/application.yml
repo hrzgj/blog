@@ -26,6 +26,10 @@ spring:
             ssl:
               enable: true
 
-img:
- location: img
 
+web:
+   upload-path: /root/springboot/img/
+
+
+server:
+  port: 8080

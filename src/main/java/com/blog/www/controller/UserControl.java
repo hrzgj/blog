@@ -4,7 +4,6 @@ import com.blog.www.model.Result;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.MD5Utils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author cy
  */
 @RestController
+@CrossOrigin
 public class UserControl {
 
     @Autowired
@@ -29,6 +29,9 @@ public class UserControl {
     @PostMapping("/register")
     public Result register(@RequestBody  User user){
         Result<User> result=new Result<>();
+        if(user==null){
+
+        }
         if(userService.accountAndMailExist(user)){
             result.setMsg("账户或者邮箱已经存在");
             result.setCode(200);
@@ -44,14 +47,16 @@ public class UserControl {
     /**
      * 登录
      * @param user 用户
-     * @return 登录是否成功 "1" 成功 "0"失败
+     * @return 登录是否成功
      */
     @PostMapping("/login")
     public Result login( @RequestBody User user, HttpServletRequest request){
-        if(user==null){
+        Result<User> result=new Result<>();
+        if(user.getAccount()==null ||user.getPassword()==null){
+            result.setCode(404);
+            result.setMsg("没有输入账号密码");
             return null;
         }
-        Result<User> result=new Result<>();
         user=userService.findByAccountAndPassword(user);
         if(user!=null) {
             result.setCode(200);
@@ -94,7 +99,47 @@ public class UserControl {
 
     }
 
+    /**
+     * 查看用户账户是否存在
+     * @param user 用户账户
+     * @return  result
+     */
+    @PostMapping("/checkAccount")
+    public Result checkAccount(@RequestBody User user){
+        Result result=new Result();
+        if(userService.accountExit(user)){
+            result.setMsg("用户账号存在");
+            result.setCode(200);
+            return result;
+        }
+        else {
+            result.setMsg("用户账号可用");
+            result.setCode(200);
+            return result;
+        }
 
+    }
+
+    /**
+     * 查看用户邮箱是否存在
+     * @param user 用户邮箱
+     * @return  result
+     */
+    @PostMapping("/checkMail")
+    public Result checkMail(@RequestBody User user){
+        Result result=new Result();
+        if(userService.mailExit(user)){
+            result.setMsg("用户邮箱存在");
+            result.setCode(200);
+            return result;
+        }
+        else {
+            result.setMsg("用户邮箱可用");
+            result.setCode(200);
+            return result;
+        }
+
+    }
 
     @PostMapping("/updatePassword")
     public Result updatePassword(@RequestParam("oldpassword") String oldPsw, @RequestParam("newpassword") String newPsw, HttpServletRequest request) {

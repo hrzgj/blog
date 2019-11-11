@@ -45,12 +45,28 @@ public interface UserMapper {
     User findByAccountAndPassword(User user);
 
     /**
+     * 查看用户账号是否存在
+     * @param user 用户
+     * @return  是否存在
+     */
+    @Select("select count(*) from user where account=#{account}")
+    int findByAccount(User user);
+
+    /**
+     * 查看用户邮箱是否存在
+     * @param user 用户邮箱
+     * @return  是否存在
+     */
+    @Select("select count(*) from user where mail =#{mail}")
+    int findByMail(User user);
+
+    /**
      * 查找数据库是否存在对应账户或者邮箱的用户
      * @param user 用户
-     * @return 存在的用户
+     * @return 是否存在
      */
-    @Select("select * from user where account=#{account} or mail=#{mail}")
-    User findByAccountOrMail(User user);
+    @Select("select count(*) from user where account=#{account} or mail=#{mail}")
+    int findByAccountOrMail(User user);
 
     /**
      * 在u_code表查找验证码来注册用户
@@ -73,8 +89,13 @@ public interface UserMapper {
     @Delete("delete from u_code where id=#{id}")
     void deleteCode(@Param("id") int id);
 
+    /**
+     * 用户图片更新
+     * @param photo 图片名称
+     * @param id   用户id
+     */
     @Update("update user set photo =#{photo} where id =#{id}")
-    void updtaePhoto(String photo,int id);
+    void updatePhoto(String photo,int id);
 
 
     /**
