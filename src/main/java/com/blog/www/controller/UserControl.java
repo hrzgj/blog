@@ -4,6 +4,7 @@ import com.blog.www.model.Result;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.MD5Utils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author cy
  */
 @RestController
-@CrossOrigin
 public class UserControl {
 
     @Autowired
@@ -27,14 +27,11 @@ public class UserControl {
      * @return  注册是否成功
      */
     @PostMapping("/register")
-    public Result register(@RequestBody  User user){
+    public Result register(@RequestBody User user){
         Result<User> result=new Result<>();
-        if(user==null){
-
-        }
         if(userService.accountAndMailExist(user)){
             result.setMsg("账户或者邮箱已经存在");
-            result.setCode(200);
+            result.setCode(404);
             return result;
         }
         userService.insert(user);
@@ -47,20 +44,18 @@ public class UserControl {
     /**
      * 登录
      * @param user 用户
-     * @return 登录是否成功
+     * @return 登录是否成功 "1" 成功 "0"失败
      */
     @PostMapping("/login")
-    public Result login( @RequestBody User user, HttpServletRequest request){
-        Result<User> result=new Result<>();
-        if(user.getAccount()==null ||user.getPassword()==null){
-            result.setCode(404);
-            result.setMsg("没有输入账号密码");
+    public Result login(@RequestBody User user, HttpServletRequest request){
+        if(user==null){
             return null;
         }
+        Result<User> result=new Result<>();
         user=userService.findByAccountAndPassword(user);
         if(user!=null) {
             result.setCode(200);
-            result.setMsg("登录成功");
+            result.setMsg("success");
             result.setData(user);
             request.getSession().setAttribute("user", user);
             return result;
@@ -69,7 +64,6 @@ public class UserControl {
             result.setMsg("账户密码错误");
             return result;
         }
-
     }
 
     /**
@@ -78,7 +72,7 @@ public class UserControl {
      * @return 注册
      */
     @GetMapping("/checkCode")
-    public Result checkCode(@PathVariable String code){
+    public Result checkCode(@Param("code")String code){
         Result<User> result=new Result<>();
         if(code==null){
             result.setMsg("修改了url的参数");
@@ -99,55 +93,20 @@ public class UserControl {
 
     }
 
-    /**
-     * 查看用户账户是否存在
-     * @param user 用户账户
-     * @return  result
-     */
-    @PostMapping("/checkAccount")
-    public Result checkAccount(@RequestBody User user){
-        Result result=new Result();
-        if(userService.accountExit(user)){
-            result.setMsg("用户账号存在");
-            result.setCode(200);
-            return result;
-        }
-        else {
-            result.setMsg("用户账号可用");
-            result.setCode(200);
-            return result;
-        }
-
-    }
 
     /**
-     * 查看用户邮箱是否存在
-     * @param user 用户邮箱
-     * @return  result
+     * 修改密码
+     * @param oldPsw  旧密码
+     * @param newPsw   新密码
+     * @return 修改成功与否
      */
-    @PostMapping("/checkMail")
-    public Result checkMail(@RequestBody User user){
-        Result result=new Result();
-        if(userService.mailExit(user)){
-            result.setMsg("用户邮箱存在");
-            result.setCode(200);
-            return result;
-        }
-        else {
-            result.setMsg("用户邮箱可用");
-            result.setCode(200);
-            return result;
-        }
-
-    }
-
     @PostMapping("/updatePassword")
     public Result updatePassword(@RequestParam("oldpassword") String oldPsw, @RequestParam("newpassword") String newPsw, HttpServletRequest request) {
         Result<User> result=new Result<>();
         User user = (User) request.getSession().getAttribute("user");
         if(user==null) {
             result.setMsg("用户为空");
-            result.setCode(200);
+            result.setCode(404);
             return  result;
         }else{
             String oldPassword = MD5Utils.encode(oldPsw);
@@ -160,30 +119,44 @@ public class UserControl {
                     result.setCode(200);
                     result.setMsg("success");
                     result.setData(user);
-                    user.setPassword(oldPassword);
+                    user.setPassword(newPassword);
                 }else {
                     result.setCode(200);
                     result.setMsg("修改密码失败");
                 }
             }else {
                 result.setMsg("旧密码不正确");
-                result.setCode(200);
+                result.setCode(404);
             }
             request.getSession().setAttribute("user", user);
             return result;
         }
     }
 
+    /**
+     * 忘记密码时发送随机验证码
+     * @return 发送成功与否
+     */
     @GetMapping("/sendCode")
     public  Result sendRandomCode(HttpServletRequest request){
         Result<User> result = new Result<>();
         User user = (User) request.getSession().getAttribute("user");
-        userService.sendRandomCode(user);
-        result.setCode(200);
-        result.setMsg("发送随即验证码成功");
+        if(userService.sendRandomCode(user)){
+            result.setCode(200);
+            result.setMsg("发送随机验证码成功");
+        }else {
+            result.setCode(200);
+            result.setMsg("发送随机验证码失败");
+        }
         return result;
     }
 
+    /**
+     * 忘记密码
+     * @param newPassword 新的密码
+     * @param code 随机验证码
+     * @return 成功与否
+     */
     @PostMapping("/forgetPassword")
     public  Result forgetPassword(@RequestParam("password") String newPassword,@RequestParam("randomcode") String code,HttpServletRequest request){
         Result<User> result = new Result<>();
