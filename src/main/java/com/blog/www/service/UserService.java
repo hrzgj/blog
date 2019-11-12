@@ -26,6 +26,13 @@ public interface UserService {
     User findByAccountAndPassword(User user);
 
     /**
+     * 通过邮箱获得用户信息
+     * @param mail 邮箱
+     * @return 成功返回用户，失败返回空
+     */
+    User findUserByMail(String mail);
+
+    /**
      * 用户账号是否存在
      * @param user 用户账号
      * @return  是否存在
@@ -72,10 +79,10 @@ public interface UserService {
 
     /**
      * 发送随机验证码
-     * @param user 用户
+     * @param mail 用户的邮箱
      * @return 是否发送成功
      */
-    boolean sendRandomCode(User user);
+    boolean sendRandomCode(String mail);
 
     /**
      * 忘记密码
