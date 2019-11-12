@@ -173,13 +173,13 @@ public class UserControl {
 
     /**
      * 忘记密码时发送随机验证码
+     * @param mail 邮箱
      * @return 发送成功与否
      */
     @GetMapping("/sendCode")
-    public  Result sendRandomCode(HttpServletRequest request){
+    public  Result sendRandomCode(@RequestParam("mail") String mail){
         Result<User> result = new Result<>();
-        User user = (User) request.getSession().getAttribute("user");
-        if(userService.sendRandomCode(user)){
+        if(userService.sendRandomCode(mail)){
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("发送随机验证码成功");
         }else {
@@ -196,9 +196,9 @@ public class UserControl {
      * @return 成功与否
      */
     @PostMapping("/forgetPassword")
-    public  Result forgetPassword(@RequestParam("password") String newPassword,@RequestParam("randomcode") String code,HttpServletRequest request){
+    public  Result forgetPassword(@RequestParam("mail")String mail,@RequestParam("password") String newPassword,@RequestParam("randomcode") String code){
         Result<User> result = new Result<>();
-        User user = (User) request.getSession().getAttribute("user");
+        User user = userService.findUserByMail(mail);
         //从数据库中找到此验证码的对象id，如一致则可以修改密码
         if(userService.findCodeInForget(user,code)){
             if (userService.forgetPassword(user,newPassword)){

@@ -1,6 +1,7 @@
 package com.blog.www.controller;
 
 import com.blog.www.model.Result;
+import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
 import com.blog.www.service.FileService;
 import com.blog.www.utils.FileUtils;
@@ -45,7 +46,7 @@ public class FileControl {
         User user= (User) request.getSession().getAttribute("user");
         if(user==null){
             result.setMsg("session失效，请重新登录");
-            result.setCode(400);
+            result.setCode(ResultCode.USER_SESSION_ERROR);
             return result;
         }
         if(user.getPhoto()!=null){

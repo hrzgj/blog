@@ -52,6 +52,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByMail(String mail) {
+        if (mail!=null) {
+            User user = userMapper.findUserByMail(mail);
+            return user;
+        }
+        return null;
+    }
+
+    @Override
     public boolean accountExit(User user) {
         return userMapper.findByAccount(user)!=0;
     }
@@ -99,18 +108,24 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+
+
+
     @Override
-    public boolean sendRandomCode(User user) {
-        if (user!=null){
-            String  code = RandomCodeUtils.getRandomCode();
-            String subject="修改你的密码";
-            String context="尊敬的"+user.getName()+"你好"+
-                    "你的验证码是:"+
-                    code+"你可以用这个验证码修改你的博客密码,如果不是你的本人操作请忽略此条信息！";
-            //将此验证码插入数据库，稍后进行验证
-            userMapper.insertCode(user.getId(),code);
-            mailService.sendMail(user.getMail(),subject,context);
-            return true;
+    public boolean sendRandomCode(String mail) {
+        if (mail!=null){
+            User user = userMapper.findUserByMail(mail);
+            if(user!=null){
+                String  code = RandomCodeUtils.getRandomCode();
+                String subject="博客|修改你的密码";
+                String context="尊敬的"+user.getName()+"你好"+
+                        "你的验证码是:"+
+                        code+"你可以用这个验证码修改你的博客密码,如果不是你的本人操作请忽略此条信息！";
+                //将此验证码插入数据库，稍后进行验证
+                userMapper.insertCode(user.getId(),code);
+                mailService.sendMail(user.getMail(),subject,context);
+                return true;
+            }
         }
         return false;
     }
