@@ -45,6 +45,14 @@ public interface UserMapper {
     User findByAccountAndPassword(User user);
 
     /**
+     * 通过邮箱找到用户信息
+     * @param mail 邮箱
+     * @return
+     */
+    @Select("select * from user where mail = #{mail}")
+    User findUserByMail(String mail);
+
+    /**
      * 查看用户账号是否存在
      * @param user 用户
      * @return  是否存在
