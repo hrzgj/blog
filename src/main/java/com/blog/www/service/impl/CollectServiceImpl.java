@@ -141,4 +141,24 @@ public class CollectServiceImpl implements CollectService {
     public boolean updateNormalCollectName(UserCollect userCollect) {
         return collectMapper.updateNormalCollectName(userCollect)>0;
     }
+
+    @Override
+    public int changeNorToUnNormal(Collect collect, int userId) {
+        //获取用户默认收藏夹id
+        int DId=collectMapper.selectAuto(userId);
+        //查看默认收藏夹是否有该博客
+        if(collectMapper.findNorMalCollectExitBlog(DId,collect.getBlogId())==0){
+            //默认收藏夹中没有该博客
+            return ResultCode.BLOG_NOT_EXIT;
+        }else{
+            //默认收藏夹中存在此博客，进行插入新的收藏夹和删除默认收藏夹中博客的操作
+            if (collectMapper.insertCollect(collect)>0 && collectMapper.deleteEditCollect(collect.getBlogId(),DId)>0){
+                return ResultCode.SUCCESS;
+            }else{
+                return ResultCode.UNSPECIFIED;
+            }
+        }
+    }
+
+
 }

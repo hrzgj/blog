@@ -79,6 +79,16 @@ public interface CollectService {
      int changeToNormal(Collect collect,int userId);
 
      /**
+      * 用户将一个博客从默认收藏夹移入非默认收藏夹
+      * @param collect 非默认收藏夹
+      * @param userId    用户id
+      * @return     是否移入成功
+      */
+     @Transactional(rollbackFor = Exception.class)
+     int changeNorToUnNormal(Collect collect,int userId);
+
+
+     /**
       * 删除非默认收藏夹的一篇博客
       * @param collect 非默认收藏夹
       * @return     是否删除成功

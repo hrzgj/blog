@@ -81,7 +81,7 @@ public interface CollectMapper {
      * @param userCollect 收藏夹
      * @return 增加条数
      */
-    @Insert("insert into u_collect (u_id,name,intro) value(#{user.id},#{name},#{intro})")
+    @Insert("insert into u_collect (u_id,name,intro) value(#{userId},#{name},#{intro})")
     int insertUserCollect(UserCollect userCollect);
 
     /**
@@ -89,7 +89,7 @@ public interface CollectMapper {
      * @param collect 收藏夹关联表
      * @return 成功操作的数据条数
      */
-    @Insert("insert into collect(c_id,b_id) values(#{userCollectId},#{id}) ")
+    @Insert("insert into collect(c_id,b_id) values(#{userCollectId},#{blogId}) ")
     @Results(value = {
             @Result(property = "id", column = "id"),
             @Result(property = "userCollectId", column = "c_id"),
@@ -133,7 +133,7 @@ public interface CollectMapper {
      * @param userId 用户id
      * @return 用户的默认收藏夹的id
      */
-    @Select("select id from d_collect where u_id = #{userId) and status = 0 ")
+    @Select("select id from d_collect where u_id = #{userId} and status = 0")
     int selectAuto(int userId);
 
     /**
@@ -145,7 +145,7 @@ public interface CollectMapper {
     int selectBlogIsAuto(int blogId);
 
     /**
-     * 删除草稿箱中的博客
+     * 删除草稿箱或者默认收藏夹中的博客
      * @param blogId 博客id
      * @param dId 草稿箱id
      * @return 数据条数
@@ -161,8 +161,7 @@ public interface CollectMapper {
      * @param user 用户
      * @return 收藏夹的list
      */
-    //,one = @One(select = "com.blog.www.mapper.UserMapper.findUserById")
-    @Select("select * from u_collect where u_id=#{id}")
+    @Select("select * from  d_collect where u_id=#{id} and status = 0 union all select * from u_collect where u_id=#{id}")
     @Results(value = {
             @Result(column = "id", property = "id"),
             @Result(column = "u_id", property = "userId"),
@@ -220,10 +219,10 @@ public interface CollectMapper {
     int findNormalCollectByUId(int userId);
 
     /**
-     * 默认收藏夹是否存在该博客
+     * 查看默认收藏夹是否有该博客
      * @param DId 默认收藏夹id
-     * @param blogId   博客id
-     * @return 删除条数
+     * @param blogId 博客id
+     * @return 是否查找成功
      */
     @Select("select count(1) from db_collect where d_id=#{DId} and b_id =#{blogId}")
     int findNorMalCollectExitBlog(int DId,int blogId);

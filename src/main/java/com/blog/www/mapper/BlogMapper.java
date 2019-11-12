@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @author: chenyu
  * @date: 2019/10/29 21:32
@@ -20,7 +22,7 @@ public interface BlogMapper {
      * @return 成功处理的数据数
      */
     @Insert("insert into blog(u_id,content,time,title) values(#{author.id},#{content},#{date},#{title})")
-    @Results( value = {
+    @Results(value = {
             @Result(property = "id", column = "id"),
             @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
             @Result(property = "title", column = "title"),
@@ -33,11 +35,11 @@ public interface BlogMapper {
 
 
     /**
+     * 修改博客内容
      * @param blog  博客
-     * @return
+     * @return 修改数据条数
      */
     @Update("update blog set title=#{title},content=#{content},time=#{date} where id=#{id}")
-
     int updateBlog(Blog blog);
 
     /**
@@ -46,7 +48,6 @@ public interface BlogMapper {
      * @return 博客id
      */
     @Select("select b_id from db_collect where d_id = #{dId}")
-
     int selectBlogId(int dId);
 
 
@@ -58,6 +59,38 @@ public interface BlogMapper {
     @Delete("delete from blog where id =#{id}")
     int deleteBlog(Blog blog);
 
+    /**
+     * 用户通过收藏夹找到该收藏夹的所有博客
+     * @param collectId 该收藏夹的id
+     * @return 博客列表
+     */
+    @Select("select blog.id,blog.title from blog,collect where collect.b_id=blog.id and collect.c_id = #{collectId}")
+    @Results(id = "blog",value = {
+            @Result(property = "id", column = "id"),
+            @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "date", column = "time")
+    })
+    List<Blog> findBlogInCollect(int collectId);
+
+    /**
+     * 用户通过收藏夹找到该收藏夹的所有博客
+     * @param collectId 该收藏夹的id
+     * @return 博客列表
+     */
+    @Select("select blog.id,blog.title from blog,db_collect where db_collect.b_id=blog.id and db_collect.d_id = #{collectId}")
+    @ResultMap("blog")
+    List<Blog> findBlogInAuto(int collectId);
+
+    /**
+     * 通过博客id查询博客的内容
+     * @param blogId 博客id
+     * @return 查询结果
+     */
+    @ResultMap("blog")
+    @Select("select * from blog where id = #{blogId}")
+    Blog getBlogById(int blogId);
     @Select("select * from blog order by time")
     Page<Blog> findPageBlog();
 
