@@ -34,14 +34,17 @@ public class UserServiceImpl implements UserService {
     public boolean insert(User user) {
         user.setPassword(MD5Utils.encode(user.getPassword()));
         String code= UUIDUtils.getUUID();
-        userMapper.insertUser(user);
-        userMapper.insertCode(user.getId(),code);
         String subject="验证你的邮箱";
         String context="尊敬的"+user.getName()+"你好"+
                 "点击该链接进行注册"+
                 " http://39.97.252.246:8080/checkCode?code="+code;
-        mailService.sendMail(user.getMail(),subject,context);
-        return true;
+        if(mailService.sendMail(user.getMail(), subject, context)){
+            userMapper.insertUser(user);
+            userMapper.insertCode(user.getId(),code);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
