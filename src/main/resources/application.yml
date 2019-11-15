@@ -26,6 +26,13 @@ spring:
             ssl:
               enable: true
 
+
+#
+#  resources:
+#    static-locations: classpath:/resources/,classpath:/static/,classpath:/public/
+
+
+
   redis:
     database: 0
     host: localhost
@@ -39,7 +46,7 @@ spring:
 
 
 web:
-   upload-path: /root/springboot/img/
+   upload-path: static/img/
    url: http://39.97.252.246:8080
 
 server:

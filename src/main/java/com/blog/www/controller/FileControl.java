@@ -51,7 +51,7 @@ public class FileControl {
             return result;
         }
         if(user.getPhoto()!=null){
-            String fileOldPath=path+"/user"+user.getPhoto();
+            String fileOldPath=path+"user/"+user.getPhoto();
             if(FileUtils.deleteFile(fileOldPath)){
                 msg.append("删除原头像成功,");
             }else {
@@ -75,19 +75,25 @@ public class FileControl {
         msg.append("下载新头像成功，并存入数据库");
         result.setMsg(String.valueOf(msg));
         result.setCode(ResultCode.SUCCESS);
+        user.setPhoto(fileNewName);
+        request.getSession().setAttribute("user",user);
         return result;
 
     }
 
 
-
+    /**
+     * 将博客图片文件下载到服务器
+     * @param file 文件
+     * @param request 获取用户登录信息
+     * @return  result
+     */
     @PostMapping("/uploadPicture")
     public Result uploadPicture(@RequestParam("photo") MultipartFile file,HttpServletRequest request){
         Result<String> result=new Result<>();
 
         String filePath=path+"blog/";
         String fileNewName=FileUtils.getFileNewName(file.getOriginalFilename());
-        String url =this.url+path+"blog/"+fileNewName;
         try {
             FileUtils.upload(file.getBytes(),filePath,fileNewName);
         } catch (Exception e) {
@@ -98,17 +104,20 @@ public class FileControl {
         }
         result.setCode(ResultCode.SUCCESS);
         result.setMsg("上传成功");
-        result.setData(url);
+        result.setData(url+"/img/blog/"+fileNewName);
         return result;
     }
 
 
+    /**
+     * 将博客的图片文件从服务器删除
+     * @param photoName 图片名称
+     * @return  result
+     */
     @GetMapping("/deletePicture")
-    public  Result deletePicture(@RequestParam("url")  String url){
+    public  Result deletePicture(@RequestParam("photoName")  String photoName){
         Result result =new Result();
-        // /root/springboot/img/blog/
-        String url1=url.substring(url.lastIndexOf("/",url.lastIndexOf("/")-1)+1);
-        String filePath=path+"blog/"+url1;
+        String filePath=path+"blog/"+photoName;
         if(FileUtils.deleteFile(filePath)) {
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("删除成功");
@@ -119,6 +128,4 @@ public class FileControl {
             return result;
         }
     }
-
-
 }

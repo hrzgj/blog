@@ -5,7 +5,6 @@ import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.MD5Utils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,6 +61,7 @@ public class UserControl {
             result.setMsg("登录成功");
             result.setData(user);
             request.getSession().setAttribute("user", user);
+            request.getSession().setMaxInactiveInterval(604800);
             return result;
         }else {
             result.setCode(ResultCode.PASSWORD_ERROR);
