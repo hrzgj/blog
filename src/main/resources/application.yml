@@ -26,6 +26,13 @@ spring:
             ssl:
               enable: true
 
+
+#
+#  resources:
+#    static-locations: classpath:/resources/,classpath:/static/,classpath:/public/
+
+
+
   redis:
     database: 0
     host: localhost
