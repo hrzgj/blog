@@ -11,8 +11,8 @@ public class ResultCode {
 
 
 
+    //处理成功的状态码
 
-    // 处理成功的状态码
     public static final int SUCCESS=1;
 
     //处理未知错误的状态码
@@ -38,6 +38,9 @@ public class ResultCode {
 
     //用户修改密码的验证码错误
     public static final int IDENTITY_ERROR=8;
+
+    //用户邮箱未注册或不存在
+    public  static final int MAIL_UN_EXIT = 9;
 
     //用户注册发送邮件失败
     public static final int MAIL_SEND_ERROR=9;

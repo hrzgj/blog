@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
  * @date: 2019/10/29 21:32
  */
 @Mapper
-@Repository
 public interface BlogMapper {
 
 
