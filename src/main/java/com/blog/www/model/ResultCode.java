@@ -11,8 +11,8 @@ public class ResultCode {
 
 
 
+    //处理成功的状态码
 
-    // 处理成功的状态码
     public static final int SUCCESS=1;
 
     //处理未知错误的状态码
