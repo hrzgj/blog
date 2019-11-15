@@ -1,5 +1,6 @@
 package com.blog.www.controller;
 
+import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.Result;
 import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
@@ -185,12 +186,19 @@ public class UserControl {
     @GetMapping("/sendCode")
     public  Result sendRandomCode(@RequestParam("mail") String mail){
         Result<User> result = new Result<>();
-        if(userService.sendRandomCode(mail)){
-            result.setCode(ResultCode.SUCCESS);
-            result.setMsg("发送随机验证码成功");
-        }else {
-            result.setCode(ResultCode.UNSPECIFIED);
-            result.setMsg("发送随机验证码失败");
+        User user = new User();
+        user.setMail(mail);
+        if(!userService.mailExit(user)){
+            result.setCode(ResultCode.MAIL_UN_EXIT);
+            result.setMsg("用户邮箱未注册或不存在");
+        }else{
+            if(userService.sendRandomCode(mail)){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("发送随机验证码成功");
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("发送随机验证码失败");
+            }
         }
         return result;
     }
