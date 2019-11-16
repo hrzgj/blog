@@ -1,6 +1,5 @@
 package com.blog.www.controller;
 
-import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.Result;
 import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
@@ -180,25 +179,18 @@ public class UserControl {
 
     /**
      * 忘记密码时发送随机验证码
-     * @param mail 邮箱
      * @return 发送成功与否
      */
     @GetMapping("/sendCode")
-    public  Result sendRandomCode(@RequestParam("mail") String mail){
+    public  Result sendRandomCode(HttpServletRequest request){
         Result<User> result = new Result<>();
-        User user = new User();
-        user.setMail(mail);
-        if(!userService.mailExit(user)){
-            result.setCode(ResultCode.MAIL_UN_EXIT);
-            result.setMsg("用户邮箱未注册或不存在");
-        }else{
-            if(userService.sendRandomCode(mail)){
-                result.setCode(ResultCode.SUCCESS);
-                result.setMsg("发送随机验证码成功");
-            }else{
-                result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("发送随机验证码失败");
-            }
+        User user = (User) request.getSession().getAttribute("user");
+        if(userService.sendRandomCode(user)){
+            result.setCode(ResultCode.SUCCESS);
+            result.setMsg("发送随机验证码成功");
+        }else {
+            result.setCode(ResultCode.UNSPECIFIED);
+            result.setMsg("发送随机验证码失败");
         }
         return result;
     }
@@ -210,9 +202,9 @@ public class UserControl {
      * @return 成功与否
      */
     @PostMapping("/forgetPassword")
-    public  Result forgetPassword(@RequestParam("mail")String mail,@RequestParam("password") String newPassword,@RequestParam("randomcode") String code){
+    public  Result forgetPassword(@RequestParam("password") String newPassword,@RequestParam("randomcode") String code,HttpServletRequest request){
         Result<User> result = new Result<>();
-        User user = userService.findUserByMail(mail);
+        User user = (User) request.getSession().getAttribute("user");
         //从数据库中找到此验证码的对象id，如一致则可以修改密码
         if(userService.findCodeInForget(user,code)){
             if (userService.forgetPassword(user,newPassword)){
