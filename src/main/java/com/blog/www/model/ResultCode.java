@@ -44,12 +44,7 @@ public class ResultCode {
 
     //删除服务器图片失败
     public static final int DELETE_ERROR=10;
-
-    //用户注册发送邮件失败
-    public static final int MAIL_SEND_ERROR=9;
-
-    //删除服务器图片失败
-    public static final int DELETE_ERROR=10;
+    
     //输入值为空
     public  static final int OBJECT_NULL = 11;
 
