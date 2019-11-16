@@ -42,5 +42,7 @@ public class ResultCode {
     //用户邮箱未注册或不存在
     public  static final int MAIL_UN_EXIT = 9;
 
+    //输入值为空
+    public  static final int OBJECT_NULL = 11;
 
 }

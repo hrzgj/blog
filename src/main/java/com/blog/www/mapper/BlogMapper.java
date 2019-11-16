@@ -12,15 +12,15 @@ import org.springframework.stereotype.Repository;
 public interface BlogMapper {
 
 
-    @Insert("insert into blog(id,u_Id,content,time,title) values(#{blogId},#{author.id},#{content},#{title},#{date})")
-//    @Results(value = {
-//            @Result(property = "blogId", column = "id"),
-//            @Result(property = "author", column = "u_id", one =@One("select * from user where id = id")),
-//            @Result(property = "title", column = "title"),
-//            @Result(property = "content", column = "content"),
-//            @Result(property = "date", column = "time")
-//    })
-    boolean insertPassage(Blog blog);
+    @Insert("insert into blog(id,u_id,content,time,title) values(#{blogId},#{author.id},#{content},#{title},#{date})")
+    @Results(value = {
+            @Result(property = "blogId", column = "id"),
+            @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "date", column = "time")
+    })
+    int insertPassage(Blog blog);
 
 
 
