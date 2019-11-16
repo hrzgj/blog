@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @CrossOrigin
-public class BlogControl {
+public class BlogControl  {
 
     @Autowired
     private BlogService blogService;
@@ -32,6 +32,14 @@ public class BlogControl {
         blog.setAuthor(user);
         return result;
 
+
+    }
+
+
+    @PostMapping("/deleteBlog")
+    public Result deleteBlog(@RequestBody Blog blog,HttpServletRequest request){
+        Result result=new Result();
+        blogService.deleteBlog(blog);
 
     }
 

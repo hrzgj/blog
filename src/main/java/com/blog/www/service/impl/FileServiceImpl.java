@@ -4,11 +4,7 @@ import com.blog.www.mapper.UserMapper;
 import com.blog.www.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * @author: chenyu
