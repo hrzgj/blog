@@ -38,7 +38,7 @@ public class BlogControl  {
     public Result deleteBlog(@RequestBody Blog blog,HttpServletRequest request){
         Result result=new Result();
         blogService.deleteBlog(blog);
-
+        return result;
     }
 
 }
