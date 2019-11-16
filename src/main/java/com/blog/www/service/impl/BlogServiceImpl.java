@@ -1,6 +1,8 @@
 package com.blog.www.service.impl;
 
 import com.blog.www.mapper.BlogMapper;
+import com.blog.www.mapper.CollectMapper;
+import com.blog.www.mapper.ComMapper;
 import com.blog.www.model.Blog;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
@@ -17,6 +19,11 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     BlogMapper blogMapper;
 
+    @Autowired
+    ComMapper comMapper;
+
+    @Autowired
+    CollectMapper collectMapper;
 
     @Override
     public boolean addPassage(Blog blog) {
@@ -30,8 +37,19 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public boolean updateBlog(Blog blog) {
+
+        blog.setDate(DateUtils.getDateToSecond());
+        return blogMapper.updateBlog(blog) != 0;
+    }
+
+    @Override
     public boolean deleteBlog(Blog blog) {
-        return false;
+
+        collectMapper.deleteColBlog(blog);
+        comMapper.deleteBlogCom(blog);
+        return blogMapper.deleteBlog(blog) != 0;
+
     }
 }
 

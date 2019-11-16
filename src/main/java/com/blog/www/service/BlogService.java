@@ -11,6 +11,11 @@ import com.blog.www.model.Blog;
  */
 public interface BlogService {
 
+    /**
+     * 删除博客，同时删除所以用户收藏夹里的博客，和该博客的评论
+     * @param blog 博客
+     * @return 成功与否
+     */
     @Transactional
     boolean deleteBlog(Blog blog);
 
@@ -20,6 +25,14 @@ public interface BlogService {
      * @return 成功与否
      */
     boolean addPassage(Blog blog);
+
+
+    /**
+     * 更新博客
+     * @param blog 博客
+     * @return 成功与否
+     */
+    boolean updateBlog(Blog blog);
 
 
 }

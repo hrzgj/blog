@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface BlogMapper {
 
 
-    @Insert("insert into blog(id,u_id,content,time,title) values(#{blogId},#{author.id},#{content},#{title},#{date})")
+    @Insert("insert into blog(id,u_id,content,title,time) values(#{blogId},#{author.id},#{content},#{title},#{date})")
     @Results(value = {
             @Result(property = "blogId", column = "id"),
             @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
@@ -27,14 +27,11 @@ public interface BlogMapper {
     int insertPassage(Blog blog);
 
 
-
-
-
-
-
-    @Delete("delete from blog where id =#{id}")
+    @Delete("delete from blog where id =#{blogId}")
     int deleteBlog(Blog blog);
 
 
+    @Update("update blog set title=#{title},content=#{content},time=#{date}")
+    int updateBlog(Blog blog);
 
 }

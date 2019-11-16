@@ -1,5 +1,6 @@
 package com.blog.www.service.impl;
 
+import com.blog.www.mapper.CollectMapper;
 import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.User;
 import com.blog.www.service.MailService;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    CollectMapper collectMapper;
 
     /**
      * 注册用户
@@ -85,6 +89,7 @@ public class UserServiceImpl implements UserService {
         if(id!=0) {
             userMapper.updateStatus(id);
             userMapper.deleteCode(id);
+            collectMapper.insertCollect(id);
             return true;
         }
         else {
