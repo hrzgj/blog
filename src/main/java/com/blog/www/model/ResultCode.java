@@ -42,6 +42,11 @@ public class ResultCode {
     //用户邮箱未注册或不存在
     public  static final int MAIL_UN_EXIT = 9;
 
+    //用户注册发送邮件失败
+    public static final int MAIL_SEND_ERROR=9;
+
+    //删除服务器图片失败
+    public static final int DELETE_ERROR=10;
     //输入值为空
     public  static final int OBJECT_NULL = 11;
 
