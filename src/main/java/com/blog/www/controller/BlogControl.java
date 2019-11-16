@@ -31,8 +31,6 @@ public class BlogControl  {
         User user= (User) request.getSession().getAttribute("user");
         blog.setAuthor(user);
         return result;
-
-
     }
 
 
