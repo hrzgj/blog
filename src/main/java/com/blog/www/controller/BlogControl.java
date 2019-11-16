@@ -1,9 +1,8 @@
 package com.blog.www.controller;
 
-import com.blog.www.model.Blog;
-import com.blog.www.model.Result;
-import com.blog.www.model.ResultCode;
-import com.blog.www.model.User;
+import com.blog.www.mapper.BlogMapper;
+import com.blog.www.mapper.CollectMapper;
+import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.CheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ public class BlogControl {
 
     @Autowired
     BlogService blogService;
-
 
     @PostMapping("/addPassage")
     public Result addPassage(@RequestBody Blog blog, HttpServletRequest request) {
@@ -48,6 +46,12 @@ public class BlogControl {
     }
 
 
+    /**
+     * 用户删除博客，同时删除博客评论，所以用户收藏夹的该博客
+     * @param blog 博客
+     * @param request 获取登录用户信息
+     * @return  结果
+     */
     @PostMapping("/deleteBlog")
     public Result deleteBlog(@RequestBody Blog blog,HttpServletRequest request){
         Result result=new Result();
@@ -72,6 +76,12 @@ public class BlogControl {
         }
     }
 
+    /**
+     * 用户修改某一篇博客
+     * @param blog 博客
+     * @param request 获取登录用户信息
+     * @return  结果
+     */
     @PostMapping("/updateBlog")
     public Result updateBlog(@RequestBody Blog blog,HttpServletRequest request){
         Result result=new Result();
@@ -96,6 +106,7 @@ public class BlogControl {
 
     }
 
-    
+
+
 
 }
