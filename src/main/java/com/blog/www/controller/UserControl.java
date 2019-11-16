@@ -21,7 +21,7 @@ import java.io.IOException;
 public class UserControl {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 
 
@@ -33,10 +33,16 @@ public class UserControl {
     @PostMapping("/register")
     public Result register(@RequestBody User user){
         Result<User> result=new Result<>();
-        userService.insert(user);
-        result.setCode(ResultCode.SUCCESS);
-        result.setMsg("注册成功");
-        return result;
+        if(userService.insert(user)){
+            result.setCode(ResultCode.SUCCESS);
+            result.setMsg("注册成功");
+            return result;
+        }else {
+            result.setCode(ResultCode.MAIL_SEND_ERROR);
+            result.setMsg("发送邮箱失败");
+            return result;
+        }
+
 
     }
 
@@ -183,7 +189,7 @@ public class UserControl {
         User user = new User();
         user.setMail(mail);
         if(!userService.mailExit(user)){
-            result.setCode(ResultCode.MAIL_UN_EXIT);
+            result.setCode(ResultCode.MAIL_SEND_ERROR);
             result.setMsg("用户邮箱未注册或不存在");
         }else{
             if(userService.sendRandomCode(mail)){

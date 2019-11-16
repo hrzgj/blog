@@ -2,6 +2,10 @@ package com.blog.www.mapper;
 import com.blog.www.model.Blog;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import com.blog.www.model.Blog;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author: chenyu

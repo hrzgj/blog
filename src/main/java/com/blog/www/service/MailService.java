@@ -11,5 +11,5 @@ public interface MailService {
      * @param subject   题目
      * @param content   内容
      */
-    void sendMail(String to,String subject,String content);
+    boolean sendMail(String to,String subject,String content);
 }

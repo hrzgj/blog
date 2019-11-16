@@ -46,14 +46,14 @@ public class FileUtils {
         out.close();
     }
 
-    public static String deleteFile(String path){
+    public static boolean deleteFile(String path){
         File file=new File(path);
         if(file.exists()){
             file.delete();
-            return "删除成功";
+            return true;
         }
         else {
-            return "删除失败";
+            return false;
         }
     }
 }
