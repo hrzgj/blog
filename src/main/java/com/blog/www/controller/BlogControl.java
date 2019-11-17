@@ -71,7 +71,7 @@ public class BlogControl {
             return result;
         }else {
             result.setCode(ResultCode.UNSPECIFIED);
-            result.setMsg("删除失败");
+            result.setMsg("删除失败,可能该博客不存在");
             return result;
         }
     }
@@ -105,6 +105,7 @@ public class BlogControl {
         }
 
     }
+
 
 
 

@@ -2,12 +2,14 @@ package com.blog.www.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Author liuyanxiang
  * @Date 2019/11/3 15:43
  */
 @Data
-public class Comment {
+public class Comment  implements Serializable {
 
     /**
      * 评论id

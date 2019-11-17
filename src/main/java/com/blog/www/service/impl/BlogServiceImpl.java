@@ -46,7 +46,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public boolean deleteBlog(Blog blog) {
 
-        collectMapper.deleteColBlog(blog);
+        collectMapper.deleteColAllBlogByBlogId(blog);
         comMapper.deleteBlogCom(blog);
         return blogMapper.deleteBlog(blog) != 0;
 

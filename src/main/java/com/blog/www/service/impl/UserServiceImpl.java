@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         if(id!=0) {
             userMapper.updateStatus(id);
             userMapper.deleteCode(id);
-            collectMapper.insertCollect(id);
+            collectMapper.insertDCollect(id);
             return true;
         }
         else {

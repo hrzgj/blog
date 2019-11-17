@@ -60,6 +60,9 @@ public class ResultCode {
     //用户无法删除不是自己的博客，权限不足
     public static final int RIGHT_ERROR=13;
 
+    //博客不存在
+    public static final int BLOG_NOT_EXIT=14;
+
 
 
 }

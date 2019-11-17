@@ -1,13 +1,17 @@
 package com.blog.www.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author: chenyu
  * @date: 2019/10/29 21:41
  */
 @Data
-public class Result<T> {
+@JsonIgnoreProperties(value = {"handler"})
+public class Result<T> implements Serializable {
     /**
      * 错误码
      */

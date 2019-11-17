@@ -58,6 +58,7 @@ public interface UserService {
      * @param code  验证码
      * @return  是否找到
      */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     boolean findCode(String code);
 
     /**

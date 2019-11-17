@@ -2,12 +2,14 @@ package com.blog.www.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author liuyanxiang
  * @date 2019/11/3 15:22
  */
 @Data
-public class Collect {
+public class Collect  implements Serializable {
 
     /**
      * 集合id

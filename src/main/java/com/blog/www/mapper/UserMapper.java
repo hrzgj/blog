@@ -52,6 +52,14 @@ public interface UserMapper {
     @Select("select * from user where id = #{id}")
     User findUserById(int id);
 
+//    /**
+//     *通过id查询用户
+//     * @param user user
+//     * @return
+//     */
+//    @Select("select * from user where id = #{id}")
+//    User findUserById(User user);
+
     /**
      * 通过邮箱找到用户信息
      * @param mail 邮箱

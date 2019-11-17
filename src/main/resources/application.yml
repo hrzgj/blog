@@ -26,6 +26,8 @@ spring:
             ssl:
               enable: true
 
+
+
   redis:
     database: 0
     host: localhost
@@ -45,4 +47,6 @@ web:
 server:
   port: 8080
 
-
+mybatis:
+  configuration:
+    cache-enabled: true
