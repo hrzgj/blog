@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "spring.datasource.mail.protocol",
+      "type": "java.lang.String",
+      "description": "Description for spring.datasource.mail.protocol."
+    },
+    {
+      "name": "file.uri",
+      "type": "java.lang.String",
+      "description": "Description for file.uri."
+    },
+    {
+      "name": "file.uri",
+      "type": "java.lang.String",
+      "description": "Description for file.uri."
+    },
+    {
+      "name": "web",
+      "type": "java.lang.String",
+      "description": "Description for web."
+    }
+  ] }

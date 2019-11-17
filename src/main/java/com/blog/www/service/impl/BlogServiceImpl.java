@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lyx
- * @date 2019/11/16 10:06
+ * @author: chenyu
+ * @date: 2019/11/12 17:28
  */
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -31,6 +31,11 @@ public class BlogServiceImpl implements BlogService {
                 return true;
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean deleteBlog(Blog blog) {
         return false;
     }
 }

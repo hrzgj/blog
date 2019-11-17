@@ -5,6 +5,7 @@ import com.blog.www.model.Result;
 import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
 import com.blog.www.service.UserService;
+import com.blog.www.utils.CheckUtils;
 import com.blog.www.utils.MD5Utils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,11 +152,11 @@ public class UserControl {
         Result<User> result=new Result<>();
         User user = (User) request.getSession().getAttribute("user");
         request.getSession().setMaxInactiveInterval(604800);
-        if(user==null) {
-            result.setMsg("用户为空");
-            result.setCode(ResultCode.USER_SESSION_ERROR);
+        if(CheckUtils.userSessionTimeOut(request,result)) {
             return result;
-        }else{
+        }
+        else
+        {
             String oldPassword = MD5Utils.encode(oldPsw);
             String newPassword = MD5Utils.encode(newPsw);
             if (oldPassword.equals(user.getPassword())||oldPassword==user.getPassword()){

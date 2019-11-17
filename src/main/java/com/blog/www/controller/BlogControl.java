@@ -9,14 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
-<<<<<<< HEAD
- * @author lyx
- * @date 2019/11/16 10:21
+ * @author: chenyu
+ * @date: 2019/11/12 17:27
  */
+@CrossOrigin
 @RestController
 public class BlogControl {
 
@@ -46,6 +47,14 @@ public class BlogControl {
                 result.setMsg("新增博客失败");
             }
         }
+        return result;
+    }
+
+
+    @PostMapping("/deleteBlog")
+    public Result deleteBlog(@RequestBody Blog blog,HttpServletRequest request){
+        Result result=new Result();
+        blogService.deleteBlog(blog);
         return result;
     }
 

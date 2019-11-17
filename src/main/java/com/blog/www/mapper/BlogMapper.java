@@ -34,4 +34,10 @@ public interface BlogMapper {
 
 
 
+
+    @Delete("delete from blog where id =#{id}")
+    int deleteBlog(Blog blog);
+
+
+
 }
