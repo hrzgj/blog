@@ -12,7 +12,7 @@ public class Blog {
     /**
      * 博客id
      */
-    private int blogId;
+    private int id;
 
     /**
      * 作者

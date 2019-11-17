@@ -23,7 +23,11 @@ public class BlogControl {
     @Autowired
     BlogService blogService;
 
-
+    /**
+     * 新增博客
+     * @param blog 博客内容
+     * @return 成功则返回对象，失败只返回信息
+     */
     @PostMapping("/addPassage")
     public Result addPassage(@RequestBody Blog blog, HttpServletRequest request) {
         Result<Blog> result = new Result<>();
