@@ -2,10 +2,8 @@ package com.blog.www.mapper;
 import com.blog.www.model.Blog;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import com.blog.www.model.Blog;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author: chenyu
@@ -15,15 +13,20 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BlogMapper {
 
-
-    @Insert("insert into blog(id,u_id,content,time,title) values(#{blogId},#{author.id},#{content},#{title},#{date})")
+    /**
+     * 新增博客
+     * @param blog 博客
+     * @return 成功处理的数据数
+     */
+    @Insert("insert into blog(u_id,content,time,title) values(#{author.id},#{content},#{date},#{title})")
     @Results(value = {
-            @Result(property = "blogId", column = "id"),
+            @Result(property = "id", column = "id"),
             @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
             @Result(property = "title", column = "title"),
             @Result(property = "content", column = "content"),
             @Result(property = "date", column = "time")
     })
+    @Options(useGeneratedKeys = true,keyProperty = "id" )
     int insertPassage(Blog blog);
 
 

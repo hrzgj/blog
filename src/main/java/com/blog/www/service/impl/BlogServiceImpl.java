@@ -1,6 +1,7 @@
 package com.blog.www.service.impl;
 
 import com.blog.www.mapper.BlogMapper;
+import com.blog.www.mapper.CollectMapper;
 import com.blog.www.model.Blog;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
@@ -17,12 +18,16 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     BlogMapper blogMapper;
 
+    @Autowired
+    CollectMapper collectMapper ;
+
 
     @Override
     public boolean addPassage(Blog blog) {
         if (blog != null){
-            blog.setDate(DateUtils.getDateToDate());
+            blog.setDate(DateUtils.getDateToSecond());
             if (blogMapper.insertPassage(blog)>0){
+
                 return true;
             }
         }
