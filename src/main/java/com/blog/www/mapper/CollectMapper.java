@@ -3,6 +3,7 @@ package com.blog.www.mapper;
 import com.blog.www.model.Blog;
 import com.blog.www.model.Collect;
 import com.blog.www.model.UserCollect;
+import com.blog.www.model.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,12 +11,15 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * @author lyx
  * @date 2019/11/16 16:12
  */
 @Mapper
 @Repository
+@CacheNamespace(blocking = true)
 public interface CollectMapper {
 
     /**
@@ -28,6 +32,10 @@ public interface CollectMapper {
 
     /**
      *
+    int deleteColAllBlogByBlogId(Blog blog);
+
+    /**
+     *用户注册默认增加默认收藏夹和草稿箱
      * @param id id
      * @return  增加的数字
      */
@@ -120,4 +128,68 @@ public interface CollectMapper {
     int deleteEditCollect(int blogId,int dId);
 
 
+
+
+    /**
+     * 登录用户查看自己收藏夹
+     * @param user 用户
+     * @return 收藏夹的list
+     */
+    //,one = @One(select = "com.blog.www.mapper.UserMapper.findUserById")
+    @Select("select * from u_collect where u_id=#{id}")
+    @Results(value = {
+            @Result(column = "id", property = "id"),
+            @Result(column = "u_id", property = "userId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "intro", property = "intro")
+    })
+    List<UserCollect> findUserCollect(User user);
+
+    /**
+     * 删除用户某个收藏夹
+     * @param userCollect 用户收藏夹
+     * @return  删除条数
+     */
+    @Delete("delete from u_collect where id=#{id} and u_id=#(userId)")
+    int deleteUserCollect(UserCollect userCollect);
+
+    /**
+     * 删除用户某个收藏夹下得所有博客
+     * @param userCollect 用户收藏夹
+     */
+    @Delete("delete from collect where c_id =#{id}")
+    void deleteBlogCollect(UserCollect userCollect);
+
+    /**
+     * 用户将某一个博客存入非默认收藏夹
+     * @param collect 博客和收藏夹中间表
+     * @return  是否增加成功
+     */
+    @Insert("insert into collect (c_id,b_id) value (#{userCollectId},#{blogId})")
+    int insertCollectBlog(Collect collect);
+
+    /**
+     * 删除用户某个收藏夹中的某个博客
+     * @param collect 博客和非默认收藏夹中间表
+     * @return 删除成功
+     */
+    @Delete("delete from collect where b_id=#{blogId} and c_id=#{userCollectId}")
+    int deleteBlogByCIdAndBid(Collect collect);
+
+    /**
+     * 用户的默认收藏夹增加一条博客
+     * @param DId 用户默认收藏夹的id
+     * @param blogId    博客id
+     * @return  插入成功
+     */
+    @Insert("insert into db_collect (b_id,d_id) value (#{blogId},#{DId}) ")
+    int insertNormalCollect(int DId,int blogId);
+
+    /**
+     * 用户查找默认收藏夹的id
+     * @param userId 用户id
+     * @return  是否查找成功
+     */
+    @Select("select id  from d_collect where u_Id=#{userId} and status =0")
+    int findNormalCollectByUId(int userId);
 }

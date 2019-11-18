@@ -2,11 +2,13 @@ package com.blog.www.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author chenyu
  */
 @Data
-public class User {
+public class User implements Serializable {
 
     /**
      * 用户id

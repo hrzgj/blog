@@ -3,22 +3,21 @@ package com.blog.www.service.impl;
 
 import com.blog.www.mapper.CollectMapper;
 import com.blog.www.model.Collect;
+import com.blog.www.model.ResultCode;
+import com.blog.www.model.User;
 import com.blog.www.model.UserCollect;
 import com.blog.www.service.CollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
-<<<<<<< HEAD
- * @author lyx
- * @date 2019/11/16 16:35
-=======
  * @author: chenyu
  * @date: 2019/11/16 20:13
->>>>>>> 263a0bb915e25c9230ff256db8733c0ecfb3504e
  */
 @Service
-public class CollectServiceImpl implements CollectService{
+public class CollectServiceImpl implements CollectService {
 
     @Autowired
     CollectMapper collectMapper;
@@ -53,4 +52,32 @@ public class CollectServiceImpl implements CollectService{
         return false;
     }
 
+    @Override
+    public List<UserCollect> findUserCollect(User user) {
+        return collectMapper.findUserCollect(user);
+    }
+
+    @Override
+    public boolean deleteUserCollect(UserCollect userCollect) {
+        collectMapper.deleteBlogCollect(userCollect);
+        return collectMapper.deleteUserCollect(userCollect) >0;
+    }
+
+    @Override
+    public boolean addCollectBlog(Collect collect) {
+        return collectMapper.insertCollectBlog(collect)>0;
+    }
+
+    @Override
+    public int changeToNormal(Collect collect, int userId) {
+        if(collectMapper.deleteBlogByCIdAndBid(collect)==0){
+            return ResultCode.BLOG_NOT_EXIT;
+        }
+        int DId=collectMapper.findNormalCollectByUId(userId);
+        if(collectMapper.insertNormalCollect(DId,collect.getBlogId())>0){
+            return ResultCode.SUCCESS;
+        }else {
+            return ResultCode.UNSPECIFIED;
+        }
+    }
 }

@@ -22,7 +22,7 @@ public interface BlogService {
      * @return 成功与否
      */
     @Transactional(rollbackFor = Exception.class)
-    boolean deleteBlog(Blog blog);
+
 
     /**
      * 增加博客,只是插入博客表中，未存入关联的收藏夹中
@@ -62,6 +62,9 @@ public interface BlogService {
      * @return 数据条数
      */
     int selectBlogInEdit(Blog blog);
+
+
+
 
 
 }

@@ -38,6 +38,8 @@ public class BlogServiceImpl implements BlogService {
         return false;
     }
 
+
+
     @Override
     public boolean editBlog(Blog blog) {
         if (blog != null){
@@ -79,6 +81,12 @@ public class BlogServiceImpl implements BlogService {
             return  collectMapper.deleteEditCollect(blog.getId(),collectMapper.selectPaper(blog.getAuthor().getId()))!=0;
         }
         return false;
+    public boolean deleteBlog(Blog blog) {
+
+        collectMapper.deleteColAllBlogByBlogId(blog);
+        comMapper.deleteBlogCom(blog);
+        return blogMapper.deleteBlog(blog) != 0;
+
     }
 
 
@@ -87,14 +95,7 @@ public class BlogServiceImpl implements BlogService {
         return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
     }
 
-    @Override
-    public boolean deleteBlog(Blog blog) {
 
-        collectMapper.deleteColBlog(blog);
-        comMapper.deleteBlogCom(blog);
-        return blogMapper.deleteBlog(blog) != 0;
-
-    }
 
 }
 

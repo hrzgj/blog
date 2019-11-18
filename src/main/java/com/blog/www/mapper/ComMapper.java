@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface ComMapper {
 
 
-    @Delete("delete from comment where b_id=#{blogId}")
+    @Delete("delete from comment where b_id=#{id}")
     int deleteBlogCom(Blog blog);
 }

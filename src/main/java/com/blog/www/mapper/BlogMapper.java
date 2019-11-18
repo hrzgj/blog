@@ -45,16 +45,13 @@ public interface BlogMapper {
     int selectBlogId(int dId);
 
 
-
-
-
-
-
-
-
+    /**
+     * 删除博客
+     * @param blog
+     * @return
+     */
     @Delete("delete from blog where id =#{id}")
     int deleteBlog(Blog blog);
-
 
 
 }
