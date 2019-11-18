@@ -15,7 +15,7 @@ public class Blog {
     private int id;
 
     /**
-     * 作者
+     * 作
      */
     private User author;
 

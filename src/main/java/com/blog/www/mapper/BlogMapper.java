@@ -27,7 +27,29 @@ public interface BlogMapper {
             @Result(property = "date", column = "time")
     })
     @Options(useGeneratedKeys = true,keyProperty = "id" )
-    int insertPassage(Blog blog);
+    int insertBlog(Blog blog);
+
+
+    @Delete("delete from blog where id =#{id}")
+    int deleteBlog(Blog blog);
+
+
+    @Update("update blog set title=#{title},content=#{content},time=#{date} where id = #{id}")
+    int updateBlog(Blog blog);
+
+    /**
+     * 从关联表中找到草稿箱中的博客的id
+     * @param dId 草稿箱的id
+     * @return 博客id
+     */
+    @Select("select b_id from db_collect where d_id = #{dId}")
+    int selectBlogId(int dId);
+
+
+
+
+
+
 
 
 
