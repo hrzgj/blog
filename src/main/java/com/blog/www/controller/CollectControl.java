@@ -72,4 +72,33 @@ public class CollectControl {
         }
 
     }
+
+
+
+    /**
+     *将博客保存至默认收藏夹中
+     * @param collect
+     * @return 结果
+     */
+    @PostMapping("/addBlogToAuto")
+    public  Result addBlogToAuto(@RequestBody Collect collect){
+        Result result = new Result();
+        if (collect == null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("用户对象为空");
+        }else {
+            if (collectService.insertCollectToAuto(collect)) {
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("成功保存博客至默认收藏夹");
+                result.setData(collect);
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("保存至默认收藏夹失败");
+            }
+        }
+        return  result;
+    }
+
+
+
 }

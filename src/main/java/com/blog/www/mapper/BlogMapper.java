@@ -30,8 +30,7 @@ public interface BlogMapper {
     int insertBlog(Blog blog);
 
 
-    @Delete("delete from blog where id =#{id}")
-    int deleteBlog(Blog blog);
+
 
 
     @Update("update blog set title=#{title},content=#{content},time=#{date} where id = #{id}")
@@ -44,10 +43,6 @@ public interface BlogMapper {
      */
     @Select("select b_id from db_collect where d_id = #{dId}")
     int selectBlogId(int dId);
-
-
-
-
 
 
 

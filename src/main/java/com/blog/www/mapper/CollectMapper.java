@@ -102,5 +102,22 @@ public interface CollectMapper {
     @Select("select id from d_collect where u_id = #{userId) and status = 0 ")
     int selectAuto(int userId);
 
+    /**
+     * 查询是否此博客已存入默认收藏夹
+     * @param blogId
+     * @return 数据条数
+     */
+    @Select("select count(*) from db_collect where b_id = #{blogId} ")
+    int selectBlogIsAuto(int blogId);
+
+    /**
+     * 删除草稿箱中的博客
+     * @param blogId 博客id
+     * @param dId 草稿箱id
+     * @return 数据条数
+     */
+    @Delete("delete from db_collect where b_id = #{blogId} and d_id = #{dId}")
+    int deleteEditCollect(int blogId,int dId);
+
 
 }

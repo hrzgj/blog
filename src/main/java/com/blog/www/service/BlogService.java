@@ -1,12 +1,20 @@
 package com.blog.www.service;
 
 import com.blog.www.model.Blog;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.blog.www.model.Blog;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author lyx
- * @date 2019/11/16 10:04
+ * @author: chenyu
+ * @date: 2019/11/12 17:28
  */
 public interface BlogService {
+
+
 
     /**
      * 删除博客，同时删除所以用户收藏夹里的博客，和该博客的评论
@@ -38,6 +46,22 @@ public interface BlogService {
      * @return 成功与否
      */
     boolean updateBlog(Blog blog);
+
+    /**
+     * 从草稿箱中保存博客,先更新博客内容，再删除草稿箱中的博客
+     * @param blog 博客
+     * @return 成功与否
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    boolean addBlogInEdit(Blog blog);
+
+
+    /**
+     * 找到草稿箱中的你博客id
+     * @param blog 博客
+     * @return 数据条数
+     */
+    int selectBlogInEdit(Blog blog);
 
 
 }

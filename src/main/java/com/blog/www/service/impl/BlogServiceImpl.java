@@ -74,6 +74,20 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public boolean addBlogInEdit(Blog blog) {
+        if (blogMapper.updateBlog(blog)>0){
+            return  collectMapper.deleteEditCollect(blog.getId(),collectMapper.selectPaper(blog.getAuthor().getId()))!=0;
+        }
+        return false;
+    }
+
+
+    @Override
+    public int selectBlogInEdit(Blog blog) {
+        return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
+    }
+
+    @Override
     public boolean deleteBlog(Blog blog) {
 
         collectMapper.deleteColBlog(blog);
@@ -82,9 +96,5 @@ public class BlogServiceImpl implements BlogService {
 
     }
 
-    @Override
-    public boolean deleteBlog(Blog blog) {
-        return false;
-    }
 }
 
