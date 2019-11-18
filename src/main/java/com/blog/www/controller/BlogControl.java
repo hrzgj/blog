@@ -9,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author: chenyu
- * @date: 2019/11/12 17:27
+ * @author lyx
+ * @date 2019/11/16 10:21
  */
-@CrossOrigin
 @RestController
 public class BlogControl {
 
@@ -29,16 +27,20 @@ public class BlogControl {
      * @param blog 博客内容
      * @return 成功则返回对象，失败只返回信息
      */
-    @PostMapping("/addPassage")
-    public Result addPassage(@RequestBody Blog blog, HttpServletRequest request) {
+    @PostMapping("/addBlog")
+    public Result addBlog(@RequestBody Blog blog, HttpServletRequest request) {
         Result<Blog> result = new Result<>();
+        //检查session
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
         User user = (User) request.getSession().getAttribute("user");
         blog.setAuthor(user);
         if (blog == null) {
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("输入博客内容为空");
         } else {
-            if (blogService.addPassage(blog)) {
+            if (blogService.addBlog(blog)) {
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("新增博客成功");
                 result.setData(blog);
