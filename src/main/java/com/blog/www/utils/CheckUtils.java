@@ -21,4 +21,15 @@ public class CheckUtils {
             return false;
         }
     }
+
+    public static boolean userRightIsTrue(int id,int loginId,Result result){
+        if(id!=loginId){
+            result.setCode(ResultCode.RIGHT_ERROR);
+            result.setMsg("用户权限错误");
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }

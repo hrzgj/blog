@@ -11,8 +11,8 @@ public class ResultCode {
 
 
 
-    //处理成功的状态码
 
+    // 处理成功的状态码
     public static final int SUCCESS=1;
 
     //处理未知错误的状态码
@@ -59,6 +59,17 @@ public class ResultCode {
 
     //用户无法删除不是自己的博客，权限不足
     public static final int RIGHT_ERROR=13;
+
+    //博客不存在
+    public static final int BLOG_NOT_EXIT=14;
+
+    //用户收藏夹存在该博客
+    public static final int BLOG_EXIT=15;
+
+
+
+
+
 
 
 
