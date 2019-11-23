@@ -38,8 +38,6 @@ public class BlogServiceImpl implements BlogService {
         return false;
     }
 
-
-
     @Override
     public boolean editBlog(Blog blog) {
         if (blog != null){
@@ -81,10 +79,23 @@ public class BlogServiceImpl implements BlogService {
             return  collectMapper.deleteEditCollect(blog.getId(),collectMapper.selectPaper(blog.getAuthor().getId()))!=0;
         }
         return false;
+    }
+
+
+    @Override
+    public int selectBlogInEdit(Blog blog) {
+        return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
+    }
+
+    @Override
     public boolean deleteBlog(Blog blog) {
 
+        //删除所有用户收藏夹中该博客的记录
         collectMapper.deleteColAllBlogByBlogId(blog);
+        collectMapper.deleteNormalColAllBlog(blog);
+        //删除评论
         comMapper.deleteBlogCom(blog);
+        //最后删除博客
         return blogMapper.deleteBlog(blog) != 0;
 
     }

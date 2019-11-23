@@ -31,9 +31,11 @@ public interface BlogMapper {
 
 
 
-
-
-    @Update("update blog set title=#{title},content=#{content},time=#{date} where id = #{id}")
+    /**
+     * @param blog  博客
+     * @return
+     */
+    @Update("update blog set title=#{title},content=#{content},time=#{date} where id=#{id}")
     int updateBlog(Blog blog);
 
     /**
