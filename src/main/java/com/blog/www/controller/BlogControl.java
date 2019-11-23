@@ -1,7 +1,6 @@
 package com.blog.www.controller;
 
-import com.blog.www.mapper.BlogMapper;
-import com.blog.www.mapper.CollectMapper;
+
 import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.CheckUtils;

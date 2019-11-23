@@ -16,9 +16,11 @@ public interface CollectService {
      /**
       * 用户修改一篇博客的收藏夹
       * @param collect 博客收藏夹的中间表
+      * @param userId 用户id
       * @return 是否改变成功
       */
-     boolean changeCollect(Collect collect);
+     @Transactional
+     int changeCollect(Collect collect,int userId);
 
      /**
       * 登录用户新增一个收藏夹
@@ -34,7 +36,6 @@ public interface CollectService {
       */
      List<UserCollect> findUserCollect(User user);
 
-
      /**
       * 删除用户某个收藏夹,并删除该收藏夹的收藏博客记录
       * @param userCollect 用户收藏夹
@@ -46,9 +47,10 @@ public interface CollectService {
      /**
       * 用户将某一个博客存入非默认收藏夹
       * @param collect 博客和收藏夹中间表
+      * @param userId 用户id
       * @return  是否增加成功
       */
-     boolean addCollectBlog(Collect collect);
+     int addCollectBlog(Collect collect,int userId);
 
      /**
       * 用户将一个博客从非默认收藏夹移入默认收藏夹

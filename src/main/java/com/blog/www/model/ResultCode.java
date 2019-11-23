@@ -63,6 +63,10 @@ public class ResultCode {
     //博客不存在
     public static final int BLOG_NOT_EXIT=14;
 
+    //用户收藏夹存在该博客
+    public static final int BLOG_EXIT=15;
+
+
 
 
 }

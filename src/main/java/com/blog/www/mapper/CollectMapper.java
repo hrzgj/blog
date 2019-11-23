@@ -15,16 +15,24 @@ import java.util.List;
  */
 @Mapper
 @Repository
-@CacheNamespace(blocking = true)
+//@CacheNamespace(blocking = true)
 public interface CollectMapper {
 
     /**
-     * 删除所有用户收藏夹的某条博客
+     * 删除所有用户非默认收藏夹的某条博客
      * @param blog 博客
      * @return 删除条数
      */
     @Delete("delete from collect where b_id =#{id}")
     int deleteColAllBlogByBlogId(Blog blog);
+
+    /**
+     * 删除所有用户默认收藏夹的某条博客
+     * @param blog 博客
+     * @return  删除成功
+     */
+    @Delete("delete from db_collect where b_id =#{id}")
+    int deleteNormalColAllBlog(Blog blog);
 
     /**
      *用户注册默认增加默认收藏夹和草稿箱
@@ -41,6 +49,26 @@ public interface CollectMapper {
      */
     @Update("update collect set c_id=#{userCollectId} where b_id=#{blogId} and id=#{id}")
     int changeBlogCollect(Collect collect);
+
+//    @Select("select count(1) from collect where c_id=#{userCollectId} and b_id=#{blogId}")
+//    int findCollectExitBlog(Collect collect);
+
+    /**
+     * 查询用户对应非默认收藏夹中是否存在该博客
+     * @param userId 用户id
+     * @param collect 收藏夹
+     * @return 存在条数
+     */
+    //and collect.id=#{collect.id}
+    @Select("select count(1) from collect,u_collect where u_id=#{userId} " +
+            "and b_id=#{collect.blogId} and c_id=u_collect.id and collect.id=#{collect.id}")
+    int findCollectExitBlogByUId(int userId,Collect collect);
+
+    @Select("select count(1) from collect where c_id=#{userCollectId} and b_id=#{blogId}")
+    int findCollectExitBlog(Collect collect);
+
+    @Select("select count(1) from u_collect where u_id=#{userId} and id=#{collect.userCollectId}")
+    int checkUserCollect(Collect collect,int userId);
 
     /**
      * 用户新增收藏夹
@@ -70,7 +98,7 @@ public interface CollectMapper {
      * @param userCollect 用户收藏夹
      * @return  删除条数
      */
-    @Delete("delete from u_collect where id=#{id} and u_id=#(userId)")
+    @Delete("delete from u_collect where id=#{id} and u_id=#{userId} ")
     int deleteUserCollect(UserCollect userCollect);
 
     /**
@@ -112,4 +140,7 @@ public interface CollectMapper {
      */
     @Select("select id  from d_collect where u_Id=#{userId} and status =0")
     int findNormalCollectByUId(int userId);
+
+    @Select("select count(1) from db_collect where d_id=#{DId} and b_id =#{blogId}")
+    int findNorMalCollectExitBlog(int DId,int blogId);
 }

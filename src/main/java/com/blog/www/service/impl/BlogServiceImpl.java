@@ -46,8 +46,12 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public boolean deleteBlog(Blog blog) {
 
+        //删除所有用户收藏夹中该博客的记录
         collectMapper.deleteColAllBlogByBlogId(blog);
+        collectMapper.deleteNormalColAllBlog(blog);
+        //删除评论
         comMapper.deleteBlogCom(blog);
+        //最后删除博客
         return blogMapper.deleteBlog(blog) != 0;
 
     }

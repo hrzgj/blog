@@ -35,11 +35,18 @@ public class CollectControl {
         if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
         }
-        if(collectService.changeCollect(collect)){
+        User user= (User) request.getSession().getAttribute("user");
+        int flag=collectService.changeCollect(collect,user.getId());
+        if(flag==ResultCode.SUCCESS){
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("更换成功");
             return result;
-        }else {
+        }else if(flag==ResultCode.BLOG_NOT_EXIT){
+            result.setCode(ResultCode.BLOG_NOT_EXIT);
+            result.setMsg("博客不存在");
+            return result;
+        }
+        else {
             result.setCode(ResultCode.UNSPECIFIED);
             result.setMsg("更换失败");
             return result;
@@ -127,16 +134,28 @@ public class CollectControl {
      * @return  结果
      */
     @PostMapping("/addBlogCollect")
-    public Result addBlogCollect(@RequestBody Collect collect){
+    public Result addBlogCollect(@RequestBody Collect collect,HttpServletRequest request){
         Result result=new Result();
-        if(collectService.addCollectBlog(collect)){
-            result.setCode(ResultCode.SUCCESS);
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        User user= (User) request.getSession().getAttribute("user");
+        int flag=collectService.addCollectBlog(collect,user.getId());
+        result.setCode(flag);
+        if(flag==ResultCode.SUCCESS){
             result.setMsg("博客添加收藏夹成功");
+            return result;
+        }
+        else if(flag==ResultCode.BLOG_EXIT){
+            result.setMsg("收藏夹已存在该博客，无需添加");
+            return result;
+        }
+        else if(flag==ResultCode.RIGHT_ERROR){
+            result.setMsg("该收藏夹不是此用户拥有");
             return result;
         }
         else {
             result.setMsg("博客添加收藏夹失败");
-            result.setCode(ResultCode.UNSPECIFIED);
             return result;
         }
     }
@@ -156,17 +175,19 @@ public class CollectControl {
             return result;
         }
         int flag=collectService.changeToNormal(collect,user.getId());
+        result.setCode(flag);
         if(flag==ResultCode.SUCCESS){
-            result.setCode(ResultCode.SUCCESS);
             result.setMsg("修改至默认收藏夹成功");
             return result;
         }else if(flag==ResultCode.BLOG_NOT_EXIT){
-            result.setCode(ResultCode.BLOG_NOT_EXIT);
-            result.setMsg("收藏夹无该博客，无法修改");
+            result.setMsg("非默认收藏夹无该博客，无法修改");
+            return result;
+        }
+        else if(flag==ResultCode.BLOG_EXIT){
+            result.setMsg("默认收藏夹已有该博客");
             return result;
         }
         else {
-            result.setCode(ResultCode.UNSPECIFIED);
             result.setMsg("修改至默认收藏夹失败");
             return result;
         }

@@ -27,10 +27,19 @@ public interface BlogMapper {
     int insertPassage(Blog blog);
 
 
+    /**
+     * 用户删除自己的博客
+     * @param blog 博客
+     * @return 删除条数
+     */
     @Delete("delete from blog where id =#{id}")
     int deleteBlog(Blog blog);
 
 
+    /**
+     * @param blog  博客
+     * @return
+     */
     @Update("update blog set title=#{title},content=#{content},time=#{date} where id=#{id}")
     int updateBlog(Blog blog);
 
