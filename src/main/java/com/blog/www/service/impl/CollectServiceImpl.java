@@ -1,6 +1,7 @@
 package com.blog.www.service.impl;
 
 
+import com.blog.www.controller.CollectControl;
 import com.blog.www.mapper.CollectMapper;
 import com.blog.www.model.Collect;
 import com.blog.www.model.ResultCode;
@@ -118,5 +119,26 @@ public class CollectServiceImpl implements CollectService {
         }else {
             return ResultCode.UNSPECIFIED;
         }
+    }
+
+    @Override
+    public boolean deleteCollectBlog(Collect collect){
+        return collectMapper.deleteCollectBlog(collect)>0;
+    }
+
+    @Override
+    public boolean deleteNormalCollectBlog(Collect collect) {
+        return  collectMapper.deleteNormalCollectBlog(collect)>0;
+    }
+
+    @Override
+    public boolean updateCollectNameAndIntro(UserCollect userCollect) {
+        return collectMapper.updateCollectNameAndIntro(userCollect)>0;
+
+    }
+
+    @Override
+    public boolean updateNormalCollectName(UserCollect userCollect) {
+        return collectMapper.updateNormalCollectName(userCollect)>0;
     }
 }

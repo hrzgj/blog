@@ -4,6 +4,8 @@ import com.blog.www.model.Blog;
 import com.blog.www.model.Collect;
 import com.blog.www.model.UserCollect;
 import com.blog.www.model.User;
+import jdk.nashorn.internal.runtime.logging.Logger;
+import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,7 +21,6 @@ import java.util.List;
  */
 @Mapper
 @Repository
-@CacheNamespace(blocking = true)
 public interface CollectMapper {
 
     /**
@@ -218,6 +219,44 @@ public interface CollectMapper {
     @Select("select id  from d_collect where u_Id=#{userId} and status =0")
     int findNormalCollectByUId(int userId);
 
+    /**
+     * 默认收藏夹是否存在该博客
+     * @param DId 默认收藏夹id
+     * @param blogId   博客id
+     * @return 删除条数
+     */
     @Select("select count(1) from db_collect where d_id=#{DId} and b_id =#{blogId}")
     int findNorMalCollectExitBlog(int DId,int blogId);
+
+    /**
+     * 删除非默认收藏夹的一篇博客
+     * @param collect 非默认收藏夹
+     * @return  删除条数
+     */
+    @Delete("delete from collect where c_id=#{userCollectId} and b_id=#{blogId}")
+    int deleteCollectBlog(Collect collect);
+
+    /**
+     * 删除默认收藏夹的一篇博客
+     * @param collect 非默认收藏夹
+     * @return  删除条数
+     */
+    @Delete("delete from db_collect where d_id=#{userCollectId} and b_id=#{blogId}")
+    int deleteNormalCollectBlog(Collect collect);
+
+    /**
+     * 更新非默认收藏夹名称和简介
+     * @param userCollect 收藏夹
+     * @return 是否更新成功
+     */
+    @Update("update u_collect set name=#{name},intro=#{intro} where id=#{id}")
+    int updateCollectNameAndIntro(UserCollect userCollect);
+
+    /**
+     * 更新默认收藏夹名称
+     * @param userCollect 收藏夹
+     * @return 更新条数
+     */
+    @Update("update d_collect set name=#{name} where u_id=#{userId} and status=0 ")
+    int updateNormalCollectName(UserCollect userCollect);
 }

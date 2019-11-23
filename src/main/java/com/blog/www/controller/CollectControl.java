@@ -82,11 +82,9 @@ public class CollectControl {
 
     }
 
-
-
     /**
      *将博客保存至默认收藏夹中
-     * @param collect
+     * @param collect 收藏夹
      * @return 结果
      */
     @PostMapping("/addBlogToAuto")
@@ -190,7 +188,6 @@ public class CollectControl {
         }
     }
 
-
     /**
      * 用户将一个博客从非默认收藏夹移入默认收藏夹
      * @param collect 非默认收藏夹
@@ -223,5 +220,96 @@ public class CollectControl {
         }
     }
 
+    /**
+     * 用户删除非默认收藏夹的一篇博客
+     * @param collect 收藏夹
+     * @param request 用户登录信息
+     * @return  结果
+     */
+    @PostMapping("/deleteCollectBlog")
+    public Result deleteCollectBlog(@RequestBody Collect collect,HttpServletRequest request){
+        Result result=new Result();
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        if(collectService.deleteCollectBlog(collect)){
+            result.setCode(ResultCode.SUCCESS);
+            result.setMsg("删除成功");
+            return result;
+        }else {
+            result.setCode(ResultCode.BLOG_NOT_EXIT);
+            result.setMsg("删除失败，博客不存在");
+            return result;
+        }
+    }
 
+    /**
+     * 删除默认收藏夹的一篇博客
+     * @param collect 收藏夹
+     * @param request 获取用户登录信息
+     * @return 结果
+     */
+    @PostMapping("/deleteNormalColBlog")
+    public Result deleteNormalColBlog(@RequestBody Collect collect,HttpServletRequest request){
+        Result result=new Result();
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        if(collectService.deleteNormalCollectBlog(collect)){
+            result.setMsg("删除成功");
+            result.setCode(ResultCode.SUCCESS);
+            return result;
+        }else{
+            result.setCode(ResultCode.BLOG_NOT_EXIT);
+            result.setMsg("删除失败,博客不存在");
+            return result;
+        }
+    }
+
+    /**
+     * 更新非默认收藏夹名称和简介
+     * @param userCollect 用户收藏夹
+     * @param request 用户登录信息
+     * @return 结果
+     */
+    @PostMapping("/updateColNameIntro")
+    public Result updateCollectNameAndIntro(@RequestBody UserCollect userCollect,HttpServletRequest request){
+        Result result=new Result();
+        User user= (User) request.getSession().getAttribute("user");
+        if(CheckUtils.userSessionTimeOut(request,result)|| CheckUtils.userRightIsTrue(user.getId(),userCollect.getUserId(),result)){
+            return result;
+        }
+        if(collectService.updateCollectNameAndIntro(userCollect)){
+            result.setMsg("更新成功");
+            result.setCode(ResultCode.SUCCESS);
+            return result;
+        }else {
+            result.setCode(ResultCode.UNSPECIFIED);
+            result.setMsg("更新失败");
+            return result;
+        }
+    }
+
+    /**
+     * 更新默认收藏夹名称
+     * @param userCollect 默认收藏夹
+     * @param request 登录用户信息
+     * @return 结果
+     */
+    @PostMapping("/updateNormalCollectName")
+    public Result updateNormalCollectName(@RequestBody UserCollect userCollect,HttpServletRequest request){
+        Result result=new Result();
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        if(collectService.updateNormalCollectName(userCollect)){
+            result.setMsg("更新成功");
+            result.setCode(ResultCode.SUCCESS);
+            return result;
+        }else {
+            result.setCode(ResultCode.UNSPECIFIED);
+            result.setMsg("更新失败");
+            return result;
+        }
+    }
 }
