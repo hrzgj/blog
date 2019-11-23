@@ -1,9 +1,6 @@
 package com.blog.www.controller;
 
-import com.blog.www.mapper.BlogMapper;
-import com.blog.www.model.*;
-import com.blog.www.mapper.BlogMapper;
-import com.blog.www.mapper.CollectMapper;
+
 import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
@@ -18,8 +15,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author lyx
- * @date 2019/11/16 10:21
+ * @author: chenyu
+ * @date: 2019/11/12 17:27
  */
 @CrossOrigin
 @RestController
@@ -71,8 +68,25 @@ public class BlogControl {
     @PostMapping("/deleteBlog")
     public Result deleteBlog(@RequestBody Blog blog,HttpServletRequest request){
         Result result=new Result();
-        blogService.deleteBlog(blog);
-        return result;
+        //判断session
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        User user= (User) request.getSession().getAttribute("user");
+        if(user.getId()!=blog.getAuthor().getId()){
+            result.setMsg("用户没有权限");
+            result.setCode(ResultCode.RIGHT_ERROR);
+            return result;
+        }
+        if(blogService.deleteBlog(blog)){
+            result.setCode(ResultCode.SUCCESS);
+            result.setMsg("删除成功，将博客评论，收藏夹收藏博客记录删除");
+            return result;
+        }else {
+            result.setCode(ResultCode.UNSPECIFIED);
+            result.setMsg("删除失败,可能该博客不存在");
+            return result;
+        }
     }
 
     /**
@@ -106,57 +120,6 @@ public class BlogControl {
     }
 
     /**
-     * 将草稿箱中的博客保存，并没有插入收藏夹，即在草稿箱中将其删除
-     * @param blog 博客内容
-     * @return
-     */
-    @PostMapping("/addBlogInEdit")
-    public Result addBlogInEdit(@RequestBody Blog blog,HttpServletRequest request){
-        Result result = new Result();
-        //检查session
-        if(CheckUtils.userSessionTimeOut(request,result)){
-            return result;
-        }
-        User user = (User) request.getSession().getAttribute("user");
-        blog.setAuthor(user);
-        if (blogService.selectBlogInEdit(blog)>0){
-            if (blogService.addBlogInEdit(blog)){
-                result.setCode(ResultCode.SUCCESS);
-                result.setMsg("保存草稿成功");
-                result.setData(blog);
-            }else{
-                result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("保存草稿失败");
-            }
-        }else{
-            result.setCode(ResultCode.OBJECT_NULL);
-            result.setMsg("草稿箱中查不到这篇博客");
-        }
-
-        return result;
-    }
-        //判断session
-        if(CheckUtils.userSessionTimeOut(request,result)){
-            return result;
-        }
-        User user= (User) request.getSession().getAttribute("user");
-        if(user.getId()!=blog.getAuthor().getId()){
-            result.setMsg("用户没有权限");
-            result.setCode(ResultCode.RIGHT_ERROR);
-            return result;
-        }
-        if(blogService.deleteBlog(blog)){
-            result.setCode(ResultCode.SUCCESS);
-            result.setMsg("删除成功，将博客评论，收藏夹收藏博客记录删除");
-            return result;
-        }else {
-            result.setCode(ResultCode.UNSPECIFIED);
-            result.setMsg("删除失败,可能该博客不存在");
-            return result;
-        }
-    }
-
-    /**
      * 用户修改某一篇博客
      * @param blog 博客
      * @param request 获取登录用户信息
@@ -183,5 +146,11 @@ public class BlogControl {
             result.setCode(ResultCode.UNSPECIFIED);
             return result;
         }
+
+    }
+
+
+
+
 
 }
