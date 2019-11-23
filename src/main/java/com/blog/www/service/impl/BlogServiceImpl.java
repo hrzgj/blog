@@ -101,11 +101,6 @@ public class BlogServiceImpl implements BlogService {
     }
 
 
-    @Override
-    public int selectBlogInEdit(Blog blog) {
-        return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
-    }
-
 
 
 }

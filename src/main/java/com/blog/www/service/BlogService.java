@@ -4,10 +4,6 @@ import com.blog.www.model.Blog;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blog.www.model.Blog;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * @author: chenyu
  * @date: 2019/11/12 17:28
@@ -22,6 +18,7 @@ public interface BlogService {
      * @return 成功与否
      */
     @Transactional(rollbackFor = Exception.class)
+    boolean deleteBlog(Blog blog);
 
 
     /**
@@ -57,7 +54,7 @@ public interface BlogService {
 
 
     /**
-     * 找到草稿箱中的你博客id
+     * 找到草稿箱中的博客id
      * @param blog 博客
      * @return 数据条数
      */
