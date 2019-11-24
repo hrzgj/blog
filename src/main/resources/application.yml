@@ -47,4 +47,8 @@ server:
 
 mybatis:
   configuration:
-    cache-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    com.blog.www.mapper: debug

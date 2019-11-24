@@ -88,4 +88,31 @@ public interface CollectService {
      int changeNorToUnNormal(Collect collect,int userId);
 
 
+     /**
+      * 删除非默认收藏夹的一篇博客
+      * @param collect 非默认收藏夹
+      * @return     是否删除成功
+      */
+     boolean deleteCollectBlog(Collect collect);
+
+     /**
+      * 删除默认收藏夹的一篇博客
+      * @param collect 收藏夹
+      * @return 是否删除成功
+      */
+     boolean deleteNormalCollectBlog(Collect collect);
+
+     /**
+      * 更新非默认收藏夹名称和简介
+      * @param userCollect 用户收藏夹
+      * @return 是否更新成功
+      */
+     boolean updateCollectNameAndIntro(UserCollect userCollect);
+
+     /**
+      * 更新默认收藏夹名称
+      * @param userCollect 收藏夹
+      * @return 是否修改成功
+      */
+     boolean updateNormalCollectName(UserCollect userCollect);
 }
