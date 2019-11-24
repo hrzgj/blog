@@ -223,5 +223,30 @@ public class CollectControl {
         }
     }
 
+    /**
+     * 用户将一个博客从默认移入非默认收藏夹
+     * @param collect  非默认收藏夹
+     * @param request 获取登录用户信息
+     * @return 是否移入成功
+     */
+    @PostMapping("/changeNorToUnNormal")
+    public Result changeNorToUnNormal(@RequestBody Collect collect,HttpServletRequest request){
+        Result result = new Result();
+        User user= (User) request.getSession().getAttribute("user");
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        int flag = collectService.changeNorToUnNormal(collect,user.getId());
+        result.setCode(flag);
+        if (flag == ResultCode.SUCCESS){
+            result.setMsg("将博客移入收藏夹成功");
+        }else if (flag == ResultCode.BLOG_NOT_EXIT){
+            result.setMsg("博客在默认收藏夹中不存在");
+        }else {
+            result.setMsg("将博客移动收藏夹失败");
+        }
+        return result;
+    }
+
 
 }

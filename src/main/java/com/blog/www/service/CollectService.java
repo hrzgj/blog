@@ -78,4 +78,14 @@ public interface CollectService {
      @Transactional(rollbackFor = Exception.class)
      int changeToNormal(Collect collect,int userId);
 
+     /**
+      * 用户将一个博客从默认收藏夹移入非默认收藏夹
+      * @param collect 非默认收藏夹
+      * @param userId    用户id
+      * @return     是否移入成功
+      */
+     @Transactional(rollbackFor = Exception.class)
+     int changeNorToUnNormal(Collect collect,int userId);
+
+
 }
