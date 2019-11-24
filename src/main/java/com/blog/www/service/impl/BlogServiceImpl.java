@@ -5,10 +5,13 @@ import com.blog.www.mapper.CollectMapper;
 import com.blog.www.mapper.ComMapper;
 import com.blog.www.model.Blog;
 import com.blog.www.model.Collect;
+import com.blog.www.model.UserCollect;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author lyx
@@ -104,6 +107,28 @@ public class BlogServiceImpl implements BlogService {
         return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
     }
 
+    @Override
+    public List<Blog> findBlogInCollect(int collectId) {
+        return blogMapper.findBlogInCollect(collectId);
+    }
+
+    @Override
+    public List<Blog> findBlogInAuto(UserCollect userCollect) {
+        int dId = collectMapper.selectAuto(userCollect.getUserId());
+        if (dId == userCollect.getId()){
+            return blogMapper.findBlogInAuto(userCollect.getId());
+        }
+        return  null;
+    }
+
+    @Override
+    public Blog getBlogById(int blogId) {
+        if (blogId == 0){
+            return null;
+        }else{
+            return  blogMapper.getBlogById(blogId);
+        }
+    }
 
 
 }

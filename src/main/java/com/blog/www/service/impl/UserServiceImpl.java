@@ -130,6 +130,8 @@ public class UserServiceImpl implements UserService {
                         "你的验证码是:"+
                         code+"你可以用这个验证码修改你的博客密码,如果不是你的本人操作请忽略此条信息！";
                 //将此验证码插入数据库，稍后进行验证
+                //先删除数据库中的此条数据
+                userMapper.deleteCode(user.getId());
                 userMapper.insertCode(user.getId(),code);
                 mailService.sendMail(user.getMail(),subject,context);
                 return true;

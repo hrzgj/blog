@@ -49,7 +49,7 @@ public interface UserMapper {
      * @param id
      * @return
      */
-    @Select("select * from user where id = #{id}")
+    @Select("select id,account,name from user where id = #{id}")
     User findUserById(int id);
 
     /**
