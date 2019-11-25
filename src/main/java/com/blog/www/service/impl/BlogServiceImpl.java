@@ -5,11 +5,14 @@ import com.blog.www.mapper.CollectMapper;
 import com.blog.www.mapper.ComMapper;
 import com.blog.www.model.Blog;
 import com.blog.www.model.Collect;
+import com.blog.www.model.UserCollect;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author lyx
@@ -38,6 +41,8 @@ public class BlogServiceImpl implements BlogService {
         }
         return false;
     }
+
+
 
     @Override
     public boolean editBlog(Blog blog) {
@@ -82,12 +87,6 @@ public class BlogServiceImpl implements BlogService {
         return false;
     }
 
-
-    @Override
-    public int selectBlogInEdit(Blog blog) {
-        return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
-    }
-
     @Override
     public Page<Blog> findPageBlog() {
         return blogMapper.findPageBlog();
@@ -107,6 +106,33 @@ public class BlogServiceImpl implements BlogService {
     }
 
 
+    @Override
+    public int selectBlogInEdit(Blog blog) {
+        return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
+    }
+
+    @Override
+    public List<Blog> findBlogInCollect(int collectId) {
+        return blogMapper.findBlogInCollect(collectId);
+    }
+
+    @Override
+    public List<Blog> findBlogInAuto(UserCollect userCollect) {
+        int dId = collectMapper.selectAuto(userCollect.getUserId());
+        if (dId == userCollect.getId()){
+            return blogMapper.findBlogInAuto(userCollect.getId());
+        }
+        return  null;
+    }
+
+    @Override
+    public Blog getBlogById(int blogId) {
+        if (blogId == 0){
+            return null;
+        }else{
+            return  blogMapper.getBlogById(blogId);
+        }
+    }
 
 
 }

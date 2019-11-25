@@ -1,9 +1,10 @@
 package com.blog.www.controller;
 
-
+import com.blog.www.mapper.BlogMapper;
 import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
+import com.blog.www.utils.CheckUtils;
 import com.blog.www.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author: chenyu
@@ -32,7 +34,7 @@ public class BlogControl {
      * @return 成功则返回对象，失败只返回信息
      */
     @PostMapping("/addBlog")
-    public Result<Blog> addBlog(@RequestBody Blog blog, HttpServletRequest request) {
+    public Result addBlog(@RequestBody Blog blog, HttpServletRequest request) {
         Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
@@ -93,7 +95,7 @@ public class BlogControl {
      * @return 结果
      */
     @PostMapping("/editBlog")
-    public Result<Blog> editBlog(@RequestBody Blog blog, HttpServletRequest request){
+    public Result editBlog(@RequestBody Blog blog,HttpServletRequest request){
         Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
@@ -157,6 +159,114 @@ public class BlogControl {
         result.setData(pageInfo);
         return result;
 
+    }
+
+    /**
+     * 将草稿箱中的博客保存，并没有插入收藏夹，即在草稿箱中将其删除
+     * @param blog 博客内容
+     * @return
+     */
+    @PostMapping("/addBlogInEdit")
+    public Result addBlogInEdit(@RequestBody Blog blog,HttpServletRequest request){
+        Result result = new Result();
+        //检查session
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        User user = (User) request.getSession().getAttribute("user");
+        blog.setAuthor(user);
+        if (blogService.selectBlogInEdit(blog)>0){
+            if (blogService.addBlogInEdit(blog)){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("保存草稿成功");
+                result.setData(blog);
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("保存草稿失败");
+            }
+        }else{
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("草稿箱中查不到这篇博客");
+        }
+
+        return result;
+    }
+
+    /**
+     *通过收藏夹查找非默认收藏夹里的博客
+     * @param userCollect 收藏夹
+     * @return 博客列表
+     */
+    @PostMapping("/getBlogByCollect")
+    public  Result<List<Blog>> getBlogByCollect(@RequestBody UserCollect userCollect){
+        Result<List<Blog>> result = new Result<>();
+        if (userCollect == null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("对象信息为空");
+        }else{
+            List<Blog> list = blogService.findBlogInCollect(userCollect.getId());
+            if (list != null){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("查找该收藏夹的博客成功");
+                result.setData(list);
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("查找该收藏夹的博客失败");
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     *通过收藏夹查找默认收藏夹里的博客
+     * @param userCollect 收藏夹
+     * @return 博客列表
+     */
+    @PostMapping("/getBlogInAuto")
+    public  Result<List<Blog>> getBlogInAuto(@RequestBody UserCollect userCollect){
+        Result<List<Blog>> result = new Result<>();
+        if (userCollect == null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("对象信息为空");
+        }else{
+            List<Blog> list = blogService.findBlogInAuto(userCollect);
+            if (list != null){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("查找该默认收藏夹的博客成功");
+                result.setData(list);
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("查找该默认收藏夹的博客失败");
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 获得单篇博客内容
+     * @param blogId 博客id
+     * @return 博客内容
+     */
+    @GetMapping("/getOneBlog")
+    public Result getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId){
+        Result result = new Result();
+        if (blogId == 0){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传输对象为空");
+            return  result;
+        }else{
+            if (blogService.getBlogById(blogId)!=null){
+                Blog blog = blogService.getBlogById(blogId);
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("获得博客内容成功");
+                result.setData(blog);
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("获得博客内容失败");
+            }
+        }
+        return  result;
     }
 
 
