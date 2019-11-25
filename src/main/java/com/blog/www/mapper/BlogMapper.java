@@ -20,7 +20,7 @@ public interface BlogMapper {
      * @return 成功处理的数据数
      */
     @Insert("insert into blog(u_id,content,time,title) values(#{author.id},#{content},#{date},#{title})")
-    @Results(value = {
+    @Results( value = {
             @Result(property = "id", column = "id"),
             @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
             @Result(property = "title", column = "title"),
@@ -37,6 +37,7 @@ public interface BlogMapper {
      * @return
      */
     @Update("update blog set title=#{title},content=#{content},time=#{date} where id=#{id}")
+
     int updateBlog(Blog blog);
 
     /**
@@ -45,6 +46,7 @@ public interface BlogMapper {
      * @return 博客id
      */
     @Select("select b_id from db_collect where d_id = #{dId}")
+
     int selectBlogId(int dId);
 
 
