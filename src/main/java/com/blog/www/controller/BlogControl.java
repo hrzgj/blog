@@ -5,9 +5,6 @@ import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
 import com.blog.www.utils.CheckUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.blog.www.utils.CheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * @author: chenyu
- * @date: 2019/11/12 17:27
+ * @author lyx
+ * @date 2019/11/16 10:21
  */
-@CrossOrigin
 @RestController
+@CrossOrigin
 public class BlogControl {
 
     @Autowired
@@ -34,7 +31,7 @@ public class BlogControl {
      * @return 成功则返回对象，失败只返回信息
      */
     @PostMapping("/addBlog")
-    public Result<Blog> addBlog(@RequestBody Blog blog, HttpServletRequest request) {
+    public Result addBlog(@RequestBody Blog blog, HttpServletRequest request) {
         Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
@@ -95,7 +92,7 @@ public class BlogControl {
      * @return 结果
      */
     @PostMapping("/editBlog")
-    public Result<Blog> editBlog(@RequestBody Blog blog, HttpServletRequest request){
+    public Result editBlog(@RequestBody Blog blog,HttpServletRequest request){
         Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
@@ -146,18 +143,6 @@ public class BlogControl {
             result.setCode(ResultCode.UNSPECIFIED);
             return result;
         }
-
-    }
-
-
-    @GetMapping("/findPageBlog")
-    public Result findPageBlog(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
-        Result<PageInfo<Blog>> result=new Result<>();
-        PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Blog> pageInfo=new PageInfo<>(blogService.findPageBlog());
-        result.setCode(ResultCode.SUCCESS);
-        result.setData(pageInfo);
-        return result;
 
     }
 

@@ -1,7 +1,6 @@
 package com.blog.www.service;
 
 import com.blog.www.model.Blog;
-import com.github.pagehelper.Page;
 import com.blog.www.model.UserCollect;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,6 @@ public interface BlogService {
      */
     @Transactional(rollbackFor = Exception.class)
     boolean deleteBlog(Blog blog);
-
 
     /**
      * 增加博客,只是插入博客表中，未存入关联的收藏夹中
@@ -58,14 +56,13 @@ public interface BlogService {
 
 
     /**
-     * 找到草稿箱中的博客id
+     * 找到草稿箱中的你博客id
      * @param blog 博客
      * @return 数据条数
      */
     int selectBlogInEdit(Blog blog);
 
 
-    Page<Blog> findPageBlog();
     /**
      * 通过分组id找到全部的博客
      * @param collectId 该分组的id

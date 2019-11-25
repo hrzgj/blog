@@ -1,6 +1,5 @@
 package com.blog.www.mapper;
 import com.blog.www.model.Blog;
-import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.Insert;
@@ -53,8 +52,8 @@ public interface BlogMapper {
 
     /**
      * 删除博客
-     * @param blog 博客id
-     * @return 删除条数
+     * @param blog
+     * @return
      */
     @Delete("delete from blog where id =#{id}")
     int deleteBlog(Blog blog);
@@ -91,7 +90,5 @@ public interface BlogMapper {
     @ResultMap("blog")
     @Select("select * from blog where id = #{blogId}")
     Blog getBlogById(int blogId);
-    @Select("select * from blog order by time")
-    Page<Blog> findPageBlog();
 
 }
