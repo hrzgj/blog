@@ -39,11 +39,7 @@ public class ResultCode {
     //用户修改密码的验证码错误
     public static final int IDENTITY_ERROR=8;
 
-    //用户注册发送邮件失败，两种情况，邮箱输入错误or该邮箱未注册
-    public static final int MAIL_SEND_ERROR=9;
 
-    //删除服务器图片失败
-    public static final int DELETE_ERROR=10;
 
     //用户注册发送邮件失败
     //用户注册发送邮件失败，两种情况，邮箱输入错误or该邮箱未注册
