@@ -6,10 +6,7 @@ import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
 import com.blog.www.utils.CheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,6 +16,7 @@ import java.util.List;
  * @date 2019/11/16 10:21
  */
 @RestController
+@CrossOrigin
 public class BlogControl {
 
     @Autowired
@@ -232,19 +230,19 @@ public class BlogControl {
 
     /**
      * 获得单篇博客内容
-     * @param blog 博客
+     * @param blogId 博客id
      * @return 博客内容
      */
     @GetMapping("/getOneBlog")
-    public Result getOneBlog(@RequestBody Blog blog){
+    public Result getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId){
         Result result = new Result();
-        if (blog == null){
+        if (blogId == 0){
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("传输对象为空");
             return  result;
         }else{
-            if (blogService.getBlogById(blog.getId())!=null){
-                blog = blogService.getBlogById(blog.getId());
+            if (blogService.getBlogById(blogId)!=null){
+                Blog blog = blogService.getBlogById(blogId);
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("获得博客内容成功");
                 result.setData(blog);
