@@ -1,6 +1,7 @@
 package com.blog.www.service;
 
 import com.blog.www.model.Blog;
+import com.github.pagehelper.Page;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +62,7 @@ public interface BlogService {
     int selectBlogInEdit(Blog blog);
 
 
-
+    Page<Blog> findPageBlog();
 
 
 }

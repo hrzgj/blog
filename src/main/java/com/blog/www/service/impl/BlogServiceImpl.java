@@ -7,6 +7,7 @@ import com.blog.www.model.Blog;
 import com.blog.www.model.Collect;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +86,11 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public int selectBlogInEdit(Blog blog) {
         return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
+    }
+
+    @Override
+    public Page<Blog> findPageBlog() {
+        return blogMapper.findPageBlog();
     }
 
     @Override
