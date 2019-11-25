@@ -62,7 +62,8 @@ public class ResultCode {
     //用户收藏夹存在该博客
     public static final int BLOG_EXIT=15;
 
-
+    //文件为空
+    public static final int FILE_NULL=16;
 
 
 

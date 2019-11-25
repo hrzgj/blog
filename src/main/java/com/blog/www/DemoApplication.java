@@ -17,15 +17,15 @@ public class DemoApplication {
 
 	}
 
-	//配置mybatis的分页插件pageHelper
 	@Bean
-	public PageHelper pageHelper() {
+	public PageHelper getPageHelper() {
 		PageHelper pageHelper = new PageHelper();
-		Properties props = new Properties();
-		props.setProperty("dialect", "mysql");
-		// 表示支持从接口中读取pageNum和pageSize
-		props.setProperty("supportMethodsArguments", "true");
-		pageHelper.setProperties(props);
+		Properties properties = new Properties();
+		properties.setProperty("helperDialect", "mysql");
+		properties.setProperty("reasonable", "true");
+		properties.setProperty("supportMethodsArguments", "true");
+		properties.setProperty("params", "count=countSql");
+		pageHelper.setProperties(properties);
 		return pageHelper;
 	}
 

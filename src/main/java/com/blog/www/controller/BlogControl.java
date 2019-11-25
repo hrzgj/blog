@@ -150,6 +150,12 @@ public class BlogControl {
     }
 
 
+    /**
+     * 首页博客查询，分页查询
+     * @param pageNum 页数
+     * @param pageSize 每页博客数量
+     * @return 结果
+     */
     @GetMapping("/findPageBlog")
     public Result findPageBlog(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
         Result<PageInfo<Blog>> result=new Result<>();
@@ -158,13 +164,12 @@ public class BlogControl {
         result.setCode(ResultCode.SUCCESS);
         result.setData(pageInfo);
         return result;
-
     }
 
     /**
      * 将草稿箱中的博客保存，并没有插入收藏夹，即在草稿箱中将其删除
      * @param blog 博客内容
-     * @return
+     * @return 结果
      */
     @PostMapping("/addBlogInEdit")
     public Result addBlogInEdit(@RequestBody Blog blog,HttpServletRequest request){
@@ -243,44 +248,33 @@ public class BlogControl {
         return result;
     }
 
-<<<<<<<<< Temporary merge branch 1
+
     /**
      * 获得单篇博客内容
      * @param blogId 博客id
      * @return 博客内容
      */
     @GetMapping("/getOneBlog")
-    public Result getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId){
+    public Result getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId) {
         Result result = new Result();
-        if (blogId == 0){
+        if (blogId == 0) {
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("传输对象为空");
-            return  result;
-        }else{
-            if (blogService.getBlogById(blogId)!=null){
+            return result;
+        } else {
+            if (blogService.getBlogById(blogId) != null) {
                 Blog blog = blogService.getBlogById(blogId);
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("获得博客内容成功");
                 result.setData(blog);
-            }else{
+            } else {
                 result.setCode(ResultCode.UNSPECIFIED);
                 result.setMsg("获得博客内容失败");
             }
         }
-        return  result;
-=========
-    @GetMapping("/findPageBlog")
-    public Result findPageBlog(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
-        Result<PageInfo<Blog>> result=new Result<>();
-        PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Blog> pageInfo=new PageInfo<>(blogService.findPageBlog());
-        result.setCode(ResultCode.SUCCESS);
-        result.setData(pageInfo);
         return result;
 
->>>>>>>>> Temporary merge branch 2
+
     }
-
-
 
 }

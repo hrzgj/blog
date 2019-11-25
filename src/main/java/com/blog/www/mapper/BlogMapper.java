@@ -59,7 +59,12 @@ public interface BlogMapper {
     @Delete("delete from blog where id =#{id}")
     int deleteBlog(Blog blog);
 
+    /**
+     * 首页博客查询，分页查询
+     * @return 每页的博客
+     */
     @Select("select * from blog order by time")
+    @ResultMap("blog")
     Page<Blog> findPageBlog();
 
 

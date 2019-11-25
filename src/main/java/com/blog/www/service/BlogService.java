@@ -88,6 +88,10 @@ public interface BlogService {
     Blog getBlogById(int blogId);
 
 
+    /**
+     * 首页博客查询，分页查询
+     * @return 每页的博客
+     */
     Page<Blog> findPageBlog();
 
 
