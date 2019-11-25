@@ -12,7 +12,6 @@ public class ResultCode {
 
 
     //处理成功的状态码
-
     public static final int SUCCESS=1;
 
     //处理未知错误的状态码
@@ -51,10 +50,8 @@ public class ResultCode {
     //输入值为空
     public  static final int OBJECT_NULL = 11;
 
-
     //博客删除失败
     public static final int DELETE_BLOG_FALSE=12;
-
 
     //用户无法删除不是自己的博客，权限不足
     public static final int RIGHT_ERROR=13;

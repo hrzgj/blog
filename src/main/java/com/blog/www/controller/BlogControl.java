@@ -5,6 +5,9 @@ import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
 import com.blog.www.utils.CheckUtils;
+import com.blog.www.utils.CheckUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +34,7 @@ public class BlogControl {
      * @return 成功则返回对象，失败只返回信息
      */
     @PostMapping("/addBlog")
-    public Result addBlog(@RequestBody Blog blog, HttpServletRequest request) {
+    public Result<Blog> addBlog(@RequestBody Blog blog, HttpServletRequest request) {
         Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
@@ -92,7 +95,7 @@ public class BlogControl {
      * @return 结果
      */
     @PostMapping("/editBlog")
-    public Result editBlog(@RequestBody Blog blog,HttpServletRequest request){
+    public Result<Blog> editBlog(@RequestBody Blog blog, HttpServletRequest request){
         Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
@@ -143,6 +146,18 @@ public class BlogControl {
             result.setCode(ResultCode.UNSPECIFIED);
             return result;
         }
+
+    }
+
+
+    @GetMapping("/findPageBlog")
+    public Result findPageBlog(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
+        Result<PageInfo<Blog>> result=new Result<>();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Blog> pageInfo=new PageInfo<>(blogService.findPageBlog());
+        result.setCode(ResultCode.SUCCESS);
+        result.setData(pageInfo);
+        return result;
 
     }
 
@@ -228,6 +243,7 @@ public class BlogControl {
         return result;
     }
 
+<<<<<<<<< Temporary merge branch 1
     /**
      * 获得单篇博客内容
      * @param blogId 博客id
@@ -252,6 +268,17 @@ public class BlogControl {
             }
         }
         return  result;
+=========
+    @GetMapping("/findPageBlog")
+    public Result findPageBlog(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
+        Result<PageInfo<Blog>> result=new Result<>();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Blog> pageInfo=new PageInfo<>(blogService.findPageBlog());
+        result.setCode(ResultCode.SUCCESS);
+        result.setData(pageInfo);
+        return result;
+
+>>>>>>>>> Temporary merge branch 2
     }
 
 

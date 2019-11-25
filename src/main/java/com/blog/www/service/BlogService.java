@@ -2,6 +2,8 @@ package com.blog.www.service;
 
 import com.blog.www.model.Blog;
 import com.blog.www.model.UserCollect;
+import com.github.pagehelper.Page;
+import com.blog.www.model.UserCollect;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,6 +86,9 @@ public interface BlogService {
      * @return 博客内容
      */
     Blog getBlogById(int blogId);
+
+
+    Page<Blog> findPageBlog();
 
 
 }
