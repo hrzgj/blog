@@ -14,12 +14,12 @@ public class UserCollect implements Serializable {
     /**
      *分组的id
      */
-    private int id;
+    private Integer id;
 
     /**
      * 此分组的所有者user的id
      */
-    private int userId;
+    private Integer userId;
 
     /**
      * 此分组的名字

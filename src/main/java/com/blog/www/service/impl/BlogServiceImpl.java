@@ -134,6 +134,11 @@ public class BlogServiceImpl implements BlogService {
         return blogMapper.findPageBlog();
     }
 
+    @Override
+    public List<Blog> seekBlog(String seek) {
+        return blogMapper.seekBlog(seek);
+    }
+
 
 }
 

@@ -94,5 +94,6 @@ public interface BlogService {
      */
     Page<Blog> findPageBlog();
 
+    List<Blog> seekBlog(String seek);
 
 }

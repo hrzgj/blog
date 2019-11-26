@@ -1,10 +1,8 @@
 package com.blog.www.controller;
 
-import com.blog.www.mapper.BlogMapper;
 import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
-import com.blog.www.utils.CheckUtils;
 import com.blog.www.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -157,7 +155,7 @@ public class BlogControl {
      * @return 结果
      */
     @GetMapping("/findPageBlog")
-    public Result findPageBlog(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
+    public Result<PageInfo<Blog>> findPageBlog(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize){
         Result<PageInfo<Blog>> result=new Result<>();
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<Blog> pageInfo=new PageInfo<>(blogService.findPageBlog());
@@ -172,8 +170,8 @@ public class BlogControl {
      * @return 结果
      */
     @PostMapping("/addBlogInEdit")
-    public Result addBlogInEdit(@RequestBody Blog blog,HttpServletRequest request){
-        Result result = new Result();
+    public Result<Blog> addBlogInEdit(@RequestBody Blog blog, HttpServletRequest request){
+        Result<Blog> result = new Result<>();
         //检查session
         if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
@@ -255,8 +253,8 @@ public class BlogControl {
      * @return 博客内容
      */
     @GetMapping("/getOneBlog")
-    public Result getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId) {
-        Result result = new Result();
+    public Result<Blog> getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId) {
+        Result<Blog> result = new Result<Blog>();
         if (blogId == 0) {
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("传输对象为空");
@@ -273,6 +271,30 @@ public class BlogControl {
             }
         }
         return result;
+
+
+    }
+
+    @GetMapping("/seekBlog")
+    public Result<List<Blog>> seekBlog(@RequestParam(value ="seek" ) String seek){
+        Result<List<Blog>> result=new Result<>();
+        if(seek==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参错误");
+            return result;
+        }
+        List<Blog> list=blogService.seekBlog(seek);
+        if(list!=null){
+            result.setData(list);
+            result.setMsg("查询成功");
+            result.setCode(ResultCode.SUCCESS);
+            return result;
+        }else {
+            result.setCode(ResultCode.BLOG_NOT_EXIT);
+            result.setMsg("查询失败，没有对应内容");
+            return result;
+
+        }
 
 
     }

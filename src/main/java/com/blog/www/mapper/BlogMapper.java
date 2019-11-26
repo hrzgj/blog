@@ -2,9 +2,11 @@ package com.blog.www.mapper;
 import com.blog.www.model.Blog;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -102,4 +104,7 @@ public interface BlogMapper {
     Blog getBlogById(int blogId);
 
 
+    @Select("select * from blog where comment like %#{seek}% or title like %#{seek}% ")
+    @ResultMap("blog")
+    List<Blog> seekBlog(String seek);
 }

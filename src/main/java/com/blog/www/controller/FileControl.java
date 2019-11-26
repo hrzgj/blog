@@ -92,7 +92,11 @@ public class FileControl {
     @PostMapping("/uploadPicture")
     public Result uploadPicture(@RequestParam("photo") MultipartFile file,HttpServletRequest request){
         Result<String> result=new Result<>();
-
+        if(file==null){
+            result.setMsg("文件为空");
+            result.setCode(ResultCode.FILE_NULL);
+            return result;
+        }
         String filePath=path+"blog/";
         String fileNewName=FileUtils.getFileNewName(file.getOriginalFilename());
         try {

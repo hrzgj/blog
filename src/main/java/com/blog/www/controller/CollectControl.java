@@ -8,10 +8,7 @@ import com.blog.www.model.*;
 import com.blog.www.service.CollectService;
 import com.blog.www.utils.CheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -29,29 +26,45 @@ public class CollectControl {
 
     /**
      * 用户修改一篇博客的收藏夹,从非默认移到非默认的收藏夹
-     * @param collect 博客收藏夹的中间表
+     * @param userCollectId 新收藏夹id
+     * @param blogId 博客id
+     * @param oldCollectId 旧收藏夹id
      * @param request 获取user
      * @return 结果
      */
-    @PostMapping("/changeCollect")
-    public Result changeBlogCollect(@RequestBody Collect collect, HttpServletRequest request){
+    @GetMapping("/changeCollect")
+    public Result changeBlogCollect(@RequestParam(value = "userCollectId") Integer userCollectId,
+                                    @RequestParam(value = "blogId")Integer blogId,
+                                    @RequestParam(value = "oldCollectId") Integer oldCollectId,
+                                    HttpServletRequest request){
         Result result=new Result();
         if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
         }
+        if(userCollectId==null||blogId==null||oldCollectId==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            return result;
+        }
+        Collect collect=new Collect();
+        collect.setBlogId(blogId);
+        collect.setUserCollectId(userCollectId);
         User user= (User) request.getSession().getAttribute("user");
-        int flag=collectService.changeCollect(collect,user.getId());
+        int flag=collectService.changeCollect(collect,oldCollectId,user.getId());
+        result.setCode(flag);
         if(flag==ResultCode.SUCCESS){
-            result.setCode(ResultCode.SUCCESS);
             result.setMsg("更换成功");
             return result;
         }else if(flag==ResultCode.BLOG_NOT_EXIT){
-            result.setCode(ResultCode.BLOG_NOT_EXIT);
-            result.setMsg("博客不存在");
+            result.setMsg("原收藏夹博客不存在");
+            return result;
+        }else if(flag==ResultCode.BLOG_EXIT){
+            result.setMsg("要移入的收藏夹博客已存在");
+            return result;
+        }else if(flag==ResultCode.COLLECT_ERROR){
+            result.setMsg("两个收藏夹可能不属于该登录用户");
             return result;
         }
         else {
-            result.setCode(ResultCode.UNSPECIFIED);
             result.setMsg("更换失败");
             return result;
         }
@@ -67,6 +80,11 @@ public class CollectControl {
     @PostMapping("/addCollect")
     public Result addUserCollect(@RequestBody UserCollect userCollect, HttpServletRequest request){
         Result result=new Result();
+        if(userCollect.getName()==null||userCollect.getUserId()==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参为空");
+            return result;
+        }
         if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
         }
@@ -143,6 +161,11 @@ public class CollectControl {
     @PostMapping("/deleteUserCollect")
     public Result deleteUserCollect(@RequestBody UserCollect userCollect,HttpServletRequest request){
         Result result=new Result();
+        if(userCollect.getUserId()==null||userCollect.getId()==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参为空");
+            return result;
+        }
         User user= (User) request.getSession().getAttribute("user");
         if(CheckUtils.userSessionTimeOut(request,result)|| CheckUtils.userRightIsTrue(user.getId(),userCollect.getUserId(),result)){
             return result;
@@ -166,7 +189,7 @@ public class CollectControl {
     @PostMapping("/addBlogCollect")
     public Result addBlogCollect(@RequestBody Collect collect,HttpServletRequest request){
         Result result=new Result();
-        if(CheckUtils.userSessionTimeOut(request,result)){
+        if(CheckUtils.userSessionTimeOut(request,result)||CheckUtils.checkCollect(collect,result)){
             return result;
         }
         User user= (User) request.getSession().getAttribute("user");
@@ -200,8 +223,9 @@ public class CollectControl {
     @PostMapping("/changeToNormal")
     public Result changeToNormal(@RequestBody Collect collect,HttpServletRequest request){
         Result result=new Result();
+
         User user= (User) request.getSession().getAttribute("user");
-        if(CheckUtils.userSessionTimeOut(request,result)){
+        if(CheckUtils.userSessionTimeOut(request,result)||CheckUtils.checkCollect(collect,result)){
             return result;
         }
         int flag=collectService.changeToNormal(collect,user.getId());
@@ -232,7 +256,7 @@ public class CollectControl {
     @PostMapping("/deleteCollectBlog")
     public Result deleteCollectBlog(@RequestBody Collect collect,HttpServletRequest request){
         Result result=new Result();
-        if(CheckUtils.userSessionTimeOut(request,result)){
+        if(CheckUtils.userSessionTimeOut(request,result)||CheckUtils.checkCollect(collect,result)){
             return result;
         }
         if(collectService.deleteCollectBlog(collect)){
@@ -255,7 +279,7 @@ public class CollectControl {
     @PostMapping("/deleteNormalColBlog")
     public Result deleteNormalColBlog(@RequestBody Collect collect,HttpServletRequest request){
         Result result=new Result();
-        if(CheckUtils.userSessionTimeOut(request,result)){
+        if(CheckUtils.userSessionTimeOut(request,result)||CheckUtils.checkCollect(collect,result)){
             return result;
         }
         if(collectService.deleteNormalCollectBlog(collect)){
@@ -279,6 +303,13 @@ public class CollectControl {
     public Result updateCollectNameAndIntro(@RequestBody UserCollect userCollect,HttpServletRequest request){
         Result result=new Result();
         User user= (User) request.getSession().getAttribute("user");
+        //判断传参是否为空
+        if(userCollect.getName()==null||userCollect.getId()==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参为空");
+            return result;
+        }
+        //判断session是否过期和用户权限是否正确
         if(CheckUtils.userSessionTimeOut(request,result)|| CheckUtils.userRightIsTrue(user.getId(),userCollect.getUserId(),result)){
             return result;
         }
@@ -302,6 +333,13 @@ public class CollectControl {
     @PostMapping("/updateNormalCollectName")
     public Result updateNormalCollectName(@RequestBody UserCollect userCollect,HttpServletRequest request){
         Result result=new Result();
+        //判断传参是否为空
+        if(userCollect.getName()==null||userCollect.getId()==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参为空");
+            return result;
+        }
+        //判断session是否过期
         if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
         }
@@ -315,6 +353,7 @@ public class CollectControl {
             return result;
         }
     }
+
     /**
      * 用户将一个博客从默认移入非默认收藏夹
      * @param collect  非默认收藏夹
@@ -322,10 +361,10 @@ public class CollectControl {
      * @return 是否移入成功
      */
     @PostMapping("/changeNorToUnNormal")
-    public Result changeNorToUnNormal(@RequestBody Collect collect,HttpServletRequest request){
+    public Result changeNorToUnNormal(@RequestBody Collect collect ,HttpServletRequest request){
         Result result = new Result();
         User user= (User) request.getSession().getAttribute("user");
-        if(CheckUtils.userSessionTimeOut(request,result)){
+        if(CheckUtils.userSessionTimeOut(request,result)||CheckUtils.checkCollect(collect,result)){
             return result;
         }
         int flag = collectService.changeNorToUnNormal(collect,user.getId());
@@ -334,7 +373,10 @@ public class CollectControl {
             result.setMsg("将博客移入收藏夹成功");
         }else if (flag == ResultCode.BLOG_NOT_EXIT){
             result.setMsg("博客在默认收藏夹中不存在");
-        }else {
+        }else if(flag ==ResultCode.BLOG_EXIT){
+            result.setMsg("博客在非默认收藏夹存在");
+        }
+        else{
             result.setMsg("将博客移动收藏夹失败");
         }
         return result;

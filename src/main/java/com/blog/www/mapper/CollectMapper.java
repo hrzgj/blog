@@ -51,24 +51,25 @@ public interface CollectMapper {
 
     /**
      * 用户更新一篇博客的收藏夹
-     * @param collect 博客收藏夹的中间表
+     * @param collect 新收藏夹
      * @return 更新条数
      */
     @Update("update collect set c_id=#{userCollectId} where b_id=#{blogId} and id=#{id}")
     int changeBlogCollect(Collect collect);
 
+    @Select("select count(1) from u_collect where u_id=#{userId} and id =#{collectOne} or id=#{collectTwo}")
+    int findCollectByUserId(int userId,int collectOne,int collectTwo);
 //    @Select("select count(1) from collect where c_id=#{userCollectId} and b_id=#{blogId}")
 //    int findCollectExitBlog(Collect collect);
 
     /**
      * 查询用户对应非默认收藏夹中是否存在该博客
-     * @param userId 用户id
+     * @param oldCollectId 旧收藏夹id
      * @param collect 收藏夹
      * @return 存在条数
      */
-    @Select("select count(1) from collect,u_collect where u_id=#{userId} " +
-            "and b_id=#{collect.blogId} and c_id=u_collect.id and collect.id=#{collect.id}")
-    int findCollectExitBlogByUId(int userId,Collect collect);
+    @Select("select id from collect where c_id=#{oldCollectId} and b_id=#{collect.blogId} ")
+    int findCollectExitBlogByUId(int oldCollectId,Collect collect);
 
     @Select("select count(1) from collect where c_id=#{userCollectId} and b_id=#{blogId}")
     int findCollectExitBlog(Collect collect);

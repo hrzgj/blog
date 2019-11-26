@@ -47,7 +47,7 @@ public class ResultCode {
     //删除服务器图片失败
     public static final int DELETE_ERROR=10;
 
-    //输入值为空
+    //传参为空，前端没有传入需要的值
     public  static final int OBJECT_NULL = 11;
 
     //博客删除失败
@@ -65,6 +65,8 @@ public class ResultCode {
     //文件为空
     public static final int FILE_NULL=16;
 
+    //收藏夹不是登录用户的
+    public static final int COLLECT_ERROR=17;
 
 
 

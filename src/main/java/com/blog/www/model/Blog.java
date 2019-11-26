@@ -3,6 +3,7 @@ package com.blog.www.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Clob;
 
 /**
  * @author: chenyu
@@ -17,7 +18,7 @@ public class Blog implements Serializable {
     private int id;
 
     /**
-     * 作
+     * 作者
      */
     private User author;
 

@@ -17,11 +17,12 @@ public interface CollectService {
      /**
       * 用户修改一篇博客的收藏夹
       * @param collect 博客收藏夹的中间表
+      * @param oldCollectId 旧收藏夹的id
       * @param userId 用户id
       * @return 是否改变成功
       */
      @Transactional
-     int changeCollect(Collect collect,int userId);
+     int changeCollect(Collect collect,int oldCollectId,int userId);
 
      /**
       * 登录用户新增一个收藏夹

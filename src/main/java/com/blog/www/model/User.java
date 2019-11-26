@@ -13,7 +13,7 @@ public class User implements Serializable {
     /**
      * 用户id
      */
-    private int id;
+    private Integer id;
 
     /**
      *用户账户
@@ -43,5 +43,5 @@ public class User implements Serializable {
     /**
      *用户状态，1是注册，0是未点击链接注册
      */
-    private int status;
+    private Integer status;
 }
