@@ -190,10 +190,13 @@ public class BlogControl {
             result.setMsg("对象信息为空");
         }else{
             List<Blog> list = blogService.findBlogInCollect(userCollect.getId());
-            if (list != null){
+            if (list != null && !list.isEmpty()){
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("查找该收藏夹的博客成功");
                 result.setData(list);
+            }else if (list.isEmpty()){
+                result.setCode(ResultCode.NO_BLOG);
+                result.setMsg("查询成功，但该用户没有写过博客");
             }else{
                 result.setCode(ResultCode.UNSPECIFIED);
                 result.setMsg("查找该收藏夹的博客失败");
@@ -216,10 +219,13 @@ public class BlogControl {
             result.setMsg("对象信息为空");
         }else{
             List<Blog> list = blogService.findBlogInAuto(userCollect);
-            if (list != null){
+            if (list != null && !list.isEmpty()){
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("查找该默认收藏夹的博客成功");
                 result.setData(list);
+            }else if (list.isEmpty()){
+                result.setCode(ResultCode.NO_BLOG);
+                result.setMsg("查询成功，但该用户没有写过博客");
             }else{
                 result.setCode(ResultCode.UNSPECIFIED);
                 result.setMsg("查找该默认收藏夹的博客失败");
@@ -254,6 +260,33 @@ public class BlogControl {
         return  result;
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/getBlogByUserId")
+    public Result<List<Blog>> getBlogByUserId(@RequestParam(value = "userId") Integer userId){
+        Result<List<Blog>> result = new Result<>();
+        if (userId == null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("对象信息为空");
+        }else{
+            List<Blog> list = blogService.findBlogByUser(userId);
+            if (list != null && !list.isEmpty()){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("查找该默认收藏夹的博客成功");
+                result.setData(list);
+            }else if (list.isEmpty()){
+                result.setCode(ResultCode.NO_BLOG);
+                result.setMsg("查询成功，但该用户没有写过博客");
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("查找该默认收藏夹的博客失败");
+            }
+        }
+        return result;
+    }
 
 
 }

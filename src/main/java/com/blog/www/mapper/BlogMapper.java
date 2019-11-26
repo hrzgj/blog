@@ -63,7 +63,7 @@ public interface BlogMapper {
      * @param collectId 该收藏夹的id
      * @return 博客列表
      */
-    @Select("select blog.id,blog.title from blog,collect where collect.b_id=blog.id and collect.c_id = #{collectId}")
+    @Select("select blog.* from blog,collect where collect.b_id=blog.id and collect.c_id = #{collectId}")
     @Results(id = "blog",value = {
             @Result(property = "id", column = "id"),
             @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
@@ -78,9 +78,19 @@ public interface BlogMapper {
      * @param collectId 该收藏夹的id
      * @return 博客列表
      */
-    @Select("select blog.id,blog.title from blog,db_collect where db_collect.b_id=blog.id and db_collect.d_id = #{collectId}")
+    @Select("select blog.* from blog,db_collect where db_collect.b_id=blog.id and db_collect.d_id = #{collectId}")
     @ResultMap("blog")
     List<Blog> findBlogInAuto(int collectId);
+
+    /**
+     * 用户通过用户找到该用户写的所有博客
+     * @param userId 该收藏夹的id
+     * @return 博客列表
+     */
+    @Select("select * from blog where u_id = #{userId} order by id desc")
+    @ResultMap("blog")
+    List<Blog> findBlogByUser(int userId);
+
 
     /**
      * 通过博客id查询博客的内容
@@ -90,5 +100,8 @@ public interface BlogMapper {
     @ResultMap("blog")
     @Select("select * from blog where id = #{blogId}")
     Blog getBlogById(int blogId);
+
+
+
 
 }

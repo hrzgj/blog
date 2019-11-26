@@ -3,11 +3,14 @@ package com.blog.www.service.impl;
 import com.blog.www.mapper.BlogMapper;
 import com.blog.www.mapper.CollectMapper;
 import com.blog.www.mapper.ComMapper;
+import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.Blog;
 import com.blog.www.model.Collect;
+import com.blog.www.model.User;
 import com.blog.www.model.UserCollect;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
+import com.blog.www.utils.StrUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,8 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     CollectMapper collectMapper;
 
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public boolean addBlog(Blog blog) {
@@ -107,16 +112,43 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> findBlogInCollect(int collectId) {
-        return blogMapper.findBlogInCollect(collectId);
+        List<Blog> blogs = blogMapper.findBlogInCollect(collectId);
+        for (Blog blog:blogs
+             ) {
+            String content = StrUtils.get25Str(blog.getContent(),50);
+            blog.setContent(content);
+        }
+        return blogs;
     }
 
     @Override
     public List<Blog> findBlogInAuto(UserCollect userCollect) {
         int dId = collectMapper.selectAuto(userCollect.getUserId());
         if (dId == userCollect.getId()){
-            return blogMapper.findBlogInAuto(userCollect.getId());
+            List<Blog> blogs = blogMapper.findBlogInAuto(userCollect.getId());
+            for (Blog blog:blogs
+            ) {
+                String content = StrUtils.get25Str(blog.getContent(),50);
+                blog.setContent(content);
+            }
+            return blogs;
         }
         return  null;
+    }
+
+    @Override
+    public List<Blog> findBlogByUser(int userId) {
+        if (userMapper.findUserById(userId)==null){
+            return null;
+        }else {
+            List<Blog> blogs = blogMapper.findBlogByUser(userId);
+            for (Blog blog:blogs
+            ) {
+                String content = StrUtils.get25Str(blog.getContent(),50);
+                blog.setContent(content);
+            }
+            return blogs;
+        }
     }
 
     @Override

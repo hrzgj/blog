@@ -66,6 +66,9 @@ public class ResultCode {
     //用户收藏夹存在该博客
     public static final int BLOG_EXIT=15;
 
+    //查询成功，但没有博客内容
+    public static final int NO_BLOG = 16;
+
 
 
 

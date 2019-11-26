@@ -1,6 +1,7 @@
 package com.blog.www.service;
 
 import com.blog.www.model.Blog;
+import com.blog.www.model.User;
 import com.blog.www.model.UserCollect;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,6 +77,13 @@ public interface BlogService {
      * @return  博客列表
      */
     List<Blog> findBlogInAuto(UserCollect userCollect);
+
+    /**
+     * 通过user查找该用户的
+     * @param userId 用户id
+     * @return 博客列表
+     */
+    List<Blog> findBlogByUser(int userId);
 
 
     /**
