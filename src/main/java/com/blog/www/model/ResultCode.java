@@ -12,7 +12,6 @@ public class ResultCode {
 
 
     //处理成功的状态码
-
     public static final int SUCCESS=1;
 
     //处理未知错误的状态码
@@ -39,9 +38,6 @@ public class ResultCode {
     //用户修改密码的验证码错误
     public static final int IDENTITY_ERROR=8;
 
-    //用户邮箱未注册或不存在
-    public  static final int MAIL_UN_EXIT = 9;
-
     //用户注册发送邮件失败
     //用户注册发送邮件失败，两种情况，邮箱输入错误or该邮箱未注册
     public static final int MAIL_SEND_ERROR=9;
@@ -49,13 +45,11 @@ public class ResultCode {
     //删除服务器图片失败
     public static final int DELETE_ERROR=10;
 
-    //输入值为空
+    //传参为空，前端没有传入需要的值
     public  static final int OBJECT_NULL = 11;
-
 
     //博客删除失败
     public static final int DELETE_BLOG_FALSE=12;
-
 
     //用户无法删除不是自己的博客，权限不足
     public static final int RIGHT_ERROR=13;
@@ -66,11 +60,14 @@ public class ResultCode {
     //用户收藏夹存在该博客
     public static final int BLOG_EXIT=15;
 
+    //文件为空
+    public static final int FILE_NULL=16;
+
+    //收藏夹不是登录用户的
+    public static final int COLLECT_ERROR=17;
+
     //查询成功，但没有博客内容
-    public static final int NO_BLOG = 16;
-
-
-
+    public static final int NO_BLOG = 18;
 
 
 

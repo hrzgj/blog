@@ -1,9 +1,12 @@
 package com.blog.www.mapper;
 import com.blog.www.model.Blog;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -52,8 +55,8 @@ public interface BlogMapper {
 
     /**
      * 删除博客
-     * @param blog
-     * @return
+     * @param blog 博客id
+     * @return 删除条数
      */
     @Delete("delete from blog where id =#{id}")
     int deleteBlog(Blog blog);
@@ -102,6 +105,7 @@ public interface BlogMapper {
     Blog getBlogById(int blogId);
 
 
-
-
+    @Select("select * from blog where comment like %#{seek}% or title like %#{seek}% ")
+    @ResultMap("blog")
+    List<Blog> seekBlog(String seek);
 }

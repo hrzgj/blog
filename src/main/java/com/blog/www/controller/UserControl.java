@@ -21,7 +21,7 @@ import java.io.IOException;
 public class UserControl {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 
 

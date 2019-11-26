@@ -1,5 +1,6 @@
 package com.blog.www.utils;
 
+import com.blog.www.model.Collect;
 import com.blog.www.model.Result;
 import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
@@ -32,4 +33,14 @@ public class CheckUtils {
         }
     }
 
+    public static boolean checkCollect(Collect collect,Result result){
+        if(collect.getUserCollectId()==null||collect.getBlogId()==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参为空");
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 }

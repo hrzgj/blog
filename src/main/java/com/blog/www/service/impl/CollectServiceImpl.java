@@ -29,10 +29,20 @@ public class CollectServiceImpl implements CollectService {
     CollectMapper collectMapper;
 
     @Override
-    public int changeCollect(Collect collect,int userId) {
+    public int changeCollect(Collect collect,int oldCollectId,int userId) {
+        if(collectMapper.findCollectByUserId(userId,oldCollectId,collect.getUserCollectId())!=2){
+            return ResultCode.COLLECT_ERROR;
+        }
         //查询用户某个非默认收藏夹内是否存在这篇博客
-        if(collectMapper.findCollectExitBlogByUId(userId,collect)<=0){
+        //收藏夹id
+        int id=collectMapper.findCollectExitBlogByUId(oldCollectId,collect);
+        if(id<=0){
             return ResultCode.BLOG_NOT_EXIT;
+        }
+        collect.setId(id);
+        //查询用户要移入的收藏夹内是否存在该博客
+        if(collectMapper.findCollectExitBlog(collect)!=0){
+            return ResultCode.BLOG_EXIT;
         }
         //改变该博客的收藏夹
         if(collectMapper.changeBlogCollect(collect) > 0){
@@ -144,21 +154,27 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public int changeNorToUnNormal(Collect collect, int userId) {
+
+
         //获取用户默认收藏夹id
         int DId=collectMapper.selectAuto(userId);
         //查看默认收藏夹是否有该博客
         if(collectMapper.findNorMalCollectExitBlog(DId,collect.getBlogId())==0){
             //默认收藏夹中没有该博客
             return ResultCode.BLOG_NOT_EXIT;
-        }else{
-            //默认收藏夹中存在此博客，进行插入新的收藏夹和删除默认收藏夹中博客的操作
-            if (collectMapper.insertCollect(collect)>0 && collectMapper.deleteEditCollect(collect.getBlogId(),DId)>0){
-                return ResultCode.SUCCESS;
-            }else{
-                return ResultCode.UNSPECIFIED;
-            }
+        }else if(collectMapper.findCollectExitBlog(collect)!=0) {
+            return ResultCode.BLOG_EXIT;
         }
+        else {
+                //默认收藏夹中存在此博客，进行插入新的收藏夹和删除默认收藏夹中博客的操作
+                if (collectMapper.insertCollect(collect)>0 && collectMapper.deleteEditCollect(collect.getBlogId(),DId)>0){
+                    return ResultCode.SUCCESS;
+                }else{
+                    return ResultCode.UNSPECIFIED;
+                }
+            }
     }
-
-
 }
+
+
+

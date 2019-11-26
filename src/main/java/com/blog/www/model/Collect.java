@@ -14,16 +14,16 @@ public class Collect  implements Serializable {
     /**
      * 集合id
      */
-    private int id;
+    private Integer id;
 
     /**
      * 分组的id
      */
-    private int userCollectId;
+    private Integer userCollectId;
 
     /**
      * 在这个分组里的博客的id
      */
-    private int blogId;
+    private Integer blogId;
 
 }

@@ -14,7 +14,7 @@ public class Code  implements Serializable {
     /**
      * 编码id，与用户的id为同一个值
      */
-    private int id;
+    private Integer id;
 
     /**
      * 编码

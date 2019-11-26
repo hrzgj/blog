@@ -19,5 +19,10 @@
       "name": "web",
       "type": "java.lang.String",
       "description": "Description for web."
+    },
+    {
+      "name": "pagehelper.reasonable",
+      "type": "java.lang.String",
+      "description": "Description for pagehelper.reasonable."
     }
   ] }

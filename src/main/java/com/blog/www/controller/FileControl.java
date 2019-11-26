@@ -5,7 +5,6 @@ import com.blog.www.model.ResultCode;
 import com.blog.www.model.User;
 import com.blog.www.service.FileService;
 import com.blog.www.utils.FileUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -50,6 +49,11 @@ public class FileControl {
             result.setCode(ResultCode.USER_SESSION_ERROR);
             return result;
         }
+        if(file==null){
+            result.setMsg("文件为空");
+            result.setCode(ResultCode.FILE_NULL);
+            return result;
+        }
         if(user.getPhoto()!=null){
             String fileOldPath=path+"user/"+user.getPhoto();
             if(FileUtils.deleteFile(fileOldPath)){
@@ -61,8 +65,6 @@ public class FileControl {
         }
         String fileName=file.getOriginalFilename();
         String fileNewName=FileUtils.getFileNewName(fileName);
-
-
         try {
             FileUtils.upload(file.getBytes(), path+"user/", fileNewName);
         } catch (Exception e) {
@@ -81,7 +83,6 @@ public class FileControl {
 
     }
 
-
     /**
      * 将博客图片文件下载到服务器
      * @param file 文件
@@ -91,7 +92,11 @@ public class FileControl {
     @PostMapping("/uploadPicture")
     public Result uploadPicture(@RequestParam("photo") MultipartFile file,HttpServletRequest request){
         Result<String> result=new Result<>();
-
+        if(file==null){
+            result.setMsg("文件为空");
+            result.setCode(ResultCode.FILE_NULL);
+            return result;
+        }
         String filePath=path+"blog/";
         String fileNewName=FileUtils.getFileNewName(file.getOriginalFilename());
         try {
@@ -107,7 +112,6 @@ public class FileControl {
         result.setData(url+"/img/blog/"+fileNewName);
         return result;
     }
-
 
     /**
      * 将博客的图片文件从服务器删除
