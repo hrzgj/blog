@@ -62,6 +62,15 @@ public interface BlogMapper {
     int deleteBlog(Blog blog);
 
     /**
+     * 首页博客查询，分页查询
+     * @return 每页的博客
+     */
+    @Select("select * from blog order by time")
+    @ResultMap("blog")
+    Page<Blog> findPageBlog();
+
+
+    /**
      * 用户通过收藏夹找到该收藏夹的所有博客
      * @param collectId 该收藏夹的id
      * @return 博客列表

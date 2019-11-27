@@ -302,9 +302,9 @@ public class BlogControl {
     }
 
     /**
-     *
-     * @param userId
-     * @return
+     *通过用户id获得博客的内容
+     * @param userId 用户id
+     * @return 博客列表
      */
     @GetMapping("/getBlogByUserId")
     public Result<List<Blog>> getBlogByUserId(@RequestParam(value = "userId") Integer userId){
@@ -316,14 +316,14 @@ public class BlogControl {
             List<Blog> list = blogService.findBlogByUser(userId);
             if (list != null && !list.isEmpty()){
                 result.setCode(ResultCode.SUCCESS);
-                result.setMsg("查找该默认收藏夹的博客成功");
+                result.setMsg("查找该用户的博客成功");
                 result.setData(list);
             }else if (list.isEmpty()){
                 result.setCode(ResultCode.NO_BLOG);
                 result.setMsg("查询成功，但该用户没有写过博客");
             }else{
                 result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("查找该默认收藏夹的博客失败");
+                result.setMsg("查找该用户的博客失败");
             }
         }
         return result;

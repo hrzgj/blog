@@ -91,6 +91,7 @@ public class CollectControl {
         if(collectService.insertUserCollect(userCollect)){
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("新增收藏夹成功");
+            result.setData(userCollect);
             return result;
         }else {
             result.setCode(ResultCode.UNSPECIFIED);
