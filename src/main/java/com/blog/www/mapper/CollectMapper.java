@@ -162,7 +162,7 @@ public interface CollectMapper {
      * @param user 用户
      * @return 收藏夹的list
      */
-    @Select("select * from  d_collect where u_id=#{id} and status = 0 union all select * from u_collect where u_id=#{id}")
+    @Select("select id,u_id,name,status as intro from  d_collect where u_id=#{id} and status = 0 union all select id,u_id,name,intro from u_collect where u_id=#{id}")
     @Results(value = {
             @Result(column = "id", property = "id"),
             @Result(column = "u_id", property = "userId"),

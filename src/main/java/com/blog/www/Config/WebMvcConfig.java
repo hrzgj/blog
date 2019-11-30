@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        registry.addResourceHandler("/static/**").addResourceLocations("/root/springboot/img");
-
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }
