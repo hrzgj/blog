@@ -113,8 +113,13 @@ public interface BlogMapper {
     @Select("select * from blog where id = #{blogId}")
     Blog getBlogById(int blogId);
 
-
-    @Select("select * from blog where comment like %#{seek}% or title like %#{seek}% ")
+    /**
+     * 搜索博客，分页展示
+     * @param seek 搜索内容
+     * @return 结果集
+     */
+    @Select("select * from blog where content like concat('%',#{seek},'%') or title like concat('%',#{seek},'%') order by time ")
     @ResultMap("blog")
-    List<Blog> seekBlog(String seek);
+    Page<Blog> seekBlog(String seek);
+
 }

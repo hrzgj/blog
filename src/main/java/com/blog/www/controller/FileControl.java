@@ -40,8 +40,8 @@ public class FileControl {
      * @return  result
      */
     @PostMapping("/fileLoad")
-    public Result upload(@RequestParam("photo") MultipartFile file, HttpServletRequest request){
-        Result result=new Result();
+    public Result<String> upload(@RequestParam("photo") MultipartFile file, HttpServletRequest request){
+        Result<String> result=new Result<>();
         User user= (User) request.getSession().getAttribute("user");
         StringBuffer msg =new StringBuffer();
         if(user==null){
@@ -77,6 +77,7 @@ public class FileControl {
         msg.append("下载新头像成功，并存入数据库");
         result.setMsg(String.valueOf(msg));
         result.setCode(ResultCode.SUCCESS);
+        result.setData(fileNewName);
         user.setPhoto(fileNewName);
         request.getSession().setAttribute("user",user);
         return result;
@@ -90,7 +91,7 @@ public class FileControl {
      * @return  result
      */
     @PostMapping("/uploadPicture")
-    public Result uploadPicture(@RequestParam("photo") MultipartFile file,HttpServletRequest request){
+    public Result<String> uploadPicture(@RequestParam("photo") MultipartFile file, HttpServletRequest request){
         Result<String> result=new Result<>();
         if(file==null){
             result.setMsg("文件为空");

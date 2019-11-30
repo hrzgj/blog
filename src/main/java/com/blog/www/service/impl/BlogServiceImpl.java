@@ -167,7 +167,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<Blog> seekBlog(String seek) {
+    public Page<Blog> seekBlog(String seek) {
         return blogMapper.seekBlog(seek);
     }
 

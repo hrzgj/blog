@@ -258,7 +258,7 @@ public class BlogControl {
      * @return 博客内容
      */
     @GetMapping("/getOneBlog")
-    public Result<Blog> getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  int blogId) {
+    public Result<Blog> getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  Integer blogId) {
         Result<Blog> result = new Result<Blog>();
         if (blogId == 0) {
             result.setCode(ResultCode.OBJECT_NULL);
@@ -280,25 +280,29 @@ public class BlogControl {
 
     }
 
+    /**
+     * 搜索博客，分页查询
+     * @param seek 搜索内容
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @return 结果
+     */
     @GetMapping("/seekBlog")
-    public Result<List<Blog>> seekBlog(@RequestParam(value ="seek" ) String seek) {
-        Result<List<Blog>> result = new Result<>();
+    public Result<PageInfo<Blog>> seekBlog(@RequestParam(value ="seek" ) String seek,
+                                           @RequestParam(defaultValue = "1") Integer pageNum,
+                                           @RequestParam(defaultValue = "10") Integer pageSize) {
+        Result<PageInfo<Blog>> result = new Result<>();
+        PageHelper.startPage(pageNum,pageSize);
         if (seek == null) {
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("传参错误");
             return result;
         }
-        List<Blog> list = blogService.seekBlog(seek);
-        if (list != null) {
-            result.setData(list);
-            result.setMsg("查询成功");
-            result.setCode(ResultCode.SUCCESS);
-            return result;
-        } else {
-            result.setCode(ResultCode.BLOG_NOT_EXIT);
-            result.setMsg("查询失败，没有对应内容");
-            return result;
-        }
+        PageInfo<Blog> pageInfo=new PageInfo<>(blogService.seekBlog(seek));
+        result.setData(pageInfo);
+        result.setMsg("查询成功");
+        result.setCode(ResultCode.SUCCESS);
+        return result;
     }
 
     /**

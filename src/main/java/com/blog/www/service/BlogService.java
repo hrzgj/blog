@@ -102,6 +102,11 @@ public interface BlogService {
      */
     Page<Blog> findPageBlog();
 
-    List<Blog> seekBlog(String seek);
+    /**
+     * 搜索博客，分页展示
+     * @param seek 搜索内容
+     * @return 结果集
+     */
+    Page<Blog> seekBlog(String seek);
 
 }
