@@ -37,6 +37,8 @@ spring:
         max-idle: 8
         min-idle: 0
 
+#  resources:
+#    static-locations: classpath:/
 
 
 
@@ -47,9 +49,9 @@ web:
 server:
   port: 8080
 
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:
