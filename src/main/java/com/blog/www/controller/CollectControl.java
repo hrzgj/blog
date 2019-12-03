@@ -312,7 +312,7 @@ public class CollectControl {
             return result;
         }
         //判断session是否过期和用户权限是否正确
-        if(CheckUtils.userSessionTimeOut(request,result)|| CheckUtils.userRightIsTrue(user.getId(),userCollect.getUserId(),result)){
+        if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
         }
         if(collectService.updateCollectNameAndIntro(userCollect)){

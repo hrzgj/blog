@@ -16,14 +16,12 @@ import java.util.List;
  */
 public interface BlogService {
 
-
-
     /**
      * 删除博客，同时删除所以用户收藏夹里的博客，和该博客的评论
      * @param blog 博客
      * @return 成功与否
      */
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     boolean deleteBlog(Blog blog);
 
     /**
@@ -57,14 +55,12 @@ public interface BlogService {
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     boolean addBlogInEdit(Blog blog);
 
-
     /**
      * 找到草稿箱中的你博客id
      * @param blog 博客
      * @return 数据条数
      */
     int selectBlogInEdit(Blog blog);
-
 
     /**
      * 通过分组id找到全部的博客
