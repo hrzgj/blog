@@ -141,6 +141,7 @@ public class CollectControl {
         }
         List<UserCollect> list=collectService.findUserCollect(user);
         if(list!=null){
+            list.get(0).setIntro("");
             result.setData(list);
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("查询成功");
