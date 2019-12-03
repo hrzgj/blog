@@ -31,8 +31,6 @@ public interface CollectMapper {
     @Delete("delete from collect where b_id =#{id}")
     int deleteColAllBlogByBlogId(Blog blog);
 
-
-
     /**
      * 删除所有用户默认收藏夹的某条博客
      * @param blog 博客
@@ -257,6 +255,7 @@ public interface CollectMapper {
      * @param userCollect 收藏夹
      * @return 更新条数
      */
-    @Update("update d_collect set name=#{name} where u_id=#{userId} and status=0 ")
+    @Update("update d_collect set name=#{name} where id=#{id} and status=0 ")
     int updateNormalCollectName(UserCollect userCollect);
+
 }
