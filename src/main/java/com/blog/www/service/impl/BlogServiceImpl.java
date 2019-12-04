@@ -107,8 +107,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> findBlogInCollect(int collectId) {
         List<Blog> blogs = blogMapper.findBlogInCollect(collectId);
-        for (Blog blog:blogs
-             ) {
+        for (Blog blog:blogs) {
             String content = StrUtils.getStr(blog.getContent(),50);
             blog.setContent(content);
         }
@@ -121,7 +120,6 @@ public class BlogServiceImpl implements BlogService {
         if (DId != 0){
             List<Blog> blogs = blogMapper.findBlogInAuto(DId);
             for (Blog blog:blogs) {
-                blog.setAuthor(null);
                 String content = StrUtils.getStr(blog.getContent(),50);
                 blog.setContent(content);
             }
@@ -136,7 +134,6 @@ public class BlogServiceImpl implements BlogService {
         if ( userId != 0){
             List<Blog> blogs = blogMapper.findBlogInEdit(userId);
             for (Blog blog:blogs) {
-                blog.setAuthor(null);
                 String content = StrUtils.getStr(blog.getContent(),50);
                 blog.setContent(content);
             }
@@ -158,7 +155,6 @@ public class BlogServiceImpl implements BlogService {
         }else {
             List<Blog> blogs = blogMapper.findBlogByUser(userId);
             for (Blog blog:blogs) {
-                blog.setAuthor(null);
                 String content = StrUtils.getStr(blog.getContent(),50);
                 blog.setContent(content);
             }
