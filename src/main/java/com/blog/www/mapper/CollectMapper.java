@@ -137,7 +137,7 @@ public interface CollectMapper {
 
     /**
      * 查询是否此博客已存入默认收藏夹
-     * @param blogId
+     * @param blogId 博客id
      * @return 数据条数
      */
     @Select("select count(*) from db_collect where b_id = #{blogId} ")
@@ -151,9 +151,6 @@ public interface CollectMapper {
      */
     @Delete("delete from db_collect where b_id = #{blogId} and d_id = #{dId}")
     int deleteEditCollect(int blogId,int dId);
-
-
-
 
     /**
      * 登录用户查看自己收藏夹

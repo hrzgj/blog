@@ -162,7 +162,9 @@ public class CollectServiceImpl implements CollectService {
         if(collectMapper.findNorMalCollectExitBlog(DId,collect.getBlogId())==0){
             //默认收藏夹中没有该博客
             return ResultCode.BLOG_NOT_EXIT;
-        }else if(collectMapper.findCollectExitBlog(collect)!=0) {
+        }
+        //非默认收藏夹已有该博客
+        else if(collectMapper.findCollectExitBlog(collect)!=0) {
             return ResultCode.BLOG_EXIT;
         }
         else {

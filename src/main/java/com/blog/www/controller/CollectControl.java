@@ -25,6 +25,12 @@ public class CollectControl {
     CollectService collectService;
 
     /**
+     * @author chenyu
+     * @date 2019/12/4 19:11
+     * @param  l
+     * @return
+     */
+    /**
      * 用户修改一篇博客的收藏夹,从非默认移到非默认的收藏夹
      * @param userCollectId 新收藏夹id
      * @param blogId 博客id
@@ -366,6 +372,11 @@ public class CollectControl {
     public Result changeNorToUnNormal(@RequestBody Collect collect ,HttpServletRequest request){
         Result result = new Result();
         User user= (User) request.getSession().getAttribute("user");
+        if(collect.getBlogId()==null||collect.getUserCollectId()==null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传参错误");
+            return result;
+        }
         if(CheckUtils.userSessionTimeOut(request,result)||CheckUtils.checkCollect(collect,result)){
             return result;
         }
