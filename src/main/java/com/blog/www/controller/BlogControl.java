@@ -88,7 +88,7 @@ public class BlogControl {
     }
 
     /**
-     * 编辑博客，即没保存，将其存入草稿箱中
+     * 编辑博客，即没发表，将其存入草稿箱中
      * @param blog 博客
      * @return 结果
      */
@@ -100,6 +100,7 @@ public class BlogControl {
             return result;
         }
         User user = (User) request.getSession().getAttribute("user");
+        user.setPassword(null);
         blog.setAuthor(user);
         if (blog == null) {
             result.setCode(ResultCode.OBJECT_NULL);
@@ -111,7 +112,7 @@ public class BlogControl {
                 result.setData(blog);
             } else {
                 result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("编辑博客失败，为存入草稿箱");
+                result.setMsg("编辑博客失败，未存入草稿箱");
             }
         }
         return result;
@@ -177,15 +178,17 @@ public class BlogControl {
             return result;
         }
         User user = (User) request.getSession().getAttribute("user");
+        user.setPassword(null);
         blog.setAuthor(user);
+        //查询草稿箱中是否有这个博客
         if (blogService.selectBlogInEdit(blog)>0){
             if (blogService.addBlogInEdit(blog)){
                 result.setCode(ResultCode.SUCCESS);
-                result.setMsg("保存草稿成功");
+                result.setMsg("发表此草稿成功，此草稿已删除");
                 result.setData(blog);
             }else{
                 result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("保存草稿失败");
+                result.setMsg("发表草稿失败");
             }
         }else{
             result.setCode(ResultCode.OBJECT_NULL);
@@ -226,17 +229,17 @@ public class BlogControl {
 
     /**
      *通过收藏夹查找默认收藏夹里的博客
-     * @param userCollect 收藏夹
+     * @param request 请求，用于得到登录的该用户信息
      * @return 博客列表
      */
-    @PostMapping("/getBlogInAuto")
-    public  Result<List<Blog>> getBlogInAuto(@RequestBody UserCollect userCollect){
+    @GetMapping("/getBlogInAuto")
+    public  Result<List<Blog>> getBlogInAuto(HttpServletRequest request){
         Result<List<Blog>> result = new Result<>();
-        if (userCollect == null){
-            result.setCode(ResultCode.OBJECT_NULL);
-            result.setMsg("对象信息为空");
+        if (CheckUtils.userSessionTimeOut(request,result)){
+            return  result;
         }else{
-            List<Blog> list = blogService.findBlogInAuto(userCollect);
+            User user = (User) request.getSession().getAttribute("user");
+            List<Blog> list = blogService.findBlogInAuto(user.getId());
             if (list != null && !list.isEmpty()){
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("查找该默认收藏夹的博客成功");
@@ -250,6 +253,60 @@ public class BlogControl {
             }
         }
         return result;
+    }
+
+    /**
+     *查找草稿箱里的博客
+     * @param request 请求，用于得到登录的该用户信息
+     * @return 博客列表
+     */
+    @GetMapping("/getBlogInEdit")
+    public  Result<List<Blog>> getBlogInEdit(HttpServletRequest request){
+        Result<List<Blog>> result = new Result<>();
+        if (CheckUtils.userSessionTimeOut(request,result)){
+            return  result;
+        }else{
+            User user = (User) request.getSession().getAttribute("user");
+            List<Blog> list = blogService.findBlogInEdit(user.getId());
+            if (list != null && !list.isEmpty()){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("查找草稿箱的博客成功");
+                result.setData(list);
+            }else if (list.isEmpty()){
+                result.setCode(ResultCode.NO_BLOG);
+                result.setMsg("查询成功，但该用户草稿箱没有博客");
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("查找草稿箱的博客失败");
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 用户删除草稿箱中的博客
+     * @param blog 博客
+     * @param request 获取登录用户信息
+     * @return  结果
+     */
+    @PostMapping("/deleteEditBlog")
+    public Result deleteEditBlog(@RequestBody Blog blog,HttpServletRequest request){
+        Result result=new Result();
+        //判断session
+        if(CheckUtils.userSessionTimeOut(request,result)){
+            return result;
+        }
+        User user= (User) request.getSession().getAttribute("user");
+        blog.setAuthor(user);
+        if(blogService.deleteEditBlog(blog)){
+            result.setCode(ResultCode.SUCCESS);
+            result.setMsg("删除草稿成功");
+            return result;
+        }else {
+            result.setCode(ResultCode.UNSPECIFIED);
+            result.setMsg("删除失败,可能该草稿不存在");
+            return result;
+        }
     }
 
     /**
