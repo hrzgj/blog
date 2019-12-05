@@ -54,8 +54,6 @@ public class BlogServiceImpl implements BlogService {
         if (blog != null){
             blog.setDate(DateUtils.getDateToSecond());
 
-            //找到用户的草稿箱的id
-            int id  = collectMapper.selectPaper(blog.getAuthor().getId());
             //如果传入博客id为空，说明这篇博客之前未存过
             if (blog.getId()==null){
                 //新增博客到草稿箱，存入内容
@@ -168,6 +166,15 @@ public class BlogServiceImpl implements BlogService {
             return null;
         }else{
             return  blogMapper.getBlogById(blogId);
+        }
+    }
+
+    @Override
+    public Blog getEditBlogById(int blogId) {
+        if (blogId == 0){
+            return null;
+        }else{
+            return  blogMapper.getEditBlogById(blogId);
         }
     }
 

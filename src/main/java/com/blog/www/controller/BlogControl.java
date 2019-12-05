@@ -18,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
+@RequestMapping("/api")
 public class BlogControl {
 
     @Autowired
@@ -317,7 +318,7 @@ public class BlogControl {
     @GetMapping("/getOneBlog")
     public Result<Blog> getOneBlog(@RequestParam(value="id",required = false,defaultValue = "0")  Integer blogId) {
         Result<Blog> result = new Result<Blog>();
-        if (blogId == 0) {
+        if (blogId == null) {
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("传输对象为空");
             return result;
@@ -335,6 +336,32 @@ public class BlogControl {
         return result;
 
 
+    }
+
+    /**
+     * 获得单篇草稿内容
+     * @param blogId 草稿id
+     * @return 草稿内容
+     */
+    @GetMapping("/getEditBlog")
+    public Result<Blog> getEditBlog(@RequestParam("id") Integer blogId){
+        Result<Blog> result = new Result<Blog>();
+        if (blogId == null){
+            result.setCode(ResultCode.OBJECT_NULL);
+            result.setMsg("传输对象为空");
+            return result;
+        }else{
+            Blog blog = blogService.getEditBlogById(blogId);
+            if (blog !=null){
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("获得草稿内容成功");
+                result.setData(blog);
+            }else{
+                result.setCode(ResultCode.UNSPECIFIED);
+                result.setMsg("获得草稿内容失败");
+            }
+        }
+        return result;
     }
 
     /**

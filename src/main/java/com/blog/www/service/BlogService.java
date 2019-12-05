@@ -106,6 +106,14 @@ public interface BlogService {
      */
     Blog getBlogById(int blogId);
 
+    /**
+     * 通过草稿id获取草稿内容
+     * @param blogId 草稿id
+     * @return 草稿内容
+     */
+    Blog getEditBlogById(int blogId);
+
+
 
     /**
      * 首页博客查询，分页查询

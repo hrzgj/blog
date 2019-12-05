@@ -129,7 +129,7 @@ public interface BlogMapper {
      * @param userId 该用户的id
      * @return 博客列表
      */
-    @Select("select * from e_blog where u_id = #{userId}")
+    @Select("select * from e_blog where u_id = #{userId} order by id desc")
     @ResultMap("blog")
     List<Blog> findBlogInEdit(int userId);
 
@@ -151,6 +151,15 @@ public interface BlogMapper {
     @ResultMap("blog")
     @Select("select * from blog where id = #{blogId}")
     Blog getBlogById(int blogId);
+
+    /**
+     * 通过草稿id查询草稿的内容
+     * @param blogId 草稿id
+     * @return 查询结果
+     */
+    @ResultMap("blog")
+    @Select("select * from e_blog where id = #{blogId}")
+    Blog getEditBlogById(int blogId);
 
     /**
      * 搜索博客，分页展示
