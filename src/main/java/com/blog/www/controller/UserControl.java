@@ -7,6 +7,7 @@ import com.blog.www.model.User;
 import com.blog.www.service.UserService;
 import com.blog.www.utils.CheckUtils;
 import com.blog.www.utils.MD5Utils;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @author cy
  */
 @RestController
+@RequestMapping("/api")
 public class UserControl {
 
     @Autowired

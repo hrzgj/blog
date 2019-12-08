@@ -48,7 +48,7 @@ public interface BlogService {
     boolean updateBlog(Blog blog);
 
     /**
-     * 从草稿箱中保存博客,先更新博客内容，再删除草稿箱中的博客
+     * 从草稿箱中保存博客,先删除草稿箱博客内容，再插入新的博客到博客表中
      * @param blog 博客
      * @return 成功与否
      */
@@ -56,7 +56,7 @@ public interface BlogService {
     boolean addBlogInEdit(Blog blog);
 
     /**
-     * 找到草稿箱中的你博客id
+     * 查询草稿箱中的博客的数量
      * @param blog 博客
      * @return 数据条数
      */
@@ -71,10 +71,25 @@ public interface BlogService {
 
     /**
      * 通过用户id找到默认收藏夹全部的博客
-     * @param userCollect 该收藏夹
+     * @param userId 用户id
      * @return  博客列表
      */
-    List<Blog> findBlogInAuto(UserCollect userCollect);
+    List<Blog> findBlogInAuto(int userId);
+
+    /**
+     * 通过用户id找到草稿箱全部的博客
+     * @param userId 用户id
+     * @return  博客列表
+     */
+    List<Blog> findBlogInEdit(int userId);
+
+    /**
+     * 删除草稿箱博客，同时删除所以用户收藏夹里的博客，和该博客的评论
+     * @param blog 博客
+     * @return 成功与否
+     */
+    @Transactional
+    boolean deleteEditBlog(Blog blog);
 
     /**
      * 通过user查找该用户的
@@ -90,6 +105,14 @@ public interface BlogService {
      * @return 博客内容
      */
     Blog getBlogById(int blogId);
+
+    /**
+     * 通过草稿id获取草稿内容
+     * @param blogId 草稿id
+     * @return 草稿内容
+     */
+    Blog getEditBlogById(int blogId);
+
 
 
     /**

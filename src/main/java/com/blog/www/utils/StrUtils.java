@@ -12,7 +12,7 @@ public class StrUtils {
      * @param length 长度
      * @return 字符串
      */
-    public static String get25Str(String string,int length){
+    public static String getStr(String string,int length){
         if (string.length() < length){
             //如果长度短于length，则返回原字符串
             return string;

@@ -34,7 +34,29 @@ public interface BlogMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id" )
     int insertBlog(Blog blog);
 
+    /**
+     * 新增草稿箱博客
+     * @param blog 博客
+     * @return 成功处理的数据数
+     */
+    @Insert("insert into e_blog(u_id,content,time,title) values(#{author.id},#{content},#{date},#{title})")
+    @Results(value = {
+            @Result(property = "id", column = "id"),
+            @Result(property = "author", column = "u_id", one =@One(select = "com.blog.www.mapper.UserMapper.findUserById")),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "date", column = "time")
+    })
+    @Options(useGeneratedKeys = true,keyProperty = "id" )
+    int insertEditBlog(Blog blog);
 
+    /**
+     * 删除草稿箱中的博客
+     * @param blogId 博客id
+     * @return 数据数
+     */
+    @Delete("delete from e_blog where id = #{blogId}")
+    int deleteEditBlog(int blogId);
 
     /**
      * 修改博客内容
@@ -45,12 +67,20 @@ public interface BlogMapper {
     int updateBlog(Blog blog);
 
     /**
-     * 从关联表中找到草稿箱中的博客的id
-     * @param dId 草稿箱的id
+     * 修改草稿箱博客内容
+     * @param blog  博客
+     * @return 修改数据条数
+     */
+    @Update("update e_blog set title=#{title},content=#{content},time=#{date} where id=#{id}")
+    int updateEditBlog(Blog blog);
+
+    /**
+     * 从草稿箱中找到博客的数量
+     * @param id 博客id
      * @return 博客id
      */
-    @Select("select b_id from db_collect where d_id = #{dId}")
-    int selectBlogId(int dId);
+    @Select("select count(*) from e_blog where id = #{id}")
+    int selectBlogCount(int id);
 
 
     /**
@@ -95,6 +125,15 @@ public interface BlogMapper {
     List<Blog> findBlogInAuto(int collectId);
 
     /**
+     * 用户通过用户id找到草稿箱的所有博客
+     * @param userId 该用户的id
+     * @return 博客列表
+     */
+    @Select("select * from e_blog where u_id = #{userId} order by id desc")
+    @ResultMap("blog")
+    List<Blog> findBlogInEdit(int userId);
+
+    /**
      * 用户通过用户找到该用户写的所有博客
      * @param userId 该收藏夹的id
      * @return 博客列表
@@ -112,6 +151,15 @@ public interface BlogMapper {
     @ResultMap("blog")
     @Select("select * from blog where id = #{blogId}")
     Blog getBlogById(int blogId);
+
+    /**
+     * 通过草稿id查询草稿的内容
+     * @param blogId 草稿id
+     * @return 查询结果
+     */
+    @ResultMap("blog")
+    @Select("select * from e_blog where id = #{blogId}")
+    Blog getEditBlogById(int blogId);
 
     /**
      * 搜索博客，分页展示

@@ -44,7 +44,7 @@ public interface CollectMapper {
      * @param id id
      * @return  增加的数字
      */
-    @Insert("insert into d_collect (u_id,name,status) value (#{id},'默认收藏夹',0),(#{id},'草稿箱',1)")
+    @Insert("insert into d_collect (u_id,name,status) value (#{id},'默认收藏夹',0)")
     int insertDCollect(int id);
 
     /**

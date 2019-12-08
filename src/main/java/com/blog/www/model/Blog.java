@@ -15,7 +15,7 @@ public class Blog implements Serializable {
     /**
      * 博客id
      */
-    private int id;
+    private Integer id;
 
     /**
      * 作者

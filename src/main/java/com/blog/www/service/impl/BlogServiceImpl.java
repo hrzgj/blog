@@ -54,24 +54,13 @@ public class BlogServiceImpl implements BlogService {
         if (blog != null){
             blog.setDate(DateUtils.getDateToSecond());
 
-            //找到用户的草稿箱的id
-            int id  = collectMapper.selectPaper(blog.getAuthor().getId());
-            //如果草稿箱中没有数据，则插入新的博客内容
-            if (collectMapper.selectPaperCount(id)==0){
-                //新增博客到草稿箱，先存入内容，加入关联表信息
-                if (blogMapper.insertBlog(blog)>0){
-                    //当插入条数不为0时为成功
-                    Collect collect = new Collect();
-                    collect.setBlogId(blog.getId());
-                    //通过用户的id得到该用户的草稿箱id
-                    collect.setUserCollectId(id);
-                    return collectMapper.insertCollectToAuto(collect)!=0;
-                }
+            //如果传入博客id为空，说明这篇博客之前未存过
+            if (blog.getId()==null){
+                //新增博客到草稿箱，存入内容
+                return blogMapper.insertEditBlog(blog)>0;
             }else{
-                //草稿箱中有数据，则进行修改操作
-                //从关联表中找到草稿箱中的id
-                blog.setId(blogMapper.selectBlogId(id));
-               return blogMapper.updateBlog(blog)!=0;
+                //有数据，则进行修改操作
+               return blogMapper.updateEditBlog(blog)!=0;
             }
         }
         return false;
@@ -86,8 +75,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public boolean addBlogInEdit(Blog blog) {
-        if (blogMapper.updateBlog(blog)>0){
-            return  collectMapper.deleteEditCollect(blog.getId(),collectMapper.selectPaper(blog.getAuthor().getId()))!=0;
+        //删除草稿箱中博客
+        if (blogMapper.deleteEditBlog(blog.getId()) > 0 ){
+            blog.setId(null);
+            blog.setDate(DateUtils.getDateToSecond());
+            return  blogMapper.insertBlog(blog)>0;
         }
         return false;
     }
@@ -107,28 +99,26 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int selectBlogInEdit(Blog blog) {
-        return blogMapper.selectBlogId(collectMapper.selectPaper(blog.getAuthor().getId()));
+        return blogMapper.selectBlogCount(blog.getId());
     }
 
     @Override
     public List<Blog> findBlogInCollect(int collectId) {
         List<Blog> blogs = blogMapper.findBlogInCollect(collectId);
-        for (Blog blog:blogs
-             ) {
-            String content = StrUtils.get25Str(blog.getContent(),50);
+        for (Blog blog:blogs) {
+            String content = StrUtils.getStr(blog.getContent(),50);
             blog.setContent(content);
         }
         return blogs;
     }
 
     @Override
-    public List<Blog> findBlogInAuto(UserCollect userCollect) {
-        int dId = collectMapper.selectAuto(userCollect.getUserId());
-        if (dId == userCollect.getId()){
-            List<Blog> blogs = blogMapper.findBlogInAuto(userCollect.getId());
-            for (Blog blog:blogs
-            ) {
-                String content = StrUtils.get25Str(blog.getContent(),50);
+    public List<Blog> findBlogInAuto(int userId) {
+        int DId = collectMapper.selectAuto(userId);
+        if (DId != 0){
+            List<Blog> blogs = blogMapper.findBlogInAuto(DId);
+            for (Blog blog:blogs) {
+                String content = StrUtils.getStr(blog.getContent(),50);
                 blog.setContent(content);
             }
             return blogs;
@@ -137,14 +127,33 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> findBlogInEdit(int userId) {
+
+        if ( userId != 0){
+            List<Blog> blogs = blogMapper.findBlogInEdit(userId);
+            for (Blog blog:blogs) {
+                String content = StrUtils.getStr(blog.getContent(),50);
+                blog.setContent(content);
+            }
+            return blogs;
+        }
+        return  null;
+    }
+
+    @Override
+    public boolean deleteEditBlog(Blog blog) {
+        //删除博客
+        return blogMapper.deleteEditBlog(blog.getId()) != 0;
+    }
+
+    @Override
     public List<Blog> findBlogByUser(int userId) {
         if (userMapper.findUserById(userId)==null){
             return null;
         }else {
             List<Blog> blogs = blogMapper.findBlogByUser(userId);
-            for (Blog blog:blogs
-            ) {
-                String content = StrUtils.get25Str(blog.getContent(),50);
+            for (Blog blog:blogs) {
+                String content = StrUtils.getStr(blog.getContent(),50);
                 blog.setContent(content);
             }
             return blogs;
@@ -157,6 +166,15 @@ public class BlogServiceImpl implements BlogService {
             return null;
         }else{
             return  blogMapper.getBlogById(blogId);
+        }
+    }
+
+    @Override
+    public Blog getEditBlogById(int blogId) {
+        if (blogId == 0){
+            return null;
+        }else{
+            return  blogMapper.getEditBlogById(blogId);
         }
     }
 
