@@ -80,8 +80,8 @@ public class CollectControl {
      * @return  结果
      */
     @PostMapping("/addCollect")
-    public Result addUserCollect(@RequestBody UserCollect userCollect, HttpServletRequest request){
-        Result result=new Result();
+    public Result<UserCollect> addUserCollect(@RequestBody UserCollect userCollect, HttpServletRequest request){
+        Result<UserCollect> result=new Result<>();
         if(userCollect.getName()==null||userCollect.getUserId()==null){
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("传参为空");
@@ -111,8 +111,8 @@ public class CollectControl {
      * @return 结果
      */
     @PostMapping("/addBlogToAuto")
-    public  Result addBlogToAuto(@RequestBody Collect collect){
-        Result result = new Result();
+    public Result<Collect> addBlogToAuto(@RequestBody Collect collect){
+        Result<Collect> result = new Result<Collect>();
         if (collect == null){
             result.setCode(ResultCode.OBJECT_NULL);
             result.setMsg("用户对象为空");

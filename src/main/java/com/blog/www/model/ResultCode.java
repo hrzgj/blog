@@ -69,6 +69,9 @@ public class ResultCode {
     //查询成功，但没有博客内容
     public static final int NO_BLOG = 18;
 
+    //用户未点击邮箱进行注册
+    public static final int NO_REGISTER=19;
+
 
 
 

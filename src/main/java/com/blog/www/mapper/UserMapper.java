@@ -41,7 +41,7 @@ public interface UserMapper {
             @Result(property="mail",column="mail"),
             @Result(property="status",column="status")
     })
-    @Select("select * from user where account=#{account} and password=#{password} and status=1")
+    @Select("select * from user where account=#{account} and password=#{password}")
     User findByAccountAndPassword(User user);
 
     /**

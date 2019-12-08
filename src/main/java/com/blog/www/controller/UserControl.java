@@ -61,12 +61,19 @@ public class UserControl {
         Result<User> result=new Result<>();
         user=userService.findByAccountAndPassword(user);
         if(user!=null) {
-            result.setCode(ResultCode.SUCCESS);
-            result.setMsg("登录成功");
-            result.setData(user);
-            request.getSession().setAttribute("user", user);
-            request.getSession().setMaxInactiveInterval(604800);
-            return result;
+            if(user.getStatus()==1) {
+                result.setCode(ResultCode.SUCCESS);
+                result.setMsg("登录成功");
+                result.setData(user);
+                request.getSession().setAttribute("user", user);
+                request.getSession().setMaxInactiveInterval(604800);
+                return result;
+            }
+            else {
+                result.setCode(ResultCode.NO_REGISTER);
+                result.setMsg("用户未点击邮箱进行注册");
+                return result;
+            }
         }else {
             result.setCode(ResultCode.PASSWORD_ERROR);
             result.setMsg("账户密码错误");

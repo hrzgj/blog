@@ -95,7 +95,7 @@ public interface BlogMapper {
      * 首页博客查询，分页查询
      * @return 每页的博客
      */
-    @Select("select * from blog order by time")
+    @Select("select * from blog order by time desc")
     @ResultMap("blog")
     Page<Blog> findPageBlog();
 

@@ -24,12 +24,12 @@ public class Comment  implements Serializable {
     /**
      * 评论的用户的id
      */
-    private User user;
+    private Integer user;
 
     /**
      * 评论的这篇博客的id
      */
-    private Blog blog;
+    private Integer blog;
 
     /**
      * 评论的时间
