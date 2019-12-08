@@ -24,12 +24,7 @@ public class CollectControl {
     @Autowired
     CollectService collectService;
 
-    /**
-     * @author chenyu
-     * @date 2019/12/4 19:11
-     * @param  l
-     * @return
-     */
+
     /**
      * 用户修改一篇博客的收藏夹,从非默认移到非默认的收藏夹
      * @param userCollectId 新收藏夹id
