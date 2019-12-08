@@ -99,9 +99,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean findCodeInForget(User user,String code) {
-        int id = userMapper.findCode(code);
-        if (id==user.getId()){
-            return true;
+        if (userMapper.findCode(code)!=null){
+            int id = userMapper.findCode(code);
+            if (id==user.getId()){
+                return true;
+            }
         }
         return false;
     }
