@@ -72,8 +72,8 @@ public class ResultCode {
     //用户未点击邮箱进行注册
     public static final int NO_REGISTER=19;
 
-
-
+    //评论不存在
+    public static final int COMMENT_NO_EXIT=20;
 
 
 

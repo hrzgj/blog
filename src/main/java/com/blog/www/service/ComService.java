@@ -1,6 +1,7 @@
 package com.blog.www.service;
 
 import com.blog.www.model.Comment;
+import com.blog.www.model.Reply;
 
 /**
  * @author: chenyu
@@ -14,5 +15,7 @@ public interface ComService {
      *@param comment 内容
      *@return 是否成功
      **/
-    boolean addComment(Comment comment);
+    int addComment(Comment comment);
+
+    int replyComment(Reply reply);
 }

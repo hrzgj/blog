@@ -153,6 +153,16 @@ public interface BlogMapper {
     Blog getBlogById(int blogId);
 
     /**
+     * 通过博客id查询博客是否存在
+     *@author chenyu
+     *@date 20:29 2019/12/9
+     *@param blogId 博客id
+     *@return  博客是否存在
+     **/
+    @Select("select count(1) from blog where id = #{blogId}")
+    int findBlogById(int blogId);
+
+    /**
      * 通过草稿id查询草稿的内容
      * @param blogId 草稿id
      * @return 查询结果

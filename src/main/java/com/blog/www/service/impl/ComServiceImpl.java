@@ -1,7 +1,10 @@
 package com.blog.www.service.impl;
 
+import com.blog.www.mapper.BlogMapper;
 import com.blog.www.mapper.ComMapper;
 import com.blog.www.model.Comment;
+import com.blog.www.model.Reply;
+import com.blog.www.model.ResultCode;
 import com.blog.www.service.ComService;
 import com.blog.www.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,37 @@ public class ComServiceImpl implements ComService {
     @Autowired
     private ComMapper commMapper;
 
+    @Autowired
+    private BlogMapper blogMapper;
+
     @Override
-    public boolean addComment(Comment comment) {
+    public int addComment(Comment comment) {
         comment.setTime(DateUtils.getDateToSecond());
-        return commMapper.insertComment(comment)>0;
+        if(blogMapper.findBlogById(comment.getBlog())<=0){
+            return ResultCode.BLOG_NOT_EXIT;
+        }
+        if(commMapper.insertComment(comment)>0){
+            return ResultCode.SUCCESS;
+        }
+        else {
+            return ResultCode.UNSPECIFIED;
+        }
+    }
+
+    @Override
+    public int replyComment(Reply reply) {
+        reply.setTime(DateUtils.getDateToSecond());
+        if(blogMapper.findBlogById(reply.getBlogId())<=0){
+            return ResultCode.BLOG_NOT_EXIT;
+        }
+        if(commMapper.findCommentById(reply.getCommentId())<=0){
+            return ResultCode.COMMENT_NO_EXIT;
+        }
+        if(commMapper.insertReply(reply)>0){
+            return ResultCode.SUCCESS;
+        }
+        else {
+            return ResultCode.UNSPECIFIED;
+        }
     }
 }
