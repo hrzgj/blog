@@ -22,9 +22,9 @@ public class Comment  implements Serializable {
     private String content;
 
     /**
-     * 评论的用户的id
+     * 评论的用户
      */
-    private Integer user;
+    private User commenter;
 
     /**
      * 评论的这篇博客的id

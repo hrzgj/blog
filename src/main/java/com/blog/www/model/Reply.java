@@ -22,17 +22,12 @@ public class Reply {
     /**
      * 回复用户的id
      */
-    private Integer replyId;
+    private User reply;
 
     /**
      * 被回复用户的id
      */
-    private Integer beReplyId;
-
-    /**
-     * 评论的这篇博客的id
-     */
-    private Integer blogId;
+    private User beReply;
 
     /**
      * 回复的时间

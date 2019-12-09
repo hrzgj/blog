@@ -52,6 +52,9 @@ public interface UserMapper {
     @Select("select id,account,name,photo from user where id = #{id}")
     User findUserById(int id);
 
+    @Select("select count(1) from user where id=#{id}")
+    int findUserExitById(int id);
+
 //    /**
 //     *通过id查询用户
 //     * @param user user

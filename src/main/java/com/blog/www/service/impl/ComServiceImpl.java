@@ -2,6 +2,7 @@ package com.blog.www.service.impl;
 
 import com.blog.www.mapper.BlogMapper;
 import com.blog.www.mapper.ComMapper;
+import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.Comment;
 import com.blog.www.model.Reply;
 import com.blog.www.model.ResultCode;
@@ -23,6 +24,9 @@ public class ComServiceImpl implements ComService {
     @Autowired
     private BlogMapper blogMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public int addComment(Comment comment) {
         comment.setTime(DateUtils.getDateToSecond());
@@ -40,17 +44,36 @@ public class ComServiceImpl implements ComService {
     @Override
     public int replyComment(Reply reply) {
         reply.setTime(DateUtils.getDateToSecond());
-        if(blogMapper.findBlogById(reply.getBlogId())<=0){
-            return ResultCode.BLOG_NOT_EXIT;
-        }
+        //查看评论是否存在
         if(commMapper.findCommentById(reply.getCommentId())<=0){
             return ResultCode.COMMENT_NO_EXIT;
         }
+        //查看用户是否存在
+        if(userMapper.findUserExitById(reply.getBeReply().getId())==0){
+            return ResultCode.USER_NO_EXIT;
+        }
+        //新增回复
         if(commMapper.insertReply(reply)>0){
             return ResultCode.SUCCESS;
         }
         else {
             return ResultCode.UNSPECIFIED;
         }
+    }
+
+    @Override
+    public int deleteComment(Comment comment) {
+        commMapper.deleteRelyByCommentId(comment.getId());
+        if(commMapper.deleteComment(comment.getId())>0){
+            return ResultCode.SUCCESS;
+        }
+        else {
+            return ResultCode.UNSPECIFIED;
+        }
+    }
+
+    @Override
+    public boolean deleteReply(Reply reply) {
+        return commMapper.deleteRelyById(reply.getId())>0;
     }
 }
