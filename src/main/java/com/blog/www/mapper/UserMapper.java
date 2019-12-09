@@ -98,7 +98,7 @@ public interface UserMapper {
      * @return 数据条数
      */
     @Select("select id from u_code where code=#{code}")
-    int findCode(@Param("code") String code);
+    Integer findCode(@Param("code") String code);
 
     /**
      * 更新用户注册状态
