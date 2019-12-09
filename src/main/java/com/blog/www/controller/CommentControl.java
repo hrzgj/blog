@@ -41,7 +41,7 @@ public class CommentControl {
             return result;
         }
         User user= (User) request.getSession().getAttribute("user");
-        comment.setUser(user.getId());
+//        comment.setUser(user.getId());
         int flag =comService.addComment(comment);
         if(flag==ResultCode.SUCCESS){
             result.setCode(ResultCode.SUCCESS);
@@ -68,7 +68,7 @@ public class CommentControl {
         if(CheckUtils.userSessionTimeOut(request,result)){
             return result;
         }
-        if(reply.getBeReplyId()==null||reply.getContent()==null||reply.getBlogId()==null||reply.getCommentId()==null){
+        if(reply.getBeReply()==null||reply.getContent()==null||reply.getBlogId()==null||reply.getCommentId()==null){
             result.setMsg("传参为空");
             result.setCode(ResultCode.OBJECT_NULL);
             return result;

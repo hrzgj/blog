@@ -10,6 +10,9 @@ import com.blog.www.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author: chenyu
  * @date: 2019/12/8 22:35
@@ -52,5 +55,24 @@ public class ComServiceImpl implements ComService {
         else {
             return ResultCode.UNSPECIFIED;
         }
+    }
+
+    @Override
+    public List<Comment> getCommentsByBlogId(Integer blogId) {
+        if (blogId != null){
+            if (blogMapper.findBlogById(blogId)<=0){
+                return null;
+            }
+            if (commMapper.getCommentCountByBlogId(blogId)!=0){
+                List<Comment> comments = commMapper.getCommentsByBlogId(blogId);
+                List<Reply> replies = new ArrayList<Reply>();
+                for (Comment comment:comments) {
+                    if (commMapper.getReplyCountByBlogId(comment.getId())!=0){
+                        replies.add((Reply) commMapper.getRepliesByCommentId(comment.getId()));
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

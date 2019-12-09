@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Clob;
+import java.util.List;
 
 /**
  * @author: chenyu
@@ -37,5 +38,9 @@ public class Blog implements Serializable {
      */
     private String date;
 
+    /**
+     * 该博客的评论列表
+     */
+    private List<Comment> comments;
 
 }

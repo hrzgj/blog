@@ -3,6 +3,7 @@ package com.blog.www.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author liuyanxiang
@@ -22,9 +23,9 @@ public class Comment  implements Serializable {
     private String content;
 
     /**
-     * 评论的用户的id
+     * 评论的用户
      */
-    private Integer user;
+    private User commenter;
 
     /**
      * 评论的这篇博客的id
@@ -36,5 +37,9 @@ public class Comment  implements Serializable {
      */
     private String time;
 
+    /**
+     * 该评论的回复
+     */
+    private List<Reply> replies;
 
 }
