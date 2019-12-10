@@ -75,6 +75,10 @@ public class ResultCode {
     //评论不存在
     public static final int COMMENT_NO_EXIT=20;
 
+    //登录用户的操作不匹配，权限不够
+    //例如，修改其他用户博客的操作。删除其他用户评论等操作
+    public static final int USER_DIFFERENT=21;
 
-
+    //用户不存在
+    public static final int USER_NO_EXIT=22;
 }

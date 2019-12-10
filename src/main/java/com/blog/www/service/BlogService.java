@@ -22,7 +22,7 @@ public interface BlogService {
      * @return 成功与否
      */
     @Transactional
-    boolean deleteBlog(Blog blog);
+    int deleteBlog(Blog blog);
 
     /**
      * 增加博客,只是插入博客表中，未存入关联的收藏夹中

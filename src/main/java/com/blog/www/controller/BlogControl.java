@@ -81,15 +81,18 @@ public class BlogControl {
             result.setCode(ResultCode.RIGHT_ERROR);
             return result;
         }
-        if(blogService.deleteBlog(blog)){
-            result.setCode(ResultCode.SUCCESS);
+        int flag=blogService.deleteBlog(blog);
+        result.setCode(flag);
+        if(flag==1){
             result.setMsg("删除成功，将博客评论，收藏夹收藏博客记录删除");
-            return result;
-        }else {
-            result.setCode(ResultCode.UNSPECIFIED);
-            result.setMsg("删除失败,可能该博客不存在");
-            return result;
         }
+        else if(flag==ResultCode.BLOG_NOT_EXIT){
+            result.setMsg("博客不存在");
+        }
+        else {
+            result.setMsg("删除失败,可能该博客不存在");
+        }
+        return result;
     }
 
     /**
@@ -336,7 +339,7 @@ public class BlogControl {
                 result.setData(blog);
             } else {
                 result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("获得博客内容失败");
+                result.setMsg("获得博客内容失败,该博客可能不存在");
             }
         }
         return result;

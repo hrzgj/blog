@@ -30,11 +30,6 @@ public class Reply {
     private User beReply;
 
     /**
-     * 评论的这篇博客的id
-     */
-    private Integer blogId;
-
-    /**
      * 回复的时间
      */
     private String time;

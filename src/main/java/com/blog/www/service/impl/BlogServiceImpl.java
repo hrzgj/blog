@@ -4,10 +4,7 @@ import com.blog.www.mapper.BlogMapper;
 import com.blog.www.mapper.CollectMapper;
 import com.blog.www.mapper.ComMapper;
 import com.blog.www.mapper.UserMapper;
-import com.blog.www.model.Blog;
-import com.blog.www.model.Collect;
-import com.blog.www.model.User;
-import com.blog.www.model.UserCollect;
+import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
 import com.blog.www.utils.StrUtils;
@@ -85,15 +82,31 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public boolean deleteBlog(Blog blog) {
+    public int deleteBlog(Blog blog) {
 
+        if(blogMapper.findBlogById(blog.getId())==0){
+            return ResultCode.BLOG_NOT_EXIT;
+        }
         //删除所有用户收藏夹中该博客的记录
-        int a=collectMapper.deleteColAllBlogByBlogId(blog);
-        int b=collectMapper.deleteNormalColAllBlog(blog);
-        //删除评论
-        comMapper.deleteBlogCom(blog);
+        collectMapper.deleteColAllBlogByBlogId(blog);
+        collectMapper.deleteNormalColAllBlog(blog);
+
+        //找出所有评论的id
+        List<Integer> list=comMapper.findCommentIdByBlogId(blog.getId());
+        //如果有评论
+        if(list.size()>0) {
+            //删除评论的所有回复
+            comMapper.deleteRelyByListCommentId(list);
+            //删除评论
+            comMapper.deleteBlogCom(blog);
+        }
         //最后删除博客
-        return blogMapper.deleteBlog(blog) != 0;
+        if(blogMapper.deleteBlog(blog) != 0){
+            return ResultCode.SUCCESS;
+        }
+        else {
+            return ResultCode.UNSPECIFIED;
+        }
     }
 
 
