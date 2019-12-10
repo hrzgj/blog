@@ -15,7 +15,7 @@ public interface ComService {
     /**
      * 新增评论
      *@author chenyu
-     *@date 22:54 2019/12/8
+     *@date 22:55 2019/12/8
      *@param comment 内容
      *@return 结果
      **/
