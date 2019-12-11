@@ -110,19 +110,20 @@ public class FileControl {
         }
         result.setCode(ResultCode.SUCCESS);
         result.setMsg("上传成功");
-        result.setData(fileNewName);
+        result.setData(url+"/img/blog/"+fileNewName);
         return result;
     }
 
     /**
      * 将博客的图片文件从服务器删除
-     * @param photoName 图片名称
+     * @param photoName 图片访问地址
      * @return  result
      */
     @GetMapping("/deletePicture")
     public  Result deletePicture(@RequestParam("photoName")  String photoName){
         Result result =new Result();
-        String filePath=path+"blog/"+photoName;
+        String photo=photoName.substring(photoName.lastIndexOf("/")+1);
+        String filePath=path+"blog/"+photo;
         if(FileUtils.deleteFile(filePath)) {
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("删除成功");
