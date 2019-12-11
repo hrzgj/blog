@@ -3,6 +3,7 @@ package com.blog.www.controller;
 import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.service.CollectService;
+import com.blog.www.service.ComService;
 import com.blog.www.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,6 +27,9 @@ public class BlogControl {
 
     @Autowired
     CollectService collectService;
+
+    @Autowired
+    ComService comService;
 
     /**
      * 新增博客
@@ -328,12 +332,14 @@ public class BlogControl {
         } else {
             if (blogService.getBlogById(blogId) != null) {
                 Blog blog = blogService.getBlogById(blogId);
+                //获得该博客的评论
+                blog.setComments(comService.getCommentsByBlogId(blogId));
                 result.setCode(ResultCode.SUCCESS);
                 result.setMsg("获得博客内容成功");
                 result.setData(blog);
             } else {
                 result.setCode(ResultCode.UNSPECIFIED);
-                result.setMsg("获得博客内容失败");
+                result.setMsg("获得博客内容失败,该博客可能不存在");
             }
         }
         return result;

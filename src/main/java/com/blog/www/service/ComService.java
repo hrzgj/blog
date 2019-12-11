@@ -4,6 +4,8 @@ import com.blog.www.model.Comment;
 import com.blog.www.model.Reply;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author: chenyu
  * @date: 2019/12/8 22:36
@@ -13,7 +15,7 @@ public interface ComService {
     /**
      * 新增评论
      *@author chenyu
-     *@date 22:54 2019/12/8
+     *@date 22:55 2019/12/8
      *@param comment 内容
      *@return 结果
      **/
@@ -46,4 +48,12 @@ public interface ComService {
      *@return 结果
      **/
     boolean deleteReply(Reply reply);
+
+    /**
+     * 通过博客id获得该博客的评论列表
+     * @param blogId 博客id
+     * @return 评论列表
+     */
+    List<Comment> getCommentsByBlogId(Integer blogId);
+
 }
