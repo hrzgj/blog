@@ -66,7 +66,7 @@ public class ComServiceImpl implements ComService {
 
     @Override
     public int deleteComment(Comment comment) {
-        commMapper.deleteRelyByCommentId(comment.getId());
+//        commMapper.deleteRelyByCommentId(comment.getId());
         if(commMapper.deleteComment(comment.getId())>0){
             return ResultCode.SUCCESS;
         }
