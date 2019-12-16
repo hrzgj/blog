@@ -7,6 +7,7 @@ import com.blog.www.mapper.UserMapper;
 import com.blog.www.model.*;
 import com.blog.www.service.BlogService;
 import com.blog.www.utils.DateUtils;
+import com.blog.www.utils.HtmlUtils;
 import com.blog.www.utils.StrUtils;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class BlogServiceImpl implements BlogService {
     public boolean addBlog(Blog blog) {
         if (blog != null){
             blog.setDate(DateUtils.getDateToSecond());
+            //将博客的标题中的字符转义
+            String title = HtmlUtils.HTMLEncod(blog.getTitle());
+            blog.setTitle(title);
             if (blogMapper.insertBlog(blog)>0){
                 return true;
             }
@@ -50,7 +54,9 @@ public class BlogServiceImpl implements BlogService {
     public boolean editBlog(Blog blog) {
         if (blog != null){
             blog.setDate(DateUtils.getDateToSecond());
-
+            //将博客的标题中的字符转义
+            String title = HtmlUtils.HTMLEncod(blog.getTitle());
+            blog.setTitle(title);
             //如果传入博客id为空，说明这篇博客之前未存过
             if (blog.getId()==null){
                 //新增博客到草稿箱，存入内容
@@ -65,7 +71,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public boolean updateBlog(Blog blog) {
-
+        //将博客的标题中的字符转义
+        String title = HtmlUtils.HTMLEncod(blog.getTitle());
+        blog.setTitle(title);
         blog.setDate(DateUtils.getDateToSecond());
         return blogMapper.updateBlog(blog) != 0;
     }
@@ -74,6 +82,9 @@ public class BlogServiceImpl implements BlogService {
     public boolean addBlogInEdit(Blog blog) {
         //删除草稿箱中博客
         if (blogMapper.deleteEditBlog(blog.getId()) > 0 ){
+            //将博客的标题中的字符转义
+            String title = HtmlUtils.HTMLEncod(blog.getTitle());
+            blog.setTitle(title);
             blog.setId(null);
             blog.setDate(DateUtils.getDateToSecond());
             return  blogMapper.insertBlog(blog)>0;
