@@ -18,8 +18,8 @@ import java.util.List;
  * @date 2019/11/16 10:21
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/api")
+//@CrossOrigin
+//@RequestMapping("/api")
 public class BlogControl {
 
     @Autowired

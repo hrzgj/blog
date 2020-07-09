@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author cy
  */
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class UserControl {
 
     @Autowired
@@ -92,19 +92,19 @@ public class UserControl {
         if(code==null){
             result.setMsg("修改了url的参数");
             result.setCode(ResultCode.REGISTER_ERROR2);
-            response.sendRedirect("http://39.97.252.246:8080/login");
+//            response.sendRedirect("http://39.108.191.226:8888/blog/login");
             return result;
         }
         if(userService.findCode(code)){
             result.setMsg("用户注册成功，已修改状态");
             result.setCode(ResultCode.SUCCESS);
-            response.sendRedirect("http://39.97.252.246:8080/login");
+//            response.sendRedirect("http://39.108.191.226:8888/blog/login");
             return result;
         }
         else {
             result.setCode(ResultCode.REGISTER_ERROR);
             result.setMsg("用户注册失败");
-            response.sendRedirect("http://39.97.252.246:8080/login");
+//            response.sendRedirect("http://39.108.191.226:8888/blog/login");
             return result;
         }
 

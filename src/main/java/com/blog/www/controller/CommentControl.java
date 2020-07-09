@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
  * @date: 2019/12/8 22:29
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/api")
+//@CrossOrigin
+//@RequestMapping("/api")
 public class CommentControl {
 
     @Autowired

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://39.97.252.246:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://39.108.191.226:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: YIdong311800
     driver-class-name: com.mysql.jdbc.Driver
@@ -44,10 +44,12 @@ spring:
 
 web:
    upload-path: static/img/
-   url: http://39.97.252.246:8080
+   url: http://39.108.191.226:8888
 
 server:
-  port: 8080
+  port: 8888
+  servlet:
+    context-path: /blog
 
 mybatis:
   configuration:
