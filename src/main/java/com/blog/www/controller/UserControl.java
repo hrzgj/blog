@@ -19,6 +19,7 @@ import java.io.IOException;
  * @author cy
  */
 @RestController
+@CrossOrigin
 //@RequestMapping("/api")
 public class UserControl {
 
@@ -41,7 +42,7 @@ public class UserControl {
             return result;
         }else {
             result.setCode(ResultCode.MAIL_SEND_ERROR);
-            result.setMsg("发送邮箱失败");
+            result.setMsg("注册失败，可能用户名已存在");
             return result;
         }
 

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date: 2019/11/1 12:31
  */
 @RestController
-//@CrossOrigin
+@CrossOrigin
 //@RequestMapping("/api")
 public class FileControl {
 

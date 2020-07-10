@@ -37,18 +37,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean insert(User user) {
         user.setPassword(MD5Utils.encode(user.getPassword()));
-        String code= UUIDUtils.getUUID();
-        String subject="验证你的邮箱";
-        String context="尊敬的"+user.getName()+"你好"+
-                "点击该链接进行注册"+
-                " https://www.yidong2018.cn/blog/checkCode?code="+code;
-        if(mailService.sendMail(user.getMail(), subject, context)){
-            userMapper.insertUser(user);
-            userMapper.insertCode(user.getId(),code);
-            return true;
-        }else {
+        if (userMapper.findByAccount(user)>0){
             return false;
         }
+        if (userMapper.insertUser(user)>0){
+            return true;
+        }
+        return false;
+//        String code= UUIDUtils.getUUID();
+//        String subject="验证你的邮箱";
+//        String context="尊敬的"+user.getName()+"你好"+
+//                "点击该链接进行注册"+
+//                " https://www.yidong2018.cn/blog/checkCode?code="+code;
+//        if(mailService.sendMail(user.getMail(), subject, context)){
+//            userMapper.insertUser(user);
+//            userMapper.insertCode(user.getId(),code);
+//            return true;
+//        }else {
+//            return false;
+//        }
     }
 
     @Override
