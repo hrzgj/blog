@@ -110,7 +110,7 @@ public class FileControl {
         }
         result.setCode(ResultCode.SUCCESS);
         result.setMsg("上传成功");
-        result.setData(url+"/img/blog/"+fileNewName);
+        result.setData(fileNewName);
         return result;
     }
 
