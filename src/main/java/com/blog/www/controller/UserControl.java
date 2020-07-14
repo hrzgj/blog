@@ -19,8 +19,8 @@ import java.io.IOException;
  * @author cy
  */
 @RestController
-@CrossOrigin
-//@RequestMapping("/api")
+@CrossOrigin(allowCredentials = "true")
+//@RequestMapping("/api")  (allowCredentials = "true")
 public class UserControl {
 
     @Autowired

@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2019/11/16 10:21
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 //@RequestMapping("/api")
 public class BlogControl {
 

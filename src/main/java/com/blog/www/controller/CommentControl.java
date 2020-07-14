@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date: 2019/12/8 22:29
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 //@RequestMapping("/api")
 public class CommentControl {
 
