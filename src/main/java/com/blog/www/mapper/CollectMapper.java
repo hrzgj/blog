@@ -81,6 +81,7 @@ public interface CollectMapper {
      * @return 增加条数
      */
     @Insert("insert into u_collect (u_id,name,intro) value(#{userId},#{name},#{intro})")
+    @Options(useGeneratedKeys = true,keyProperty = "id" )
     int insertUserCollect(UserCollect userCollect);
 
     /**
