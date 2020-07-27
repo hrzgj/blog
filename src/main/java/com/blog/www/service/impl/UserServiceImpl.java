@@ -11,6 +11,7 @@ import com.blog.www.utils.UUIDUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
      * @param user 用户 用户
      * @return  是否增加成功
      */
+    @Transactional
     @Override
     public boolean insert(User user) {
         user.setPassword(MD5Utils.encode(user.getPassword()));
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         if (userMapper.insertUser(user)>0){
+            collectMapper.insertDCollect(user.getId());
             return true;
         }
         return false;
