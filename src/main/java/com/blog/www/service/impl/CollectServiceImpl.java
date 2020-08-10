@@ -69,7 +69,7 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public boolean insertCollectToAuto(Collect collect) {
         //如果数据库中没有此条博客存入默认收藏夹的消息，则继续操作
-        if (collectMapper.selectBlogIsAuto(collect.getBlogId()) == 0){
+        if (collectMapper.selectBlogIsAuto(collect.getBlogId(),collect.getUserCollectId()) == 0){
             if (collectMapper.insertCollectToAuto(collect)>0){
                 return true;
             }

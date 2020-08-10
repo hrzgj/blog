@@ -141,8 +141,8 @@ public interface CollectMapper {
      * @param blogId 博客id
      * @return 数据条数
      */
-    @Select("select count(*) from db_collect where b_id = #{blogId} ")
-    int selectBlogIsAuto(int blogId);
+    @Select("select count(*) from db_collect where b_id = #{blogId} and d_id = #{dId}")
+    int selectBlogIsAuto(int blogId,int dId);
 
     /**
      * 删除草稿箱或者默认收藏夹中的博客
