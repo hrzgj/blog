@@ -1,5 +1,6 @@
 package com.blog.www.mapper;
 
+
 import com.blog.www.model.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,9 @@ public interface UserMapper {
      */
     @Insert("insert into user (account,password,name,mail,status) values(#{account},#{password},#{name},#{mail},#{status})")
     @Options(useGeneratedKeys = true,keyProperty = "id")
-    void insertUser(User user);
+    int insertUser(User user);
+
+
 
     /**
      * 用户注册时获得的验证码

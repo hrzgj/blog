@@ -115,6 +115,7 @@ public interface ComMapper {
         public String deleteRelyByListCommentId(List<Integer> list){
             StringBuilder stringBuilder=new StringBuilder();
             stringBuilder.append("delete from s_comment where c_id in (");
+
             for(int i=0;i<list.size();i++){
                 stringBuilder.append(list.get(i));
                 if(i<list.size()-1){

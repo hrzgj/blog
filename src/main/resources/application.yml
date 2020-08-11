@@ -1,10 +1,16 @@
 spring:
+#ReadExcel
+  #ExcelUtil
+  #Controller
+  #Service
+  #UserMapper
+  #User
   datasource:
-    url: jdbc:mysql://39.97.252.246:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://39.108.191.226:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: YIdong311800
     driver-class-name: com.mysql.jdbc.Driver
-#  datasource:
+
 #    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
 #    username: root
 #    password: YIdong311800
