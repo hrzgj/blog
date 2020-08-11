@@ -69,7 +69,7 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public boolean insertCollectToAuto(Collect collect) {
         //如果数据库中没有此条博客存入默认收藏夹的消息，则继续操作
-        if (collectMapper.selectBlogIsAuto(collect.getBlogId()) == 0){
+        if (collectMapper.selectBlogIsAuto(collect.getBlogId(),collect.getUserCollectId()) == 0){
             if (collectMapper.insertCollectToAuto(collect)>0){
                 return true;
             }
@@ -116,7 +116,7 @@ public class CollectServiceImpl implements CollectService {
         //获取用户默认收藏夹id
         int DId=collectMapper.findNormalCollectByUId(userId);
         //查看默认收藏夹是否有该博客
-        if(collectMapper.findNorMalCollectExitBlog(DId,userId)>0){
+        if(collectMapper.findNorMalCollectExitBlog(DId,collect.getBlogId())>0){
             return ResultCode.BLOG_EXIT;
         }
         //删除非默认收藏夹里的博客，若删除失败即不存在该博客

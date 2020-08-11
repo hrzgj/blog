@@ -14,7 +14,9 @@ import java.util.Properties;
 @MapperScan("com.blog.www.mapper")
 public class DemoApplication {
 
-
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
 	@Bean
 	public PageHelper getPageHelper() {
 		PageHelper pageHelper = new PageHelper();

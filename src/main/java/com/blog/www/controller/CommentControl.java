@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
  * @date: 2019/12/8 22:29
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/api")
+@CrossOrigin(allowCredentials = "true")
+//@RequestMapping("/api")
 public class CommentControl {
 
     @Autowired
@@ -119,12 +119,12 @@ public class CommentControl {
             result.setCode(ResultCode.OBJECT_NULL);
             return result;
         }
-        User user= (User) request.getSession().getAttribute("user");
-        if(!comment.getCommenter().getId().equals(user.getId())){
-            result.setCode(ResultCode.USER_DIFFERENT);
-            result.setMsg("用户权限错误");
-            return result;
-        }
+//        User user= (User) request.getSession().getAttribute("user");
+//        if(!comment.getCommenter().getId().equals(user.getId())){
+//            result.setCode(ResultCode.USER_DIFFERENT);
+//            result.setMsg("用户权限错误");
+//            return result;
+//        }
         if(comService.deleteComment(comment)==1){
             result.setCode(ResultCode.SUCCESS);
             result.setMsg("删除成功");

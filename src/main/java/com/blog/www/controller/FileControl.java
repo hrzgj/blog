@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
  * @date: 2019/11/1 12:31
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/api")
+@CrossOrigin(allowCredentials = "true")
+//@RequestMapping("/api")
 public class FileControl {
 
 
@@ -110,7 +110,7 @@ public class FileControl {
         }
         result.setCode(ResultCode.SUCCESS);
         result.setMsg("上传成功");
-        result.setData(url+"/img/blog/"+fileNewName);
+        result.setData(fileNewName);
         return result;
     }
 

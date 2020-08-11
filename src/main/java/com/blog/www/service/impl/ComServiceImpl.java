@@ -8,6 +8,7 @@ import com.blog.www.model.Reply;
 import com.blog.www.model.ResultCode;
 import com.blog.www.service.ComService;
 import com.blog.www.utils.DateUtils;
+import com.blog.www.utils.HtmlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,9 @@ public class ComServiceImpl implements ComService {
     @Override
     public int addComment(Comment comment) {
         comment.setTime(DateUtils.getDateToSecond());
+        //将评论的内容中的字符转义
+        String content = HtmlUtils.HTMLEncod(comment.getContent());
+        comment.setContent(content);
         if(blogMapper.findBlogById(comment.getBlog())<=0){
             return ResultCode.BLOG_NOT_EXIT;
         }

@@ -18,8 +18,8 @@ import java.util.List;
  * @date 2019/11/16 10:21
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/api")
+@CrossOrigin(allowCredentials = "true")
+//@RequestMapping("/api")
 public class BlogControl {
 
     @Autowired
@@ -139,7 +139,7 @@ public class BlogControl {
             return result;
         }
         User user= (User) request.getSession().getAttribute("user");
-        if(user.getId()!=blog.getAuthor().getId()){
+        if(!user.getId().equals(blog.getAuthor().getId())){
             result.setMsg("用户权限错误");
             result.setCode(ResultCode.RIGHT_ERROR);
             return result;

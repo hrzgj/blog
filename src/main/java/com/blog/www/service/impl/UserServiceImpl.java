@@ -11,12 +11,13 @@ import com.blog.www.utils.UUIDUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 /**
  * @author chenyu
- */
+        */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -31,25 +32,33 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 注册用户
-     *
      * @param user 用户 用户
-     * @return 是否增加成功
+     * @return  是否增加成功
      */
+    @Transactional
     @Override
     public boolean insert(User user) {
         user.setPassword(MD5Utils.encode(user.getPassword()));
-        String code = UUIDUtils.getUUID();
-        String subject = "验证你的邮箱";
-        String context = "尊敬的" + user.getName() + "你好" +
-                "点击该链接进行注册" +
-                " http://39.97.252.246:8080/checkCode?code=" + code;
-        if (mailService.sendMail(user.getMail(), subject, context)) {
-            userMapper.insertUser(user);
-            userMapper.insertCode(user.getId(), code);
-            return true;
-        } else {
+        if (userMapper.findByAccount(user)>0){
             return false;
         }
+        if (userMapper.insertUser(user)>0){
+            collectMapper.insertDCollect(user.getId());
+            return true;
+        }
+        return false;
+//        String code= UUIDUtils.getUUID();
+//        String subject="验证你的邮箱";
+//        String context="尊敬的"+user.getName()+"你好"+
+//                "点击该链接进行注册"+
+//                " https://www.yidong2018.cn/blog/checkCode?code="+code;
+//        if(mailService.sendMail(user.getMail(), subject, context)){
+//            userMapper.insertUser(user);
+//            userMapper.insertCode(user.getId(),code);
+//            return true;
+//        }else {
+//            return false;
+//        }
     }
 
     @Override
@@ -61,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByMail(String mail) {
-        if (mail != null) {
+        if (mail!=null) {
             User user = userMapper.findUserByMail(mail);
             return user;
         }
@@ -75,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean mailExit(User user) {
-        return userMapper.findByMail(user) != 0;
+        return userMapper.findByMail(user)!=0;
     }
 
     @Override

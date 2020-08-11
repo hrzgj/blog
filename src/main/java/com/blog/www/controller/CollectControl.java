@@ -17,9 +17,9 @@ import java.util.List;
  * @author: chenyu
  * @date: 2019/11/16 20:12
  */
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class CollectControl {
 
     @Autowired

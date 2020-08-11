@@ -16,11 +16,9 @@ public interface UserMapper {
      * 插入用户数据
      * @param user 登录用户
      */
-    @Insert("insert into user (account,password,name,mail,status) values(#{account},#{password},#{name},#{mail},#{status})")
+    @Insert("insert into user (account,password,name,mail,status) values(#{account},#{password},#{name},#{mail},1)")
     @Options(useGeneratedKeys = true,keyProperty = "id")
-    int insertUser(User user);
-
-
+    Integer insertUser(User user);
 
     /**
      * 用户注册时获得的验证码

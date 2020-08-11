@@ -81,6 +81,7 @@ public interface CollectMapper {
      * @return 增加条数
      */
     @Insert("insert into u_collect (u_id,name,intro) value(#{userId},#{name},#{intro})")
+    @Options(useGeneratedKeys = true,keyProperty = "id" )
     int insertUserCollect(UserCollect userCollect);
 
     /**
@@ -140,8 +141,8 @@ public interface CollectMapper {
      * @param blogId 博客id
      * @return 数据条数
      */
-    @Select("select count(*) from db_collect where b_id = #{blogId} ")
-    int selectBlogIsAuto(int blogId);
+    @Select("select count(*) from db_collect where b_id = #{blogId} and d_id = #{dId}")
+    int selectBlogIsAuto(int blogId,int dId);
 
     /**
      * 删除草稿箱或者默认收藏夹中的博客
